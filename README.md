@@ -1,1 +1,2 @@
 # diplomaServer
+npm run dev
