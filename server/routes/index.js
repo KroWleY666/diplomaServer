@@ -2,6 +2,8 @@ const rolesController = require('../controllers').roles;
 const userRolesController = require('../controllers').userRoles;
 const usersController = require('../controllers').users;
 const groupsController = require('../controllers').groups;
+const filtersController = require('../controllers').filters;
+const exercisesController = require('../controllers').exercises;
 
 module.exports = (app) => {
   app.get('/api', (req, res) => res.status(200).send({
@@ -25,5 +27,8 @@ module.exports = (app) => {
   app.get('/api/groups', groupsController.list); //ok
   app.get('/api/groupusersList', groupsController.findParticipant); //ok
 
-  app.post('/api/addtogroup', groupsController.addParticipant222); 
+  app.post('/api/addtogroup', groupsController.addParticipant); //ok
+  
+  app.post('/api/newFilters', filtersController.create); //
+  app.post('/api/newExercises', exercisesController.create); //
 };
