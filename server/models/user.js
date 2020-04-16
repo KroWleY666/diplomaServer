@@ -27,8 +27,8 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false
       },
       group_id: {
-        type: DataTypes.INTEGER,
-        allowNull: true
+        type: DataTypes.INTEGER
+        //allowNull: true
       }
     });
     User.associate = models => {

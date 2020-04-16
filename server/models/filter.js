@@ -20,12 +20,14 @@ module.exports = (sequelize, DataTypes) => {
     },
     duration:  { 
       type: DataTypes.STRING
-    },
-    name:  { 
-      type: DataTypes.STRING
     }
   });
-  Filter.associate = function(models) {
+  Filter.associate = models => {
+    Filter.hasMany(models.Plan, {
+      foreignKey: 'filter_user_id',
+      as: 'filterPlan'
+     // onDelete: 'CASCADE',
+    })
     // associations can be defined here
   };
   return Filter;

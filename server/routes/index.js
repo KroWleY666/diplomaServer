@@ -4,6 +4,7 @@ const usersController = require('../controllers').users;
 const groupsController = require('../controllers').groups;
 const filtersController = require('../controllers').filters;
 const exercisesController = require('../controllers').exercises;
+const plansController = require('../controllers').plans;
 
 module.exports = (app) => {
   app.get('/api', (req, res) => res.status(200).send({
@@ -29,6 +30,38 @@ module.exports = (app) => {
 
   app.post('/api/addtogroup', groupsController.addParticipant); //ok
   
+
+  /*---------- filters ----------*/
   app.post('/api/newFilters', filtersController.create); //
-  app.post('/api/newExercises', exercisesController.create); //
+  app.get('/api/listFilter', filtersController.listFilter); //
+
+  /*---------- exercises ----------*/
+  app.post('/api/:trainExercise/newExercises', exercisesController.create); // ok +
+  app.get('/api/listExercises', exercisesController.listExercise); // ok
+
+  /*---------- planes ----------*/
+  app.post('/api/newPlan', plansController.create); // 
+  app.get('/api/listPlan', plansController.listPlan); // 
+
+  app.post('/api/newTrain', plansController.createTrain); // 
+  app.get('/api/listTrain', plansController.listTrain); // 
+
+
+  app.get('/api/listTEx', plansController.listTEx); // 
+  
+
+
+  app.post('/api/newListTrain', plansController.createTrainExercise); // 
+  
+
+
+  app.post('/api/:trainExercise/listManyToMany', plansController.listTrainExercise); //
+  
+
+
+
+  app.post('/api/addSportsmen', groupsController.addParticipant222); // ok +-
+  app.get('/api/listSportsmen', groupsController.listParticipant); // ok
+  app.delete('/api/delSportsmen', groupsController.destroyParticipant); //ok
+
 };

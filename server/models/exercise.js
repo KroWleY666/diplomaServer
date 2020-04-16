@@ -7,6 +7,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER
     },
     name: {
+      allowNull: false,
       type: DataTypes.STRING
     },
     duration:  {
@@ -15,11 +16,37 @@ module.exports = (sequelize, DataTypes) => {
     approach: {
       type: DataTypes.INTEGER
     },
+    count: {
+      type: DataTypes.INTEGER
+    },
     day: {
       type: DataTypes.STRING
     }
   });
-  Exercise.associate = function(models) {
+  Exercise.associate  = models => {
+    /*Exercise.hasMany(models.Plan, {
+      foreignKey: 'exercise_id'
+     // onDelete: 'CASCADE',
+    }),*/
+   /* Exercise.hasMany(models.Train, {
+      foreignKey: 'trainExercise'
+     // onDelete: 'CASCADE',
+    }),*/
+    /*Exercise.hasMany(models.TrainExercise, {
+      foreignKey: 'exercise_id',
+    //  targetKey: 'exercise_id'
+     // onDelete: 'CASCADE',
+    })*/
+
+    Exercise.belongsToMany(models.Train, {
+      as: 'Trains', 
+      through: 'TrainExercise',
+      foreignKey: 'exercise_id',
+      otherKey: 'train_id'//})
+     // foreignKey: 'exercise_id',
+    //  targetKey: 'exercise_id'
+     // onDelete: 'CASCADE',
+    })
     // associations can be defined here
   };
   return Exercise;

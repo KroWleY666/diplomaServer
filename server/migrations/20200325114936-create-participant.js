@@ -1,26 +1,27 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Filters', {
-      filter_user_id: {
+    return queryInterface.createTable('Participants', {
+      participant_id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      goal: {
-        type: Sequelize.STRING
+      name: {
+        type: Sequelize.STRING,
+        allowNull: false
       },
-      level: {
-        type: Sequelize.STRING
+      surname: {
+        type: Sequelize.STRING,
+        allowNull: false
       },
-      period: {
-        type: Sequelize.STRING
+      email: {
+        type: Sequelize.STRING,
+        allowNull: false
       },
-      type: {
-        type: Sequelize.STRING
-      },
-      duration: {
-        type: Sequelize.STRING
+      group_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false
       },
       createdAt: {
         allowNull: false,
@@ -33,6 +34,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Filters');
+    return queryInterface.dropTable('Participants');
   }
 };

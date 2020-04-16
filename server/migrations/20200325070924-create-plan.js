@@ -7,8 +7,16 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      exercise_id: {
+      filter_user_id: { 
+        allowNull: false,
+        type: Sequelize.INTEGER
+      },
+     /* train_id: {
         type: Sequelize.INTEGER,
+        allowNull: false
+      },*/
+      name: {
+        type: Sequelize.STRING,
         allowNull: false
       },
       createdAt: {
