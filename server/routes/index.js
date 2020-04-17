@@ -19,21 +19,37 @@ module.exports = (app) => {
 
   app.post('/api/roles/:role_id/userRoles', userRolesController.create);
 
+
+
+  /*-------------------- users --------------------*/
+  // регистрация пользователей (тренеры)                      !!!!!
   app.post('/api/register', usersController.register); //ok
+  // !!!!!!!!!!!!!!!! НЕ РАБОТАЕТ
   app.post('/api/login', usersController.login);
-  app.get('/api/usersList', usersController.list);//ok
+  // вывод всех зарегистрированных пользователей (тренеры)    !!!!!
+  app.get('/api/usersList', usersController.listRegister);//ok
 
 
-  app.post('/api/newGroup', groupsController.create); //ok
-  app.get('/api/groups', groupsController.list); //ok
-  app.get('/api/groupusersList', groupsController.findParticipant); //ok
 
-  app.post('/api/addtogroup', groupsController.addParticipant); //ok
-  
+  /*-------------------- groups --------------------*/
+  // добавить группу к пользователю с id: userId, создать     !!!!!
+  app.post('/api/:userId/newGroup', groupsController.create); //ok
+  // список групп пользователя с id: userId, создать          !!!!!
+  app.get('/api/:userId/groupList', groupsController.list); //ok
+  // добавить спортсмена в группу с id группы: groupId        !!!!!
+  app.post('/api/:group_id/newParticipant', groupsController.addParticipant); //ok
+  // поиск спортсмена по имя-фамилия БЕЗ id группы: groupId        !!!!!
+  app.get('/api/findParicipant', groupsController.findParticipant); //ok
+
 
   /*---------- filters ----------*/
+  // создать фильтр
   app.post('/api/newFilters', filtersController.create); //
+  // список всех фильтров
   app.get('/api/listFilter', filtersController.listFilter); //
+
+  app.get('/api/PlanFilter', filtersController.addPlanToFilter); //
+  
 
   /*---------- exercises ----------*/
   app.post('/api/:trainExercise/newExercises', exercisesController.create); // ok +
@@ -55,13 +71,8 @@ module.exports = (app) => {
   
 
 
-  app.post('/api/:trainExercise/listManyToMany', plansController.listTrainExercise); //
+ // app.post('/api/:trainExercise/listManyToMany', plansController.listTrainExercise); //
   
-
-
-
-  app.post('/api/addSportsmen', groupsController.addParticipant222); // ok +-
-  app.get('/api/listSportsmen', groupsController.listParticipant); // ok
   app.delete('/api/delSportsmen', groupsController.destroyParticipant); //ok
 
 };

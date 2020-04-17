@@ -1,26 +1,20 @@
+'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Filters', {
-      filter_id: {
+    return queryInterface.createTable('FilterPlans', {
+      fp_id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      goal: {
-        type: Sequelize.STRING
+      filter_id: {
+        allowNull: false,
+        type: Sequelize.INTEGER
       },
-      level: {
-        type: Sequelize.STRING
-      },
-      period: {
-        type: Sequelize.STRING
-      },
-      type: {
-        type: Sequelize.STRING
-      },
-      duration: {
-        type: Sequelize.STRING
+      plan_id: {
+        allowNull: false,
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
@@ -33,6 +27,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Filters');
+    return queryInterface.dropTable('FilterPlans');
   }
 };

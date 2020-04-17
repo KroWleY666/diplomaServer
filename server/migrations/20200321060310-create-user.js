@@ -7,7 +7,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      name: {
+     /* name: {
         type: Sequelize.STRING,
         allowNull: false
       },
@@ -18,6 +18,10 @@ module.exports = {
       role: {
         type: Sequelize.STRING,
         allowNull: false
+      },*/
+      salt: {
+        type: Sequelize.STRING,
+        allowNull: false
       },
       email: {
         type: Sequelize.STRING,
@@ -26,10 +30,6 @@ module.exports = {
       password: {
         type: Sequelize.STRING,
         allowNull: false
-      },
-      group_id: {
-        type: Sequelize.INTEGER,
-        allowNull: true
       },
       createdAt: {
         allowNull: false,

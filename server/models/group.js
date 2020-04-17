@@ -16,9 +16,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   });
   Group.associate = models => {
-    Group.hasMany(models.User, {
-      foreignKey: 'group_id',
-      as: 'userGroup'
+    Group.belongsTo(models.User, {
+      foreignKey: 'user_id',
+      onDelete: 'CASCADE'
+     // as: 'ownerOfGroup'
     }),
     Group.hasMany(models.Participant, {
       foreignKey: 'group_id',

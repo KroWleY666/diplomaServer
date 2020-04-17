@@ -6,11 +6,11 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       type: DataTypes.INTEGER
     },
-    filter_user_id: { 
+   /* filter_user_id: { 
       allowNull: false,
       type: DataTypes.INTEGER
     },
-    /*train_id: {
+    train_id: {
       allowNull: false,
       type: DataTypes.INTEGER
     },*/
@@ -20,16 +20,18 @@ module.exports = (sequelize, DataTypes) => {
     }
   });
   Plan.associate = models => {
-    Plan.belongsTo(models.Filter, {
-      foreignKey: 'filter_user_id'
+    Plan.belongsToMany(models.Filter, {
+      through: models.FilterPlan,
+      as: 'filters',
+      foreignKey: 'plan_id'
     }),
     Plan.belongsTo(models.Participant, {
       foreignKey: 'plan_id'
-    }),
-    Plan.hasMany(models.Train, {
+    })
+  /*  Plan.hasMany(models.Train, {
       foreignKey: 'planTrain',
       as: 'trainsOfPlan'
-    })
+    })*/
   };
   return Plan;
 };

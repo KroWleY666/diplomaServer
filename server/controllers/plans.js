@@ -101,7 +101,7 @@ module.exports = {
 
 
       createTrainExercise(req, res) {
-        return Train.create({
+        Train.create({
           name: req.body.name,
           from: req.body.from,
           to: req.body.to
@@ -113,9 +113,17 @@ module.exports = {
             count: req.body.count,
             day: req.body.day
           }).then(exercises => {
-            exercises.set(trains)
+            exercises.set(trains) //trains)
+            res.status(201).send(exercises/*.findAll({
+              include: {
+                model: Train,
+                as: 'trains'
+              }
+            })*/
+            )
           }).catch(error => res.status(400).send(error));
-          res.status(201).send(trains)
+          
+         
         })      
         .catch(error => res.status(400).send(error));
       },
