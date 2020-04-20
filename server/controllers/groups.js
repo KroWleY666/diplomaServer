@@ -77,8 +77,7 @@ module.exports = {
         return Participant
         .findAll({where: {
           name: req.body.name,
-          surname: req.body.surname,
-          //group_id: req.body.group_id
+          surname: req.body.surname
         }})
           .then((user) => {
             if (user) {
@@ -97,20 +96,44 @@ module.exports = {
         return Participant
           .findOne({
             where: {
-              participant_id: req.body.participant_id,
-              group_id: req.body.group_id,
-            },
+              participant_id: req.body.participant_id
+            }
           })
           .then(participant => {
-            if (!participant) {
-              
+            if (!participant) {              
               return res.status(404).send({
-                message: 'TodoItem Not Found',
+                message: 'Спортсмен не найден!',
               });
             }
             return participant
               .destroy()
-              .then(() => res.status(204).send())
+              .then(() => res.status(200).send({
+                message: 'Спортсмен удален!',
+              }))
+              .catch(error => res.status(400).send(error));
+          })
+          .catch(error => res.status(400).send(error));
+      },
+
+      /*-----удалить группу с участниками-----*/
+      destroyGroup(req, res) {
+        return Group
+          .findOne({
+            where: {
+              group_id: req.body.group_id
+            }
+          })
+          .then(group => {
+            if (!group) {              
+              return res.status(404).send({
+                message: 'Группа не найдена!',
+              });
+            }
+            return group
+              .destroy()
+              .then(() => res.status(200).send({
+                message: 'Группа удалена!',
+              }))
               .catch(error => res.status(400).send(error));
           })
           .catch(error => res.status(400).send(error));

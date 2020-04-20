@@ -1,8 +1,8 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('TrainExercises', {
-      train_ex_id: {
+    return queryInterface.createTable('PlanTrains', {
+      pt_id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
@@ -12,7 +12,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER
       },
-      exercise_id: {
+      plan_id: {
         allowNull: false,
         type: Sequelize.INTEGER
       },
@@ -27,6 +27,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('TrainExercises');
+    return queryInterface.dropTable('PlanTrains');
   }
 };

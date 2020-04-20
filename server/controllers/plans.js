@@ -2,21 +2,30 @@ const Plan = require('../models').Plan
 const Filter = require('../models').Filter
 const Exercise = require('../models').Exercise
 const Train = require('../models').Train
-//const TrainExercise = require('../models').TrainExercise
 
 module.exports = {
+
+    /*----------создать отдельно план----------*/
     create(req, res) {
-      return Plan
-        .create({
-          name: req.body.name,
-          filter_user_id: req.body.filter_user_id,
-          exercise_id: req.body.exercise_id
-        })
-        .then(plan => res.status(201).send(plan))
-        .catch(error => res.status(400).send(error));
+      Plan.findOne({where: {name: req.body.name}})
+      .then(plan => {
+        if(plan) {
+          return res.status(404).send({
+            message: 'План уже существует!',
+          })
+        } else {
+          return Plan
+          .create({
+            name: req.body.name
+          })
+          .then(plan => res.status(201).send(plan))
+          .catch(error => res.status(400).send(error));
+        }
+      })
+      .catch(error => res.status(400).send(error));     
     },
 
-
+    /*----------создать отдельно тренировку----------*/
     createTrain(req, res) {
       return Train
         .create({
@@ -28,18 +37,19 @@ module.exports = {
         .catch(error => res.status(400).send(error));
     },
 
+    /*----------список тренировок и их упражнений----------*/
     listTrain(req, res) {
       return Train
-        .findAll(/*{
+        .findAll({
           include: [{
-            model: TrainExercise,//Exercise,
-            as: 'exercisesOfTrain'
+            model: Exercise,
+            as: 'exercises'
           }]
-        }*/)
+        })
         .then((train) => {
           if (!train) {
             return res.status(404).send({
-              message: 'Todo Not Found',
+              message: 'Тренировки не найдены!',
             });
           }
           return res.status(200).send(train);
@@ -47,107 +57,86 @@ module.exports = {
         .catch((error) => res.status(400).send(error));
     },
 
-  /*  create222(req, res) {
-      Plan.create({
-          name: req.body.name,
-          filter_user_id: req.body.filter_user_id
-        }).then(plan => {
-          
-        }
-          res.status(201).send(plan))
-        .catch(error => res.status(400).send(error));
-    },*/
+    /*-----список планов с зависимыми моделями-----*/
+listPlan(req, res) {
+  return Plan
+    .findAll({
+      include: [{
+        model: Filter,
+        as: 'filters',
+      },{
+        model: Train,
+        as: 'trains',
+      }]
+      })
+    .then((plan) => {
+      if (!plan) {
+        return res.status(404).send({
+          message: 'Планов нет!',
+        });
+      }
+      return res.status(200).send(plan);
+    })
+    .catch((error) => res.status(400).send(error));
+  },
 
-    /*-----список групп с зависимыми моделями-----*/
-    listPlan(req, res) {
+    /*---------добавить в план тренировку---------*/
+    addTrainToPlan(req, res) {
+      Train.findOne({where: {train_id: req.body.train_id}}) //return
+      .then(newTrain => {
+            var trainToAdd = newTrain;
+            Plan.findOne({ where: { plan_id: req.body.plan_id } }) //return
+      .then(plan => {
+              plan.addTrain(trainToAdd) //return
+              .then(function(ans){
+                res.status(201).send(trainToAdd)
+                trainToAdd;//return
+              })
+              .catch((error) => res.status(400).send(error));
+            })
+      .catch((error) => res.status(400).send(error));
+    })
+    .catch((error) => res.status(400).send(error));
+  },
+
+  /*-----удалить тренировку-----*/
+  destroyTrain(req, res) {
+    return Train
+      .findByPk(req.body.train_id)
+      .then(train => {
+        if (!train) {          
+          return res.status(404).send({
+            message: 'Тренировка не найдена!'
+          });
+        }
+        return train
+          .destroy()
+          .then(() => res.status(200).send({
+            message: 'Тренировка удалена!'
+          }))
+          .catch(error => res.status(400).send(error));
+      })
+      .catch(error => res.status(400).send(error));
+  },
+
+    /*-----удалить план-----*/
+    destroyPlan(req, res) {
       return Plan
-        .findAll({
-          include: [/*{
-            model: Filter,
-            as: 'filterPlan',
-          },*/{
-            model: Exercise,
-            as: 'exercisePlan',
-          }]
-        })
-        .then((plan) => {
-          if (!plan) {
+        .findByPk(req.body.plan_id)
+        .then(plan => {
+          if (!plan) {          
             return res.status(404).send({
-              message: 'Todo Not Found',
+              message: 'План не найден!'
             });
           }
-          return res.status(200).send(plan);
+          return plan
+            .destroy()
+            .then(() => res.status(200).send({
+              message: 'План удален!'
+            }))
+            .catch(error => res.status(400).send(error));
         })
-        .catch((error) => res.status(400).send(error));
-      },
-
-    /*  listTrainExercise(req, res) {
-        return TrainExercise
-          .findAll({
-            include: [{
-              model: Exercise,Train
-            }]
-          })
-          .then((train) => {
-            if (!train) {
-              return res.status(404).send({
-                message: 'Todo Not Found',
-              });
-            }
-            return res.status(200).send(train);
-          })
-          .catch((error) => res.status(400).send(error));
-      },*/
-
-
-      createTrainExercise(req, res) {
-        Train.create({
-          name: req.body.name,
-          from: req.body.from,
-          to: req.body.to
-        }).then(trains => {
-          Exercise.create({
-            name: req.body.nameEx,
-            approach: req.body.approach,
-            duration: req.body.duration,
-            count: req.body.count,
-            day: req.body.day
-          }).then(exercises => {
-            exercises.set(trains) //trains)
-            res.status(201).send(exercises/*.findAll({
-              include: {
-                model: Train,
-                as: 'trains'
-              }
-            })*/
-            )
-          }).catch(error => res.status(400).send(error));
-          
-         
-        })      
         .catch(error => res.status(400).send(error));
-      },
-
-      listTEx(req, res) {
-        return Train
-          .findAll({
-            include: [{
-              model: Exercise,
-              as: 'Exercises',
-              through: {
-                attributes: ['train_id', 'exercise_id'],
-              }
-            }]
-          })
-          .then((train) => {
-            if (!train) {
-              return res.status(404).send({
-                message: 'Todo Not Found',
-              });
-            }
-            return res.status(200).send(train);
-          })
-          .catch((error) => res.status(400).send(error));
-      },
+    },
 
 }

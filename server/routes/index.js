@@ -40,39 +40,67 @@ module.exports = (app) => {
   app.post('/api/:group_id/newParticipant', groupsController.addParticipant); //ok
   // поиск спортсмена по имя-фамилия БЕЗ id группы: groupId        !!!!!
   app.get('/api/findParicipant', groupsController.findParticipant); //ok
-
-
-  /*---------- filters ----------*/
-  // создать фильтр
-  app.post('/api/newFilters', filtersController.create); //
-  // список всех фильтров
-  app.get('/api/listFilter', filtersController.listFilter); //
-
-  app.get('/api/PlanFilter', filtersController.addPlanToFilter); //
-  
-
-  /*---------- exercises ----------*/
-  app.post('/api/:trainExercise/newExercises', exercisesController.create); // ok +
-  app.get('/api/listExercises', exercisesController.listExercise); // ok
-
-  /*---------- planes ----------*/
-  app.post('/api/newPlan', plansController.create); // 
-  app.get('/api/listPlan', plansController.listPlan); // 
-
-  app.post('/api/newTrain', plansController.createTrain); // 
-  app.get('/api/listTrain', plansController.listTrain); // 
-
-
-  app.get('/api/listTEx', plansController.listTEx); // 
-  
-
-
-  app.post('/api/newListTrain', plansController.createTrainExercise); // 
-  
-
-
- // app.post('/api/:trainExercise/listManyToMany', plansController.listTrainExercise); //
-  
+  // удалить спортсмена из группы                             !!!!!
   app.delete('/api/delSportsmen', groupsController.destroyParticipant); //ok
+  // удалить группу                                           !!!!!
+  app.delete('/api/delGroup', groupsController.destroyGroup); //ok
+
+  
+
+  /*-------------------- filters --------------------*/
+  // создать фильтр просто                                         !!!!!
+  app.post('/api/newFilters', filtersController.create); //ok
+  // список всех фильтров c привязанными к ним планами             !!!!!
+  app.get('/api/listFilter', filtersController.listFilter); //ok
+  // привязка плана(создается здесь же) к id фильтра               !!!!!
+  app.get('/api/PlanFilter', filtersController.addPlanToFilter); //ok
+  // удалить фильтр с привязанными к нему планами                  !!!!!
+  app.post('/api/delPlanFilter', filtersController.destroyFilter); //ok
+  
+
+
+  /*----------------- planes -----------------*/
+  // создать план отдельно                                 !!!!!
+  app.post('/api/newPlan', plansController.create); // ok
+  // список планов с привязанными к ним фильтрами и тренировками         !!!!!
+  app.get('/api/listPlan', plansController.listPlan); // ok
+  // создать тренировку отдельно                                 !!!!!
+  app.post('/api/newTrain', plansController.createTrain); // ok 
+  // список тренировок                                     !!!!!
+  app.get('/api/listTrain', plansController.listTrain); // ok
+
+
+
+  /*----------------- M:M planes,trains,exercises -----------------*/
+  // добавить в план тренировки(создать трентровку в ид плана)         !!!!!
+  app.post('/api/newTrainToPlan', plansController.addTrainToPlan); //ok 
+  // добавить в тренировку упражнение(добавить ид упражнения в ид тренировки)         !!!!! 
+  app.post('/api/newExerciseToTrain', exercisesController.addExerciseToTrain); // ok
+  // удалить тренировку по ее id                      !!!!!
+  app.delete('/api/delTrain', plansController.destroyTrain); // ok
+  // удалить план по его id                      !!!!!
+  app.delete('/api/delPlan', plansController.destroyPlan); // ok
+
+
+
+  /*----------------- exercises -----------------*/
+  // создать упражнение без привязки к тренировке             !!!!!
+  app.post('/api/newExercises', exercisesController.create); // ok
+  // список всех упражнений с зависимыми тренировками         !!!!!
+  app.get('/api/listExercises', exercisesController.listExercise); // ok
+  // удалить упражнение по его id                      !!!!!
+  app.delete('/api/delExercise', exercisesController.destroyExercise); // ok
+  // информация об упражнении БЕЗ тренировки           !!!!!
+  app.post('/api/oneExercise', exercisesController.oneExercise); // ok
+  
+  
+
+
+
+
+  // проверка связки моделей НЕ РАБОТАЕТ(не требуется вроде)
+  app.get('/api/PlanAndFilterCheck', filtersController.PlanAndFilter); //
+  
+
 
 };

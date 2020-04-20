@@ -20,9 +20,6 @@ module.exports = {
       count: {
         type: Sequelize.INTEGER
       },
-      day: {
-        type: Sequelize.STRING
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
@@ -31,17 +28,6 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       }
-  /*    trainExercise: {
-        type: Sequelize.INTEGER,
-        //onDelete: 'CASCADE',
-      /* references: {
-         /* model: 'Trains',
-          key: 'train_id',
-          as: 'trainExercise',*/
-       /*   model: 'trainExercises',
-          key: 'train_id'
-        }*/
-     /* }*/
     });
   },
   down: (queryInterface, Sequelize) => {

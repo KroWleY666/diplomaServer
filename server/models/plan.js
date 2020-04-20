@@ -6,14 +6,6 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       type: DataTypes.INTEGER
     },
-   /* filter_user_id: { 
-      allowNull: false,
-      type: DataTypes.INTEGER
-    },
-    train_id: {
-      allowNull: false,
-      type: DataTypes.INTEGER
-    },*/
     name: {
       allowNull: false,
       type: DataTypes.STRING
@@ -23,6 +15,12 @@ module.exports = (sequelize, DataTypes) => {
     Plan.belongsToMany(models.Filter, {
       through: models.FilterPlan,
       as: 'filters',
+      foreignKey: 'plan_id',
+      onDelete: 'CASCADE'
+    }),
+    Plan.belongsToMany(models.Train, {
+      through: models.PlanTrain,
+      as: 'trains',
       foreignKey: 'plan_id'
     }),
     Plan.belongsTo(models.Participant, {

@@ -1,7 +1,7 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const TrainExercise = sequelize.define('TrainExercise', {
-    train_ex_id: {
+  const PlanTrain = sequelize.define('PlanTrain', {
+    pt_id: {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
@@ -11,11 +11,13 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       type: DataTypes.INTEGER
     },
-    exercise_id: {
+    plan_id: {
       allowNull: false,
       type: DataTypes.INTEGER
-    },
+    }
   });
-
-  return TrainExercise;
+  PlanTrain.associate = function(models) {
+    // associations can be defined here
+  };
+  return PlanTrain;
 };
