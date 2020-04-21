@@ -11,23 +11,30 @@ module.exports = (passport) => {
             User.findOne({
                 where: { email: email }
             }).then(user => {
-                if (!user) return done(null, false, {message: 'Пользователь не найден'})
-                bcrypt.compare(password, user.password, (err, isMatch) => {
-                    if (err) throw err;
+                if (!user) return done(null, false, { message: 'Пользователь не найден'})
+                /*var hashedPassword =*/ bcrypt.compare(password, user.salt, (err, isMatch) => { //compare
+                  if (err) throw err;
+                 /* if (user.password === hashedPassword) {
+                    return done(null, user)
+                  } else {*/
                     if (isMatch) return done(null, user);
-                    else return done(null, false, {message: 'Неправильный пароль'})
-                })
+                    else return done(null, false, {message: 'Неправильный пароль'}) 
+                  })
             })
-        })
-    );
+        })),
 
+    console.log("passport is working");
     passport.serializeUser((user, done) => {
-        done(null, user.user_id);
+        console.log("Serialize");
+        return done(null, user.user_id);
+        //
     });
 
     passport.deserializeUser((user_id, done) => {
-        User.findByPk(user_id, (err, user) => {
-            done(err, user);
+        console.log("DeSerialize");
+        User.findByPk(user_id).then(user => {
+            console.log(user);
+            return done(null, user);
         })
     })
 };

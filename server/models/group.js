@@ -21,9 +21,14 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: 'CASCADE'
      // as: 'ownerOfGroup'
     }),
+    Group.belongsToMany(models.Event, {
+      as: 'events', 
+      through: models.GroupEvent,
+      foreignKey: 'group_id'
+    }),
     Group.hasMany(models.Participant, {
       foreignKey: 'group_id',
-      as: 'groupParticipants'
+      as: 'participants'
     })
   };
   return Group;

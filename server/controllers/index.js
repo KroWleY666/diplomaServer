@@ -8,7 +8,8 @@ const groups = require('./groups')
 const filters = require('./filters')
 const plans = require('./plans')
 const exercises = require('./exercises')
-//const participants = require('./participants')
+const events = require('./events')
+const participants = require('./participants')
 
 module.exports = {
     roles,
@@ -18,5 +19,6 @@ module.exports = {
     filters,
     plans,
     exercises,
-  //  participants
+    events,
+    participants
 }

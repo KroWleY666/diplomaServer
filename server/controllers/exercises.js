@@ -98,7 +98,5 @@ module.exports = {
         return res.status(200).send(exercise);
       })
       .catch((error) => res.status(400).send(error));
-    },
-
-    
+    }    
 }

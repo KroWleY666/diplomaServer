@@ -31,12 +31,17 @@ module.exports = {
 
     /*--------список всех групп с зависимой моделью Participant--------*/
     list(req, res) {
+     /* if (!req.user) {
+        return res.status(404).send({
+          message: 'Авторизируйся!',
+        });
+      } else {*/
       return Group
         .findAll({
-          where: {user_id: req.params.userId},
+         // where: {user_id: req.user.user_id},
           include: [{
             model: Participant,
-            as: 'groupParticipants',
+            as: 'participants',
           }],
         })
         .then((group) => {
@@ -48,6 +53,7 @@ module.exports = {
           return res.status(200).send(group);
         })
         .catch((error) => res.status(400).send(error));
+     // }
       },
  
       /*--------добавить спортсмена в группу--------*/

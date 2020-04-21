@@ -37,45 +37,46 @@ module.exports = {
         })
         .catch((error) => res.status(400).send(error));
       },
-
-    /*---------добавить в фильтр план---------*/
-    addPlanToFilter(req, res) {
-      Plan.findOne({ where: {plan_id: req.body.plan_id}}) //return
-      .then(newPlan => {
-            var planToAdd = newPlan;
-            Filter.findOne({ where: { filter_id: req.body.filter_id } }) //return
-      .then(filter => {
-              filter.addPlan(planToAdd) //return
-              .then(function(ans){
-                res.status(201).send(planToAdd)
-                planToAdd;//return
-              })
-              .catch((error) => res.status(400).send(error));          
+      
+      /*---------добавить в фильтр план---------*/
+      addPlanToFilter(req, res) {
+        Plan.findOne({ where: {plan_id: req.body.plan_id}}) //return
+        .then(newPlan => {
+              var planToAdd = newPlan;
+              Filter.findOne({ where: { filter_id: req.body.filter_id } }) //return
+        .then(filter => {
+                filter.addPlan(planToAdd) //return
+                .then(function(ans){
+                  res.status(201).send(planToAdd)
+                  planToAdd;//return
+                })
+                .catch((error) => res.status(400).send(error));          
+        })
+        .catch((error) => res.status(400).send(error));
       })
       .catch((error) => res.status(400).send(error));
-    })
-    .catch((error) => res.status(400).send(error));
-  },
+    },
+    
+    /*----------удалить фильтр----------*/
+    destroyFilter(req, res) {
+      return Filter
+        .findByPk(req.body.filter_id)
+        .then(filter => {
+          if (!filter) {          
+            return res.status(404).send({
+              message: 'Фильтр не найден!'
+            });
+          }
+          return filter
+            .destroy()
+            .then(() => res.status(200).send({
+              message: 'Фильтр удален!'
+            }))
+            .catch(error => res.status(400).send(error));
+        })
+        .catch(error => res.status(400).send(error));
+    },
 
-  /*----------удалить фильтр----------*/
-  destroyFilter(req, res) {
-    return Filter
-      .findByPk(req.body.filter_id)
-      .then(filter => {
-        if (!filter) {          
-          return res.status(404).send({
-            message: 'Фильтр не найден!'
-          });
-        }
-        return filter
-          .destroy()
-          .then(() => res.status(200).send({
-            message: 'Фильтр удален!'
-          }))
-          .catch(error => res.status(400).send(error));
-      })
-      .catch(error => res.status(400).send(error));
-  },
 
   /*---------проверить связь фильтра и плана---------*/
   PlanAndFilter(req, res) {

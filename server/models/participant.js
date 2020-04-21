@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true
-  },
+    },
     name: {
       type: DataTypes.STRING,
       allowNull: false
@@ -26,6 +26,14 @@ module.exports = (sequelize, DataTypes) => {
     Participant.belongsTo(models.Group, {
       foreignKey: 'group_id',
       onDelete: 'CASCADE'
+    }),
+    Participant.hasMany(models.Standart, {
+      foreignKey: 'participant_id',
+      as: 'standarts'
+    }),
+    Participant.hasMany(models.Parameter, {
+      foreignKey: 'participant_id',
+      as: 'parameters'
     })
    /* Participant.belongsTo(models.Plan, {
       foreignKey: 'plan_id',

@@ -5,6 +5,8 @@ const groupsController = require('../controllers').groups;
 const filtersController = require('../controllers').filters;
 const exercisesController = require('../controllers').exercises;
 const plansController = require('../controllers').plans;
+const eventsController = require('../controllers').events;
+const participantsController = require('../controllers').participants;
 
 module.exports = (app) => {
   app.get('/api', (req, res) => res.status(200).send({
@@ -24,9 +26,12 @@ module.exports = (app) => {
   /*-------------------- users --------------------*/
   // регистрация пользователей (тренеры)                      !!!!!
   app.post('/api/register', usersController.register); //ok
-  // !!!!!!!!!!!!!!!! НЕ РАБОТАЕТ
+  // !!!!!!!!!!!!!!!! ПРОВЕРИТЬ В КЛИЕНТЕ
   app.post('/api/login', usersController.login);
   // вывод всех зарегистрированных пользователей (тренеры)    !!!!!
+  // !!!!!!!!!!!!!!!!  ПРОВЕРИТЬ В КЛИЕНТЕ
+  app.get('/api/logout', usersController.logout);
+  
   app.get('/api/usersList', usersController.listRegister);//ok
 
 
@@ -34,8 +39,8 @@ module.exports = (app) => {
   /*-------------------- groups --------------------*/
   // добавить группу к пользователю с id: userId, создать     !!!!!
   app.post('/api/:userId/newGroup', groupsController.create); //ok
-  // список групп пользователя с id: userId, создать          !!!!!
-  app.get('/api/:userId/groupList', groupsController.list); //ok
+  // список групп пользователя с id: userId, создать          !!!!!  req.user?????
+  app.get('/api/groupList', groupsController.list); //ok
   // добавить спортсмена в группу с id группы: groupId        !!!!!
   app.post('/api/:group_id/newParticipant', groupsController.addParticipant); //ok
   // поиск спортсмена по имя-фамилия БЕЗ id группы: groupId        !!!!!
@@ -92,9 +97,34 @@ module.exports = (app) => {
   app.delete('/api/delExercise', exercisesController.destroyExercise); // ok
   // информация об упражнении БЕЗ тренировки           !!!!!
   app.post('/api/oneExercise', exercisesController.oneExercise); // ok
-  
-  
 
+
+
+  /*-------------------- events --------------------*/
+  // создать событие отдельно                    !!!!!
+  app.post('/api/newEvent', eventsController.create); // ok
+  // список событий и групп для них                    !!!!!
+  app.get('/api/listEvent', eventsController.listEvent); // ok
+  // создать событие в группу                    !!!!!
+  app.post('/api/newEventToGroup', eventsController.addEventToGroup); // ok
+  // удалить событие по id                       !!!!!
+  app.delete('/api/delEvent', eventsController.destroyEvent); // ok  
+
+
+
+  /*-------------------- standarts,parameters --------------------*/
+  // создать событие отдельно                    !!!!!
+  app.post('/api/newStandart', participantsController.createStandart); // ok
+  // список событий и групп для них                    !!!!!
+  app.post('/api/newParameter', participantsController.createParameter); // ok
+  // создать событие в группу                    !!!!!
+  app.get('/api/listPartModels', participantsController.listPartModels); // ok
+  // удалить событие по id                       !!!!!
+  app.delete('/api/delParameter', participantsController.destroyParameter); // ok  
+  // удалить событие по id                       !!!!!
+  app.delete('/api/delStandart', participantsController.destroyStandart); // ok  
+  
+  
 
 
 

@@ -69,27 +69,38 @@ module.exports = {
           })
           .catch((error) => res.status(400).send(error));
         },
-    
+
+    /*--------вход в систему--------*/
     login(req, res, next) {
-        passport.authenticate('local', {        
-            successRedirect: '/',
-            failureRedirect: '/user/login',
-            failureFlash: true
-        })(req, res, next)
-        .then(auth => {
-            if(auth) {
-                return res.status(200).send({
-                    message: 'Пользователь вошел в систему',
-                  });
-            } else {
-                return res.status(400).send({
-                    message: 'Что-то пошло не так...',
-                  });
-            }
+        passport.authenticate('local', {
+            successRedirect: '/api/groupList',
+            failureRedirect: '/users/login'//,
+           // failureFlash: true
+        })//(req, res, next);
+
+
+        User.findOne({
+            where: { email: req.body.email }
+        }).then(user => {
+            if (!user) {  res.status(404).send( {message: 'Пользователь не найден'})}
+            
+            bcrypt.compare(req.body.password, user.salt, (err, isMatch) => {
+            //    console.log(`${req.body.password}, ${user.salt}`)
+                if (err) throw err;
+                if (isMatch) return res.status(200).send(user);
+             else 
+                res.status(404).send( {message: 'Неверный пароль'})
+            })
+            })
+            .catch((error) => res.status(400).send(error));
+    },
+    
+    /*--------выход из системы--------*/
+    logout(req, res) {//, next
+        req.logout();
+        res.status(200).send({
+          //  url:'/profile',
+            message: 'Пользователь вышел из системы',
         })
-        .catch((error) => res.status(400).send(error));
-        
-        console.log('прошли log')
-        let errors = [];
     }
 }
