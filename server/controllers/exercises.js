@@ -30,6 +30,7 @@ module.exports = {
     listExercise(req, res) {
       return Exercise
         .findAll({
+          attributes: ['name','count','duration','approach'],
           include: [{
             model: Train,
             as: 'trains'
@@ -56,7 +57,7 @@ module.exports = {
               train.addExercise(exerciseToAdd) //return
               .then(function(ans){
                 res.status(201).send(exerciseToAdd)
-                return exerciseToAdd;//return
+                exerciseToAdd;//return
               })
               .catch((error) => res.status(400).send(error));
             })
@@ -95,7 +96,8 @@ module.exports = {
             message: 'Упражнений нет!',
           });
         }
-        return res.status(200).send(exercise);
+        res.status(200).send(exercise);//return
+        return exercise
       })
       .catch((error) => res.status(400).send(error));
     }    

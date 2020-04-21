@@ -7,6 +7,7 @@ const exercisesController = require('../controllers').exercises;
 const plansController = require('../controllers').plans;
 const eventsController = require('../controllers').events;
 const participantsController = require('../controllers').participants;
+const trainsController = require('../controllers').trains;
 
 module.exports = (app) => {
   app.get('/api', (req, res) => res.status(200).send({
@@ -124,9 +125,16 @@ module.exports = (app) => {
   // удалить событие по id                       !!!!!
   app.delete('/api/delStandart', participantsController.destroyStandart); // ok  
   
+
+
+  /*-------------------- trains,datetrain --------------------*/
+  // создать событие отдельно                    !!!!!
+  app.post('/api/newDateTrain', trainsController.create); // ok
   
+  // создать событие отдельно                    !!!!!
+ // app.post('/api/updateDateTrain', trainsController.updateDateTrain); // ok
 
-
+  
 
   // проверка связки моделей НЕ РАБОТАЕТ(не требуется вроде)
   app.get('/api/PlanAndFilterCheck', filtersController.PlanAndFilter); //

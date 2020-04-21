@@ -10,14 +10,10 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       type: DataTypes.STRING
     },
-    from: {
+    type: {
       allowNull: false,
       type: DataTypes.STRING
-    },
-    to: {
-      allowNull: false,
-      type: DataTypes.STRING
-    },
+    }
   });
 
   Train.associate = models => {
@@ -27,23 +23,18 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'train_id',
       onDelete: 'CASCADE',
     }),
-    /*Train.belongsTo(models.Exercise, { //hasMany
-      foreignKey: 'trainExercise',
-      as: 'exercisesOfTrain'
-    }),*/
+    Train.belongsToMany(models.DateTrain, {
+      through: models.DETrain,
+      as: 'dates',
+      foreignKey: 'train_id'//,
+     // onDelete: 'CASCADE',
+    }),
     Train.belongsToMany(models.Exercise, {
       as: 'exercises', 
       through: models.TrainExercise,
       foreignKey: 'train_id'//,
       //otherKey: 'exercise_id'
     })
-
-    /*Train.hasMany(models.TrainExercise, { //hasMany
-      foreignKey: 'train_id',
-     // targetKey: 'train_id',
-      as: 'exercisesOfTrain'
-     // as: 'exercisesOfTrain'
-    })*/
   };
   return Train;
 };

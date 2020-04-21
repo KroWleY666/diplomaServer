@@ -2,6 +2,7 @@ const Plan = require('../models').Plan
 const Filter = require('../models').Filter
 const Exercise = require('../models').Exercise
 const Train = require('../models').Train
+const DateTrain = require('../models').DateTrain
 
 module.exports = {
 
@@ -30,8 +31,7 @@ module.exports = {
       return Train
         .create({
           name: req.body.name,
-          from: req.body.from,
-          to: req.body.to
+          type: req.body.type
         })
         .then(train => res.status(201).send(train))
         .catch(error => res.status(400).send(error));
@@ -44,6 +44,9 @@ module.exports = {
           include: [{
             model: Exercise,
             as: 'exercises'
+          },{
+            model: DateTrain,
+            as: 'dates'
           }]
         })
         .then((train) => {

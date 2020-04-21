@@ -28,6 +28,10 @@ module.exports = (sequelize, DataTypes) => {
       as: 'trains', 
       through: models.TrainExercise,
       foreignKey: 'exercise_id'
+    }),
+    Exercise.hasMany(models.ExercParam, {
+      foreignKey: 'exercise_id',
+      as: 'filters'
     })
     // associations can be defined here
   };
