@@ -8,8 +8,8 @@ module.exports = {
     create(req, res) {
       // если группа вообще существует, не только у конкретного пользователя
       Group.findOne({where: {
-        title: req.body.title,
-        sport: req.body.sport
+        title: req.body.title//,
+        //sport: req.body.sport
       }}).then(group => 
         {
           if(group) {
@@ -19,7 +19,7 @@ module.exports = {
           } else {
             return Group.create({
               title: req.body.title,
-              sport: req.body.sport,
+              //sport: req.body.sport,
               user_id: req.params.userId
             })
             .then(group => res.status(201).send(group))

@@ -10,11 +10,11 @@ module.exports = {
       title: {
         type: Sequelize.STRING,
         allowNull: false
-      },
+      }/*,
       sport: {
         type: Sequelize.STRING,
         allowNull: false
-      },
+      }*/,
       user_id: {
         type: Sequelize.INTEGER,
         onDelete: 'CASCADE',

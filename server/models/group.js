@@ -9,11 +9,11 @@ module.exports = (sequelize, DataTypes) => {
     title: {
       type: DataTypes.STRING,
       allowNull: false
-    },
+    }/*,
     sport: {
       type: DataTypes.STRING,
       allowNull: false
-    }
+    }*/
   });
   Group.associate = models => {
     Group.belongsTo(models.User, {
