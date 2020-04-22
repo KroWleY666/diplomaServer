@@ -9,7 +9,11 @@ module.exports = (sequelize, DataTypes) => {
     name: {
       allowNull: false,
       type: DataTypes.STRING
-    },
+    },    
+    definition:  {
+      allowNull: false,
+      type: DataTypes.STRING
+    }/*,
     duration:  {
       type: DataTypes.INTEGER
     },
@@ -18,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     count: {
       type: DataTypes.INTEGER
-    }/*,
+    },
     day: {
       type: DataTypes.STRING //в тренировки
     }*/
@@ -32,6 +36,11 @@ module.exports = (sequelize, DataTypes) => {
     Exercise.hasMany(models.ExercParam, {
       foreignKey: 'exercise_id',
       as: 'filters'
+    }),
+    Exercise.belongsToMany(models.Character, {
+      as: 'characters', 
+      through: models.CharEx,
+      foreignKey: 'exercise_id'
     })
     // associations can be defined here
   };

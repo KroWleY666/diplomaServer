@@ -70,6 +70,7 @@ module.exports = {
               name: req.body.name,
               surname: req.body.surname,
               email: req.body.email,
+              sex: req.body.sex,
               group_id: req.params.group_id
           })
           .then((participant) => res.status(200).send(participant))

@@ -1,29 +1,25 @@
+'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Exercises', {
-      exercise_id: {
+    return queryInterface.createTable('Characters', {
+      character_id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      name: {
-        allowNull: false,        
-        type: Sequelize.STRING
-      },
-      definition:  {
-        allowNull: false,
-        type: Sequelize.STRING
-      }/*,
       duration: {
-        type: Sequelize.INTEGER
-      },
-      approach: {
+        allowNull: false,
         type: Sequelize.INTEGER
       },
       count: {
+        allowNull: false,
         type: Sequelize.INTEGER
-      }*/,
+      },
+      approach: {
+        allowNull: true,
+        type: Sequelize.INTEGER
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
@@ -35,6 +31,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Exercises');
+    return queryInterface.dropTable('Characters');
   }
 };

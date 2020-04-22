@@ -1,5 +1,6 @@
 const Exercise = require('../models').Exercise
 const Train = require('../models').Train
+const Character = require('../models').Character
 
 module.exports = {
 
@@ -15,11 +16,76 @@ module.exports = {
         return Exercise
         .create({
           name: req.body.name,
+          definition: req.body.definition
+        })
+        .then(exercise => res.status(201).send(exercise))
+        .catch(error => res.status(400).send(error));
+          /*Character
+            .create({
+              approach: req.body.approach,
+              duration: req.body.duration,
+              count: req.body.count
+            })
+            .then(character => {*/
+             // exercise.addCharacter(character)   
+           //   res.status(201).send(exercise)           
+          //  })
+       //   res.status(201).send(exercise)
+      //  })          
+     //   .catch(error => res.status(400).send(error));
+      }
+    })
+    .catch(error => res.status(400).send(error));      
+    },
+    
+    /*----- список только упражнений -----*/
+    listOnlyExercise(req, res) {
+      return Exercise
+      .findAll({
+       // attributes: ['name', 'definition']//,'count','duration','approach'
+      })
+      .then((exercise) => {
+        if (!exercise) {
+          return res.status(404).send({
+            message: 'Упражнений нет!',
+          });
+        }
+        return res.status(200).send(exercise);
+      })
+      .catch((error) => res.status(400).send(error));  
+    },
+    
+    /*----- добавить упражнение -----*/
+    addCharToExer(req, res) {
+      Exercise.findOne({where: {exercise_id: req.body.exercise_id}})
+      .then(ex => {
+        if(!ex) {
+          return res.status(404).send({
+          message: 'Упражнение не найдено!',
+        })
+      } else {
+       Character.findOne({where: {
           approach: req.body.approach,
           duration: req.body.duration,
           count: req.body.count
-        })
-        .then(exercise => res.status(201).send(exercise))
+        }})
+        .then(char => {
+          if(!char) {
+            return Character
+            .create({
+              approach: req.body.approach,
+              duration: req.body.duration,
+              count: req.body.count
+            })
+            .then(character =>  {
+              ex.addCharacter(character)
+              res.status(201).send(character)
+            })
+          }else {
+            ex.addCharacter(char)
+            res.status(201).send(char)
+          }
+        })       
         .catch(error => res.status(400).send(error));
       }
     })
@@ -30,10 +96,14 @@ module.exports = {
     listExercise(req, res) {
       return Exercise
         .findAll({
-          attributes: ['name','count','duration','approach'],
+         // attributes: ['name', 'definition'],//,'count','duration','approach'
           include: [{
             model: Train,
             as: 'trains'
+          },
+          {
+            model: Character,
+            as: 'characters'
           }]
         })
         .then((exercise) => {

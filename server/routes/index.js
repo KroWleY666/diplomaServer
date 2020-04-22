@@ -50,8 +50,10 @@ module.exports = (app) => {
   app.delete('/api/delSportsmen', groupsController.destroyParticipant); //ok
   // удалить группу                                           !!!!!
   app.delete('/api/delGroup', groupsController.destroyGroup); //ok
-
+  // вывод ВСЕХ спортсменов и их id групп                    !!!!!
+  app.get('/api/listPartWithGroup', participantsController.listPartWithGroup); // ok
   
+
 
   /*-------------------- filters --------------------*/
   // создать фильтр просто                                         !!!!!
@@ -98,7 +100,12 @@ module.exports = (app) => {
   app.delete('/api/delExercise', exercisesController.destroyExercise); // ok
   // информация об упражнении БЕЗ тренировки           !!!!!
   app.post('/api/oneExercise', exercisesController.oneExercise); // ok
-
+  // добавить 3 параметра к упражнению (по его id в коде)           !!!!!
+  app.post('/api/addCharToExer', exercisesController.addCharToExer); // ok
+  // список только упражнений, без других моделей           !!!!!
+  app.get('/api/listOnlyExercise', exercisesController.listOnlyExercise); // ok
+  
+  
 
 
   /*-------------------- events --------------------*/

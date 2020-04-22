@@ -19,6 +19,10 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
+      sex: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
       group_id: {
         type: Sequelize.INTEGER,
         onDelete: 'CASCADE',

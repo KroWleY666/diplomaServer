@@ -84,7 +84,7 @@ module.exports = {
         .catch(error => res.status(400).send(error));
     },
 
-    /*--------список стандартов--------*/
+    /*--------список спортсменов с стандартами,измерениями--------*/
     listPartModels(req, res) {
       /*if (!req.user) {
         return res.status(404).send({
@@ -111,7 +111,25 @@ module.exports = {
           return res.status(200).send(part);
         })
         .catch((error) => res.status(400).send(error));
-      }
-    //}
-      
+      },
+
+     /*--------список ВСЕХ спортсменов и их групп--------*/
+     listPartWithGroup(req, res) {
+      /*if (!req.user) {
+        return res.status(404).send({
+          message: 'Авторизируйся!',
+        });
+      } else {*/
+      return Participant
+        .findAll()
+        .then((part) => {
+          if (!part) {
+            return res.status(404).send({
+              message: 'Участников нет!',
+            });
+          }
+          return res.status(200).send(part);
+        })
+        .catch((error) => res.status(400).send(error));
+      }     
 }
