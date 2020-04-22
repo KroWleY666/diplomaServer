@@ -13,6 +13,18 @@ module.exports = (sequelize, DataTypes) => {
     type: {
       allowNull: false,
       type: DataTypes.STRING
+    },
+    goal: {
+      allowNull: false,
+      type: DataTypes.STRING
+    },
+    level: {
+      allowNull: false,
+      type: DataTypes.STRING
+    },
+    definition: {
+      allowNull: false,
+      type: DataTypes.STRING
     }
   });
 

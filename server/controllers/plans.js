@@ -31,7 +31,10 @@ module.exports = {
       return Train
         .create({
           name: req.body.name,
-          type: req.body.type
+          type: req.body.type,
+          goal: req.body.goal,
+          level: req.body.level,
+          definition: req.body.definition
         })
         .then(train => res.status(201).send(train))
         .catch(error => res.status(400).send(error));

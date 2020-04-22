@@ -16,6 +16,18 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
+      goal: {
+        allowNull: false,
+        type: Sequelize.STRING
+      },
+      level: {
+        allowNull: false,
+        type: Sequelize.STRING
+      },
+      definition: {
+        allowNull: false,
+        type: Sequelize.STRING
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

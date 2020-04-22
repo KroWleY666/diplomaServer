@@ -16,7 +16,9 @@ module.exports = {
         return Exercise
         .create({
           name: req.body.name,
-          definition: req.body.definition
+          definition: req.body.definition,
+          img: req.body.img,
+          type: req.body.type
         })
         .then(exercise => res.status(201).send(exercise))
         .catch(error => res.status(400).send(error));

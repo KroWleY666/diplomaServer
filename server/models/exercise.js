@@ -13,6 +13,14 @@ module.exports = (sequelize, DataTypes) => {
     definition:  {
       allowNull: false,
       type: DataTypes.STRING
+    },
+    img:  {
+      allowNull: false,
+      type: DataTypes.STRING
+    },
+    type:  {
+      allowNull: false,
+      type: DataTypes.STRING
     }/*,
     duration:  {
       type: DataTypes.INTEGER

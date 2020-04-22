@@ -14,6 +14,14 @@ module.exports = {
       definition:  {
         allowNull: false,
         type: Sequelize.STRING
+      },
+      img:  {
+        allowNull: false,
+        type: Sequelize.STRING
+      },
+      type:  {
+        allowNull: false,
+        type: Sequelize.STRING
       }/*,
       duration: {
         type: Sequelize.INTEGER
