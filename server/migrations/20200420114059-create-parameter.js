@@ -14,7 +14,16 @@ module.exports = {
       },
       data: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        /*validation: {
+          isDate: true,
+        },
+        options: {
+          format: 'DD/MM/YYYY',
+         // message: 'The value is not a valid date',
+          min: '01/01/1920',
+      },
+        timestamps: false*/
       },
       value: {
         allowNull: false,

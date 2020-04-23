@@ -136,6 +136,8 @@ module.exports = (app) => {
   app.post('/api/newStandart/:participant_id', participantsController.createStandart); // ok
   // список событий и групп для них                    !!!!!
   app.post('/api/newParameter/:participant_id', participantsController.createParameter); // ok
+  // список событий и групп для них                    !!!!!
+  app.post('/api/newEvent/:participant_id', participantsController.createEvent); // ok
 
   // получить всю инфу ОДНОГО спортсмена по ИД                    !!!!!
   app.get('/api/listONEPartModels/:participant_id', participantsController.listONEPartModels); // ok
