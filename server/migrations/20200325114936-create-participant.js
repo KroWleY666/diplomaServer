@@ -23,6 +23,21 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
+      age: {
+        type: Sequelize.DATE,
+        allowNull: false,
+        validation: {
+          isDate: true,
+        }
+      },
+      heigth: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+      },
+      weigth: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+      },
       group_id: {
         type: Sequelize.INTEGER,
         onDelete: 'CASCADE',

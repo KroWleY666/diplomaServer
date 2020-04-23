@@ -70,11 +70,15 @@ module.exports = {
               message: 'Участник с таким email уже существует!'
             });            
           } else {
+            //allPart.age  
             return Participant.create({ 
               name: req.body.name,
               surname: req.body.surname,
               email: req.body.email,
               sex: req.body.sex,
+              age: req.body.age,
+              heigth: req.body.heigth,
+              weigth: req.body.weigth,
               group_id: req.body.group_id
           })
           .then((participant) => {

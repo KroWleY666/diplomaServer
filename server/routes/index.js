@@ -146,6 +146,10 @@ module.exports = (app) => {
   app.delete('/api/delParameter/:param_id', participantsController.destroyParameter); // ok  
   // удалить событие по id                       !!!!!
   app.delete('/api/delStandart/:standart_id', participantsController.destroyStandart); // ok  
+  // удалить событие по id                       !!!!!
+  app.delete('/api/delEvent/:event_id', participantsController.destroyEvent); // ok  
+  
+
   
    // создать событие отдельно                    !!!!!
    app.get('/api/listPartStandart/:participant_id', participantsController.listPartStandart); // ok
