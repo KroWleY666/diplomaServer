@@ -21,6 +21,11 @@ module.exports = (sequelize, DataTypes) => {
       as: 'groups', 
       through: models.GroupEvent,
       foreignKey: 'event_id'
+    }),
+    Event.belongsTo(models.Participant, {
+      foreignKey: 'participant_id',
+     // as: 'participants'
+      onDelete: 'CASCADE'
     })
     // associations can be defined here
   };

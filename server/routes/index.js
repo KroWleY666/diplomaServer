@@ -133,18 +133,26 @@ module.exports = (app) => {
 
   /*-------------------- standarts,parameters --------------------*/
   // создать событие отдельно                    !!!!!
-  app.post('/api/newStandart', participantsController.createStandart); // ok
+  app.post('/api/newStandart/:participant_id', participantsController.createStandart); // ok
   // список событий и групп для них                    !!!!!
-  app.post('/api/newParameter', participantsController.createParameter); // ok
+  app.post('/api/newParameter/:participant_id', participantsController.createParameter); // ok
 
   // получить всю инфу ОДНОГО спортсмена по ИД                    !!!!!
   app.get('/api/listONEPartModels/:participant_id', participantsController.listONEPartModels); // ok
   
   // удалить событие по id                       !!!!!
-  app.delete('/api/delParameter', participantsController.destroyParameter); // ok  
+  app.delete('/api/delParameter/:param_id', participantsController.destroyParameter); // ok  
   // удалить событие по id                       !!!!!
-  app.delete('/api/delStandart', participantsController.destroyStandart); // ok  
+  app.delete('/api/delStandart/:standart_id', participantsController.destroyStandart); // ok  
   
+   // создать событие отдельно                    !!!!!
+   app.get('/api/listPartStandart/:participant_id', participantsController.listPartStandart); // ok
+   // список событий и групп для них                    !!!!!
+   app.get('/api/listPartParameter/:participant_id', participantsController.listPartParameter); // ok
+ 
+   // список событий и групп для них                    !!!!!
+   app.get('/api/listPartEvent/:participant_id', participantsController.listPartEvent); // ok
+ 
 
 
   /*-------------------- trains,datetrain --------------------*/

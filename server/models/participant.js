@@ -35,6 +35,10 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'participant_id',
       as: 'standarts'
     }),
+    Participant.hasMany(models.Event, {
+      foreignKey: 'participant_id',
+      as: 'events'
+    }),
     Participant.hasMany(models.Parameter, {
       foreignKey: 'participant_id',
       as: 'parameters'
