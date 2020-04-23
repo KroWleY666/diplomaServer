@@ -142,6 +142,34 @@ module.exports = {
       }, 
       
       /*----- список событий для ОДНОГО спортсмена -----*/
+      reternEventsOfGroup222(req, res) {
+        GroupEvent.findAll({where: {group_id: req.params.group_id},        
+       /* include: [{
+          model: Event,
+         // through: GroupEvent,
+          as: 'events'
+        }]*/
+      })             
+        //.then(group => {    
+         /* if (!group) {
+            return res.status(404).send({
+              message: 'Группы нет!',
+            });
+          } 
+          Event.findAll({
+            include: [{
+              model: Group,
+              where: {group_id: req.params.group_id}
+             // through: GroupEvent,
+              //as: 'events'
+            }]
+          }) */  .then(event => {  res.status(200).send(event); })   
+          //res.status(200).send(group);   
+       // }) 
+       .catch((error) => res.status(400).send(error));
+      },
+      
+      /*----- список событий для ОДНОГО спортсмена -----*/
       listParticEvent222(req, res) {
         return Group.findByPk(req.params.group_id)             
         .then(group => {    

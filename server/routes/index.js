@@ -136,8 +136,10 @@ module.exports = (app) => {
   app.post('/api/newStandart', participantsController.createStandart); // ok
   // список событий и групп для них                    !!!!!
   app.post('/api/newParameter', participantsController.createParameter); // ok
-  // создать событие в группу                    !!!!!
-  app.get('/api/listPartModels', participantsController.listPartModels); // ok
+
+  // получить всю инфу ОДНОГО спортсмена по ИД                    !!!!!
+  app.get('/api/listONEPartModels/:participant_id', participantsController.listONEPartModels); // ok
+  
   // удалить событие по id                       !!!!!
   app.delete('/api/delParameter', participantsController.destroyParameter); // ok  
   // удалить событие по id                       !!!!!
@@ -159,7 +161,7 @@ module.exports = (app) => {
   
 
   
-  app.get('/api/reternEventsOfGroup/:group_id', eventsController.reternEventsOfGroup); // ok
+  app.get('/api/reternEventsOfGroup222/:group_id', eventsController.reternEventsOfGroup); // ok
   
 
 };

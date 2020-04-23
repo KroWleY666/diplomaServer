@@ -85,14 +85,14 @@ module.exports = {
     },
 
     /*--------список спортсменов с стандартами,измерениями--------*/
-    listPartModels(req, res) {
+    listONEPartModels(req, res) {
       /*if (!req.user) {
         return res.status(404).send({
           message: 'Авторизируйся!',
         });
       } else {*/
       return Participant
-        .findAll({
+        .findOne({ where: {participant_id: req.params.participant_id},
         //  where: {participant_id: req.body.participant_id},
           include: [{
             model: Standart,

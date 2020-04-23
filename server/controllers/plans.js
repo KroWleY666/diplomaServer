@@ -28,15 +28,25 @@ module.exports = {
 
     /*----------создать отдельно тренировку----------*/
     createTrain(req, res) {
-      return Train
-        .create({
-          name: req.body.name,
-          type: req.body.type,
-          goal: req.body.goal,
-          level: req.body.level,
-          definition: req.body.definition
-        })
-        .then(train => res.status(201).send(train))
+      Train.findOne({where : {name: req.body.name}})
+      .then(tr => {
+        if(tr) {
+          return res.status(404).send({
+            message: 'Тренировка уже существует!',
+          })
+        }else {
+          return Train
+          .create({
+            name: req.body.name,
+            type: req.body.type,
+            goal: req.body.goal,
+            level: req.body.level,
+            definition: req.body.definition
+          })
+          .then(train => res.status(201).send(train))   
+          .catch(error => res.status(400).send(error)); 
+        }
+      })      
         .catch(error => res.status(400).send(error));
     },
 
