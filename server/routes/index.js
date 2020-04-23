@@ -43,13 +43,13 @@ module.exports = (app) => {
   // список групп пользователя с id: userId, создать          !!!!!  req.user?????
   app.get('/api/groupList', groupsController.list); //ok
   // добавить спортсмена в группу с id группы: groupId        !!!!!
-  app.post('/api/:group_id/newParticipant', groupsController.addParticipant); //ok
+  app.post('/api/newParticipant', groupsController.addParticipant); //ok
   // поиск спортсмена по имя-фамилия БЕЗ id группы: groupId        !!!!!
   app.get('/api/findParicipant', groupsController.findParticipant); //ok
   // удалить спортсмена из группы                             !!!!!
-  app.delete('/api/delSportsmen', groupsController.destroyParticipant); //ok
+  app.delete('/api/delSportsmen/:participant_id', groupsController.destroyParticipant); //ok
   // удалить группу                                           !!!!!
-  app.delete('/api/delGroup', groupsController.destroyGroup); //ok
+  app.delete('/api/delGroup/:group_id', groupsController.destroyGroup); //ok
   // вывод ВСЕХ спортсменов и их id групп                    !!!!!
   app.get('/api/listPartWithGroup', participantsController.listPartWithGroup); // ok
   
@@ -85,9 +85,9 @@ module.exports = (app) => {
   // добавить в тренировку упражнение(добавить ид упражнения в ид тренировки)         !!!!! 
   app.post('/api/newExerciseToTrain', exercisesController.addExerciseToTrain); // ok
   // удалить тренировку по ее id                      !!!!!
-  app.delete('/api/delTrain', plansController.destroyTrain); // ok
+  app.delete('/api/delTrain/:train_id', plansController.destroyTrain); // ok
   // удалить план по его id                      !!!!!
-  app.delete('/api/delPlan', plansController.destroyPlan); // ok
+  app.delete('/api/delPlan/:plan_id', plansController.destroyPlan); // ok
 
 
 
@@ -104,7 +104,8 @@ module.exports = (app) => {
   app.post('/api/addCharToExer', exercisesController.addCharToExer); // ok
   // список только упражнений, без других моделей           !!!!!
   app.get('/api/listOnlyExercise', exercisesController.listOnlyExercise); // ok
-  
+  // обновить 2 параметра к упражнению (по его id в коде)           !!!!!
+  app.put('/api/updateCharToExer/:character_id', exercisesController.updateCharToExer); // ok
   
 
 
@@ -114,9 +115,19 @@ module.exports = (app) => {
   // список событий и групп для них                    !!!!!
   app.get('/api/listEvent', eventsController.listEvent); // ok
   // создать событие в группу                    !!!!!
+
   app.post('/api/newEventToGroup', eventsController.addEventToGroup); // ok
   // удалить событие по id                       !!!!!
-  app.delete('/api/delEvent', eventsController.destroyEvent); // ok  
+  app.delete('/api/delEvent/:event_id', eventsController.destroyEvent); // ok  
+
+  // список событий ОДНОГО СПОРСМЕНА                    !!!!!
+
+  app.get('/api/listParticEvent/:group_id', eventsController.listParticEvent); // ok
+  
+  app.get('/api/listParticEvent222/:group_id', eventsController.listParticEvent222);
+  
+  // список событий ОДНОГО СПОРСМЕНА                    !!!!!
+  //app.post('/api/addEventToGroup', eventsController.addEventToGroup); // ok
 
 
 
@@ -147,5 +158,8 @@ module.exports = (app) => {
   app.get('/api/PlanAndFilterCheck', filtersController.PlanAndFilter); //
   
 
+  
+  app.get('/api/reternEventsOfGroup/:group_id', eventsController.reternEventsOfGroup); // ok
+  
 
 };

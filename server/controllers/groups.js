@@ -1,6 +1,7 @@
 const Group = require('../models').Group
 const User = require('../models').User
 const Participant = require('../models').Participant
+const Event = require('../models').Event
 
 module.exports = {
 
@@ -42,6 +43,9 @@ module.exports = {
           include: [{
             model: Participant,
             as: 'participants',
+          },{
+            model: Event,
+            as: 'events',
           }],
         })
         .then((group) => {
@@ -71,9 +75,13 @@ module.exports = {
               surname: req.body.surname,
               email: req.body.email,
               sex: req.body.sex,
-              group_id: req.params.group_id
+              group_id: req.body.group_id
           })
-          .then((participant) => res.status(200).send(participant))
+          .then((participant) => {
+            //Group.findOne({where: {group_id: req.params.group_id}}) 
+           // return
+            res.status(200).send(participant)
+          })
           .catch((error) => res.status(400).send(error));
           }        
         }).catch((error) => res.status(400).send(error)); 
@@ -103,7 +111,7 @@ module.exports = {
         return Participant
           .findOne({
             where: {
-              participant_id: req.body.participant_id
+              participant_id: req.params.participant_id
             }
           })
           .then(participant => {
@@ -127,7 +135,7 @@ module.exports = {
         return Group
           .findOne({
             where: {
-              group_id: req.body.group_id
+              group_id: req.params.group_id
             }
           })
           .then(group => {
@@ -145,4 +153,31 @@ module.exports = {
           })
           .catch(error => res.status(400).send(error));
       },
+
+
+
+
+
+
+      /*--------список всех групп с зависимой моделью Participant--------*/
+    listGroupById(req, res) {
+      /* if (!req.user) {
+         return res.status(404).send({
+           message: 'Авторизируйся!',
+         });
+       } else {*/
+        Group
+         .findOne({where: {group_id: req.body.group_id}})
+         .then((group) => {
+           if (!group) {            
+            return res.status(404).send({
+               message: 'Групп нет!',
+             });
+           }           
+           res.status(200).send(group.title);
+           return group.title
+         })
+         .catch((error) => res.status(400).send(error));
+      // }
+       },
 }

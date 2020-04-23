@@ -7,16 +7,16 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       type: DataTypes.INTEGER
     },
-    duration: {
+    /*duration: {
       allowNull: false,
       type: DataTypes.INTEGER
-    },
+    },*/
     count: {
       allowNull: false,
       type: DataTypes.INTEGER
     },
     approach: {
-      allowNull: true,
+      allowNull: false,
       type: DataTypes.INTEGER
     }
   });

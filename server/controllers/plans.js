@@ -88,7 +88,7 @@ listPlan(req, res) {
 
     /*---------добавить в план тренировку---------*/
     addTrainToPlan(req, res) {
-      Train.findOne({where: {train_id: req.body.train_id}}) //return
+      Train.findAll({where: {train_id: req.body.train_id}}) //return
       .then(newTrain => {
             var trainToAdd = newTrain;
             Plan.findOne({ where: { plan_id: req.body.plan_id } }) //return
@@ -108,7 +108,7 @@ listPlan(req, res) {
   /*-----удалить тренировку-----*/
   destroyTrain(req, res) {
     return Train
-      .findByPk(req.body.train_id)
+      .findByPk(req.params.train_id)
       .then(train => {
         if (!train) {          
           return res.status(404).send({
@@ -128,7 +128,7 @@ listPlan(req, res) {
     /*-----удалить план-----*/
     destroyPlan(req, res) {
       return Plan
-        .findByPk(req.body.plan_id)
+        .findByPk(req.params.plan_id)
         .then(plan => {
           if (!plan) {          
             return res.status(404).send({

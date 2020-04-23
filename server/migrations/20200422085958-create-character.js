@@ -8,16 +8,16 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      duration: {
+      /*duration: {
         allowNull: false,
         type: Sequelize.INTEGER
-      },
+      },*/
       count: {
         allowNull: false,
         type: Sequelize.INTEGER
       },
       approach: {
-        allowNull: true,
+        allowNull: false,
         type: Sequelize.INTEGER
       },
       createdAt: {

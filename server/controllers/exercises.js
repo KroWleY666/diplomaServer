@@ -68,18 +68,19 @@ module.exports = {
       } else {
        Character.findOne({where: {
           approach: req.body.approach,
-          duration: req.body.duration,
+          //duration: req.body.duration,
           count: req.body.count
         }})
-        .then(char => {
+        .then(char => {          
           if(!char) {
             return Character
             .create({
               approach: req.body.approach,
-              duration: req.body.duration,
+              //duration: req.body.duration,
               count: req.body.count
             })
             .then(character =>  {
+             // res.render('/api/newExerciseToTrain')
               ex.addCharacter(character)
               res.status(201).send(character)
             })
@@ -93,6 +94,46 @@ module.exports = {
     })
     .catch(error => res.status(400).send(error));      
     },
+    
+    /*----- обновить параметры упражнения -----*/
+    updateCharToExer(req, res) {
+      Exercise.findOne({where: {exercise_id: req.body.exercise_id}})
+      .then(ex => {
+        if(!ex) {
+          return res.status(404).send({
+          message: 'Упражнение не найдено!',
+        })
+      } else {
+       Character.findByPk(req.params.character_id//{where: {
+         /* approach: req.body.approach,
+          duration: req.body.duration,
+          count: req.body.count*/
+        //}      }
+        )
+        .then(char => {          
+          if(!char) {
+            return Character
+            .update({
+              approach: req.body.approach,
+              duration: req.body.duration,
+              count: req.body.count
+            })
+            .then(character =>  {
+             // res.render('/api/newExerciseToTrain')
+           //   ex.addCharacter(character)
+              res.status(201).send(character)
+            })
+          }/*else {
+            ex.addCharacter(char)
+            res.status(201).send(char)
+          }*/
+        })       
+        .catch(error => res.status(400).send(error));
+      }
+    })
+    .catch(error => res.status(400).send(error));      
+    },
+
 
     /*----- список всех упражнений -----*/
     listExercise(req, res) {
@@ -121,7 +162,7 @@ module.exports = {
 
     /*---------добавить в тренировку упражнение---------*/
     addExerciseToTrain(req, res) {
-      Exercise.findOne({ where: { exercise_id: req.body.exercise_id } }) //return
+      Exercise.findAll({ where: { exercise_id: req.body.exercise_id } }) //return
       .then(newExercise => {
             var exerciseToAdd = newExercise;
             Train.findOne({ where: { train_id: req.body.train_id } }) //return
