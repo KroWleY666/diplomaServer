@@ -14,6 +14,14 @@ module.exports = (sequelize, DataTypes) => {
     to: {
       type: DataTypes.STRING,
       allowNull: false
+    },
+    title: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    type: {
+      type: DataTypes.STRING,
+      allowNull: false
     }
   });
   DateTrain.associate = models => {

@@ -3,6 +3,8 @@ const Standart = require('../models').Standart
 const Parameter = require('../models').Parameter
 const Event = require('../models').Event
 const DateTrain = require('../models').DateTrain
+const DETrain = require('../models').DETrain
+const Train = require('../models').Train
 
 module.exports = {
 
@@ -228,7 +230,7 @@ module.exports = {
             return res.status(200).send(part);
           })
           .catch((error) => res.status(400).send(error));
-        },
+        },      
       
      /*--------список ВСЕХ спортсменов и их групп--------*/
      listPartWithGroup(req, res) {

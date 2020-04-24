@@ -143,9 +143,11 @@ module.exports = (app) => {
   app.get('/api/listONEPartModels/:participant_id', participantsController.listONEPartModels); // ok
   // получить записи тренировки ОДНОГО спортсмена по ИД                    !!!!!
   app.get('/api/listPartDates/:participant_id', participantsController.listPartDates); // ok
+  // получить записи тренировки ОДНОГО спортсмена по ИД                    !!!!!
+  //app.get('/api/listALLDates/:participant_id', participantsController.listALLDates); // ok
   
   
-
+  
   // удалить событие по id                       !!!!!
   app.delete('/api/delParameter/:param_id', participantsController.destroyParameter); // ok  
   // удалить событие по id                       !!!!!
@@ -167,8 +169,12 @@ module.exports = (app) => {
 
   /*-------------------- trains,datetrain --------------------*/
   // создать событие отдельно                    !!!!!
-  app.post('/api/newDateTrain/:participant_id', trainsController.create); // ok
+  app.post('/api/newDateTrain/:participant_id', trainsController.createDT); // ok
   
+  // создать событие отдельно                    !!!!!
+  //app.post('/api/createDT/:participant_id', trainsController.createDT); // не работает
+  
+
   // создать событие отдельно                    !!!!!
  // app.post('/api/updateDateTrain', trainsController.updateDateTrain); // ok
 

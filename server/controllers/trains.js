@@ -5,7 +5,7 @@ const Participant = require('../models').Participant
 module.exports = {
 
     /*----------создать дату для тренировки----------*/
-    create(req, res) {
+    /*create(req, res) {
       Participant.findOne({where: {participant_id: req.params.participant_id}})
         .then(part => {
       DateTrain.create({
@@ -37,7 +37,48 @@ module.exports = {
         .catch((error) => res.status(400).send(error));
       })
       .catch((error) => res.status(400).send(error));
-    },
+    },*/
+    
+    /*----------создать дату для тренировки----------*/
+    createDT(req, res) {
+        DateTrain.findOne({where: {
+          from: req.body.from,
+          to: req.body.to,
+          title: req.body.title,
+          type: req.body.type,
+          participant_id: req.params.participant_id
+        }}).then(nDT => {
+          if(!nDT) {
+            DateTrain.create({
+              from: req.body.from,
+              to: req.body.to,
+              title: req.body.title,
+              type: req.body.type,
+              participant_id: req.params.participant_id
+            }).then(newDT => {
+              var DTtoAdd = newDT;
+              Train.findOne({ where: { train_id: req.body.train_id } }) //return
+                .then(train => {   
+                  res.status(201).send(DTtoAdd)            
+                  train.addDate(DTtoAdd)
+                  return DTtoAdd
+              })
+              .catch((error) => res.status(400).send(error))
+            })
+          } else {
+            Train.findOne({ where: { train_id: req.body.train_id } }) //return
+              .then(train => {      
+                res.status(201).send(nDT)          
+                train.addDate(nDT)     
+                return nDT          
+            })
+            .catch((error) => res.status(400).send(error));
+          }})
+          .catch((error) => res.status(400).send(error));
+        },           
+       
+           
+    
     
     /*-----ИЗМЕНИТЬ даты в тренировке-----*/
     updateDateTrain(req, res) {

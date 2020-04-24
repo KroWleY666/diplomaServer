@@ -24,7 +24,7 @@ module.exports = {
         allowNull: false
       },
       age: {
-        type: Sequelize.DATE,
+        type: Sequelize.STRING,
         allowNull: false,
         validation: {
           isDate: true,
