@@ -54,6 +54,14 @@ module.exports = (sequelize, DataTypes) => {
     Participant.hasMany(models.Parameter, {
       foreignKey: 'participant_id',
       as: 'parameters'
+    }),
+    /*Participant.hasMany(models.Train, {
+      foreignKey: 'participant_id',
+      as: 'trains'
+    }),*/
+    Participant.hasMany(models.DateTrain, {
+      foreignKey: 'participant_id',
+      as: 'datesOfTrain'
     })
    /* Participant.belongsTo(models.Plan, {
       foreignKey: 'plan_id',

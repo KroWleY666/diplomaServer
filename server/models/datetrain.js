@@ -21,7 +21,14 @@ module.exports = (sequelize, DataTypes) => {
       through: models.DETrain,
       as: 'trains',
       foreignKey: 'dt_id'
-    })
+    }),
+    DateTrain.belongsTo(models.Participant, {
+      // as: 'exercises', 
+      onDelete: 'CASCADE',
+       //through: models.TrainExercise,
+       foreignKey: 'participant_id'//,
+       //otherKey: 'exercise_id'
+     })
   };
   return DateTrain;
 };

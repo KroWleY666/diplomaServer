@@ -1,13 +1,17 @@
 const DateTrain = require('../models').DateTrain
 const Train = require('../models').Train
+const Participant = require('../models').Participant
 
 module.exports = {
 
     /*----------создать дату для тренировки----------*/
     create(req, res) {
-        DateTrain.create({
+      Participant.findOne({where: {participant_id: req.params.participant_id}})
+        .then(part => {
+      DateTrain.create({
             from: req.body.from,
-            to: req.body.to
+            to: req.body.to,
+            participant_id: req.params.participant_id
         }) //return
         .then(newDT => {
             var DTtoAdd = newDT;
@@ -31,6 +35,8 @@ module.exports = {
         .catch((error) => res.status(400).send(error));
         })
         .catch((error) => res.status(400).send(error));
+      })
+      .catch((error) => res.status(400).send(error));
     },
     
     /*-----ИЗМЕНИТЬ даты в тренировке-----*/

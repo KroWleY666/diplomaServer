@@ -2,8 +2,12 @@ const Participant = require('../models').Participant
 const Standart = require('../models').Standart
 const Parameter = require('../models').Parameter
 const Event = require('../models').Event
+const DateTrain = require('../models').DateTrain
 
 module.exports = {
+
+
+  /*---------------СТАНДАРТ-----СТАНДАРТ-----СТАНДАРТ---------------*/
 
     /*--------создать стандарт--------*/
     createStandart(req, res) {
@@ -20,22 +24,22 @@ module.exports = {
         })
         .catch(error => res.status(400).send(error));        
     },
-
-    /*--------создать измерение--------*/
-    createParameter(req, res) {
-        Participant.findByPk(req.params.participant_id)
-        .then(part => {
-            return Parameter.create({
-                measure: req.body.measure,
-                data: req.body.data,
-                value: req.body.value,
-                participant_id: req.params.participant_id
-            })
-            .then(parameter => res.status(201).send(parameter))
-            .catch(error => res.status(400).send(error));
+    
+    /*--------список с стандартами--------*/
+    listPartStandart(req, res) {
+      return Standart
+        .findAll({ where: {participant_id: req.params.participant_id}
         })
-        .catch(error => res.status(400).send(error));        
-    },
+        .then((part) => {
+          if (!part) {
+            return res.status(404).send({
+              message: 'Стандартов нет!',
+            });
+          }
+          return res.status(200).send(part);
+        })
+        .catch((error) => res.status(400).send(error));
+      },
     
     /*-----удалить стандарт-----*/
     destroyStandart(req, res) {
@@ -60,6 +64,41 @@ module.exports = {
         })
         .catch(error => res.status(400).send(error));
     },
+
+
+  /*---------------ИЗМЕРЕНИЕ-----ИЗМЕРЕНИЕ-----ИЗМЕРЕНИЕ---------------*/
+
+    /*--------создать измерение--------*/
+    createParameter(req, res) {
+        Participant.findByPk(req.params.participant_id)
+        .then(part => {
+            return Parameter.create({
+                measure: req.body.measure,
+                data: req.body.data,
+                value: req.body.value,
+                participant_id: req.params.participant_id
+            })
+            .then(parameter => res.status(201).send(parameter))
+            .catch(error => res.status(400).send(error));
+        })
+        .catch(error => res.status(400).send(error));        
+    },   
+    
+    /*--------список с измерениями--------*/
+    listPartParameter(req, res) {
+      return Parameter
+        .findAll({ where: {participant_id: req.params.participant_id}
+        })
+        .then((part) => {
+          if (!part) {
+            return res.status(404).send({
+              message: 'Параметров нет!',
+            });
+          }
+          return res.status(200).send(part);
+        })
+        .catch((error) => res.status(400).send(error));
+      },
     
     /*-----удалить измерение-----*/
     destroyParameter(req, res) {
@@ -84,14 +123,68 @@ module.exports = {
         })
         .catch(error => res.status(400).send(error));
     },
+    
+    
+  /*---------------СОБЫТИЕ-----СОБЫТИЕ-----СОБЫТИЕ---------------*/
+
+    /*--------создать событие спортсмену--------*/
+    createEvent(req, res) {
+        Participant.findByPk(req.params.participant_id)
+        .then(part => {
+            return Event.create({
+                data: req.body.data,
+                definition: req.body.definition,
+                participant_id: req.params.participant_id
+            })
+            .then(parameter => res.status(201).send(parameter))
+            .catch(error => res.status(400).send(error));
+        })
+        .catch(error => res.status(400).send(error));        
+    },
+    
+    /*--------список с событиями--------*/
+    listPartEvent(req, res) {
+      return Event
+        .findAll({ where: {participant_id: req.params.participant_id}
+        })
+        .then((part) => {
+          if (!part) {
+            return res.status(404).send({
+              message: 'Событий нет!',
+            });
+          }
+          return res.status(200).send(part);
+        })
+        .catch((error) => res.status(400).send(error));
+      },
+    
+    /*-----удалить событие-----*/
+    destroyEvent(req, res) {
+      return Event
+        .findOne({
+          where: {
+            event_id: req.params.event_id
+          }
+        })
+        .then(event => {
+          if (!event) {              
+            return res.status(404).send({
+              message: 'Событие не найдено!',
+            });
+          }
+          return event
+            .destroy()
+            .then(() => res.status(200).send({
+              message: 'Событие удалено!',
+            }))
+            .catch(error => res.status(400).send(error));
+        })
+        .catch(error => res.status(400).send(error));
+    },
+    
 
     /*--------список спортсменов с стандартами,измерениями--------*/
     listONEPartModels(req, res) {
-      /*if (!req.user) {
-        return res.status(404).send({
-          message: 'Авторизируйся!',
-        });
-      } else {*/
       return Participant
         .findOne({ where: {participant_id: req.params.participant_id},
         //  where: {participant_id: req.body.participant_id},
@@ -105,7 +198,11 @@ module.exports = {
           {
             model: Event,
             as: 'events',
-          }],
+          },
+          {
+            model: DateTrain,
+            as: 'datesOfTrain',
+          }]
         })
         .then((part) => {
           if (!part) {
@@ -118,95 +215,21 @@ module.exports = {
         .catch((error) => res.status(400).send(error));
       },
       
-      /*--------создать событие спортсмену--------*/
-      createEvent(req, res) {
-          Participant.findByPk(req.params.participant_id)
-          .then(part => {
-              return Event.create({
-                  data: req.body.data,
-                  definition: req.body.definition,
-                  participant_id: req.params.participant_id
-              })
-              .then(parameter => res.status(201).send(parameter))
-              .catch(error => res.status(400).send(error));
-          })
-          .catch(error => res.status(400).send(error));        
-      },
-      
-      /*-----удалить событие-----*/
-      destroyEvent(req, res) {
-        return Event
-          .findOne({
-            where: {
-              event_id: req.params.event_id
-            }
-          })
-          .then(event => {
-            if (!event) {              
-              return res.status(404).send({
-                message: 'Событие не найдено!',
-              });
-            }
-            return event
-              .destroy()
-              .then(() => res.status(200).send({
-                message: 'Событие удалено!',
-              }))
-              .catch(error => res.status(400).send(error));
-          })
-          .catch(error => res.status(400).send(error));
-      },
-      
-      /*--------список с стандартами--------*/
-      listPartStandart(req, res) {
-        return Standart
-          .findAll({ where: {participant_id: req.params.participant_id}
-          })
+      /*--------список спортсменов с стандартами,измерениями--------*/
+      listPartDates(req, res) {
+        return DateTrain
+          .findAll({ where: {participant_id: req.params.participant_id}})
           .then((part) => {
             if (!part) {
               return res.status(404).send({
-                message: 'Стандартов нет!',
+                message: 'Дат тренировок (записей) нет!',
               });
             }
             return res.status(200).send(part);
           })
           .catch((error) => res.status(400).send(error));
         },
-        
-        /*--------список с стандартами--------*/
-        listPartParameter(req, res) {
-          return Parameter
-            .findAll({ where: {participant_id: req.params.participant_id}
-            })
-            .then((part) => {
-              if (!part) {
-                return res.status(404).send({
-                  message: 'Параметров нет!',
-                });
-              }
-              return res.status(200).send(part);
-            })
-            .catch((error) => res.status(400).send(error));
-          },
-          
-          /*--------список с стандартами--------*/
-          listPartEvent(req, res) {
-            return Event
-              .findAll({ where: {participant_id: req.params.participant_id}
-              })
-              .then((part) => {
-                if (!part) {
-                  return res.status(404).send({
-                    message: 'Событий нет!',
-                  });
-                }
-                return res.status(200).send(part);
-              })
-              .catch((error) => res.status(400).send(error));
-            },
-
-        
-
+      
      /*--------список ВСЕХ спортсменов и их групп--------*/
      listPartWithGroup(req, res) {
       /*if (!req.user) {
