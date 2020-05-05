@@ -34,8 +34,9 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
-      },
-      timestamps: false/*,
+      }
+     // timestamps: false
+      /*,
       duration: {
         type: Sequelize.INTEGER
       },

@@ -36,8 +36,8 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
-      },
-      timestamps: false
+      }
+     // timestamps: false
     });
   },
   down: (queryInterface, Sequelize) => {
