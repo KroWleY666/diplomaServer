@@ -18,23 +18,11 @@ module.exports = {
           name: req.body.name,
           definition: req.body.definition,
           img: req.body.img,
-          type: req.body.type
+          type: req.body.type,
+          muscle: req.body.muscle
         })
         .then(exercise => res.status(201).send(exercise))
-        .catch(error => res.status(400).send(error));
-          /*Character
-            .create({
-              approach: req.body.approach,
-              duration: req.body.duration,
-              count: req.body.count
-            })
-            .then(character => {*/
-             // exercise.addCharacter(character)   
-           //   res.status(201).send(exercise)           
-          //  })
-       //   res.status(201).send(exercise)
-      //  })          
-     //   .catch(error => res.status(400).send(error));
+        .catch(error => res.status(400).send(error));         
       }
     })
     .catch(error => res.status(400).send(error));      
@@ -104,12 +92,7 @@ module.exports = {
           message: 'Упражнение не найдено!',
         })
       } else {
-       Character.findByPk(req.params.character_id//{where: {
-         /* approach: req.body.approach,
-          duration: req.body.duration,
-          count: req.body.count*/
-        //}      }
-        )
+       Character.findByPk(req.params.character_id)
         .then(char => {          
           if(!char) {
             return Character
@@ -182,7 +165,7 @@ module.exports = {
   /*-----удалить упражнение-----*/
   destroyExercise(req, res) {
     return Exercise
-      .findByPk(req.body.exercise_id)
+      .findByPk(req.params.exercise_id)
       .then(exercise => {
         if (!exercise) {          
           return res.status(404).send({

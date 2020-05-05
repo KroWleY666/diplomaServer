@@ -17,5 +17,18 @@ module.exports = (sequelize, DataTypes) => {
     },
   });
 
+  TrainExercise.associate = models => {
+    TrainExercise.belongsTo(models.Train, {
+      foreignKey: 'train_id',
+     // as: 'participants'
+      onDelete: 'CASCADE'
+    }),
+    TrainExercise.belongsTo(models.Exercise, {
+      foreignKey: 'exercise_id',
+     // as: 'participants'
+      onDelete: 'CASCADE'
+    })
+    // associations can be defined here
+  };
   return TrainExercise;
 };

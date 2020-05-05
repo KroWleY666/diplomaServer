@@ -16,9 +16,9 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
-      goal: {
+      duration: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.INTEGER
       },
       level: {
         allowNull: false,

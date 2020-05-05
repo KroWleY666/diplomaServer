@@ -14,9 +14,9 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       type: DataTypes.STRING
     },
-    goal: {
+    duration: {
       allowNull: false,
-      type: DataTypes.STRING
+      type: DataTypes.INTEGER
     },
     level: {
       allowNull: false,
@@ -38,7 +38,8 @@ module.exports = (sequelize, DataTypes) => {
     Train.belongsToMany(models.DateTrain, {
       through: models.DETrain,
       as: 'dates',
-      foreignKey: 'train_id'//,
+      foreignKey: 'train_id',
+      otherKey: 'dt_id'
      // onDelete: 'CASCADE',
     }),
     Train.belongsToMany(models.Exercise, {

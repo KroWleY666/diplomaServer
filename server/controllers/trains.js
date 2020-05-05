@@ -1,6 +1,7 @@
 const DateTrain = require('../models').DateTrain
 const Train = require('../models').Train
 const Participant = require('../models').Participant
+const TrainExercise = require('../models').TrainExercise
 
 module.exports = {
 
@@ -37,7 +38,24 @@ module.exports = {
         .catch((error) => res.status(400).send(error));
       })
       .catch((error) => res.status(400).send(error));
-    },*/
+    },*/ 
+    
+    /*-----тренировки из даты-----*/
+    listTrainWithExercise(req, res) {
+      TrainExercise
+        .findAll({where: {train_id: req.params.train_id},
+          attributes: ['exercise_id']
+        })
+        .then(train => {
+          if (!train) {          
+            return res.status(404).send({
+              message: 'Тренировки нет!'
+            });
+          }
+          return res.status(200).send(train);        
+        })
+        .catch(error => res.status(400).send(error));
+      },
     
     /*----------создать дату для тренировки----------*/
     createDT(req, res) {
@@ -75,11 +93,8 @@ module.exports = {
             .catch((error) => res.status(400).send(error));
           }})
           .catch((error) => res.status(400).send(error));
-        },           
+        },         
        
-           
-    
-    
     /*-----ИЗМЕНИТЬ даты в тренировке-----*/
     updateDateTrain(req, res) {
         Train
@@ -104,19 +119,6 @@ module.exports = {
           .catch(error => res.status(400).send(error));
         })
         .catch(error => res.status(400).send(error));
-
-
-      /*  DateTrain.findOne({ where: { dt_id: req.body.dt_id } })
-        .then(datetrain => {
-          datetrain.update({
-              from: req.body.from || datetrain.from,
-              to: req.body.to || datetrain.to
-          }).then(newDate => {
-              newDate.set
-              res.status(200).send(datetrain)
-          })
-*/
-
     },
 
     /*-----удалить даты в тренировке-----*/
@@ -138,4 +140,26 @@ module.exports = {
       })
       .catch(error => res.status(400).send(error));
   },
+  
+  
+  /*-----тренировки из даты-----*/
+  /*listTrainsFromOneData(req, res) {
+    DateTrain
+      .findAll({where: {participant_id: req.params.participant_id}})
+      .then(datetrain => {
+        if (!datetrain) {          
+          return res.status(404).send({
+            message: 'Тренировки нет!'
+          });
+        }
+        Train
+        .findAll()
+        .then(train => {
+          train.getDates(datetrain) //??????????????
+        return res.status(200).send(datetrain);        
+      })
+    //  .catch(error => res.status(400).send(error));
+    })
+   // .catch(error => res.status(400).send(error));
+  },*/
 }

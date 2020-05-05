@@ -39,7 +39,7 @@ module.exports = {
           .create({
             name: req.body.name,
             type: req.body.type,
-            goal: req.body.goal,
+            duration: req.body.duration,
             level: req.body.level,
             definition: req.body.definition
           })

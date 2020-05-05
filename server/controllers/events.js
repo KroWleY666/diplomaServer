@@ -143,30 +143,9 @@ module.exports = {
       
       /*----- список событий для ОДНОГО спортсмена -----*/
       reternEventsOfGroup222(req, res) {
-        GroupEvent.findAll({where: {group_id: req.params.group_id},        
-       /* include: [{
-          model: Event,
-         // through: GroupEvent,
-          as: 'events'
-        }]*/
-      })             
-        //.then(group => {    
-         /* if (!group) {
-            return res.status(404).send({
-              message: 'Группы нет!',
-            });
-          } 
-          Event.findAll({
-            include: [{
-              model: Group,
-              where: {group_id: req.params.group_id}
-             // through: GroupEvent,
-              //as: 'events'
-            }]
-          }) */  .then(event => {  res.status(200).send(event); })   
-          //res.status(200).send(group);   
-       // }) 
-       .catch((error) => res.status(400).send(error));
+        GroupEvent.findAll({where: {group_id: req.params.group_id}})    
+        .then(event => {  res.status(200).send(event); })   
+        .catch((error) => res.status(400).send(error));
       },
       
       /*----- список событий для ОДНОГО спортсмена -----*/
@@ -178,10 +157,6 @@ module.exports = {
               message: 'Группы нет!',
             });
           }     
-        //  res.status(200).send(group); 
-         // console.log(`${group.group_id}`)
-          //group.get(Event)
-         // if(group) {
           Event.findAll()  
             .then((event) => {
              // console.log(`${event}`)
@@ -196,53 +171,6 @@ module.exports = {
               res.status(200).send(t);
              // return 
             })
-            //.catch((error) => res.status(400).send(error));
-          //}
-       // })
-        //}//)
-         // .catch((error) => res.status(400).send(error));
         }) .catch((error) => res.status(400).send(error));
       }
-          
-    
-        
-        //Participant.findOne({where: {participant_id: req.body.participant_id}})
-        //.then(part => {
-        /*  if(part) {
-            Event
-            .findAll()
-            .then((event) => {
-              if (!event) {
-                return res.status(404).send({
-                  message: 'Событий нет!',
-                });
-              }
-              part.getEvent(event)
-              return res.status(200).send(event);
-            })
-            .catch((error) => res.status(400).send(error));
-          }})
-        })
-          .catch((error) => res.status(400).send(error));
-        },*/
-
-    /*---------добавить в группу событие---------*/
-   /* addEventToGroup(req, res) {
-        Event.findOne({where: {event_id: req.body.event_id}}) //return
-        .then(newEvent => {
-              var eventToAdd = newEvent;
-              Group.findAll({ where: { group_id: req.body.group_id } }) //return
-        .then(group => {
-            group.addEvent(eventToAdd) //return
-                .then(function(ans){
-                  res.status(201).send(eventToAdd)
-                  return eventToAdd;//return
-                })
-                .catch((error) => res.status(400).send(error));
-              })
-        .catch((error) => res.status(400).send(error));
-      })
-      .catch((error) => res.status(400).send(error));
-    } 
-    /* */
   }

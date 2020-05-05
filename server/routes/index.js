@@ -97,7 +97,7 @@ module.exports = (app) => {
   // список всех упражнений с зависимыми тренировками         !!!!!
   app.get('/api/listExercises', exercisesController.listExercise); // ok
   // удалить упражнение по его id                      !!!!!
-  app.delete('/api/delExercise', exercisesController.destroyExercise); // ok
+  app.delete('/api/delExercise/:exercise_id', exercisesController.destroyExercise); // ok
   // информация об упражнении БЕЗ тренировки           !!!!!
   app.post('/api/oneExercise', exercisesController.oneExercise); // ok
   // добавить 3 параметра к упражнению (по его id в коде)           !!!!!
@@ -147,10 +147,11 @@ module.exports = (app) => {
   //app.get('/api/listALLDates/:participant_id', participantsController.listALLDates); // ok
   
   
+
   
-  // удалить событие по id                       !!!!!
+  // удалить измерение по id                       !!!!!
   app.delete('/api/delParameter/:param_id', participantsController.destroyParameter); // ok  
-  // удалить событие по id                       !!!!!
+  // удалить норматив по id                       !!!!!
   app.delete('/api/delStandart/:standart_id', participantsController.destroyStandart); // ok  
   // удалить событие по id                       !!!!!
   app.delete('/api/delEvent/:event_id', participantsController.destroyEvent); // ok  
@@ -178,7 +179,10 @@ module.exports = (app) => {
   // создать событие отдельно                    !!!!!
  // app.post('/api/updateDateTrain', trainsController.updateDateTrain); // ok
 
-  
+  // 
+  //берем параметром id тренировки и получаем список ее id упражнений 
+  app.get('/api/listTrainWithExercise/:train_id', trainsController.listTrainWithExercise); // ok
+  //
 
   // проверка связки моделей НЕ РАБОТАЕТ(не требуется вроде)
   app.get('/api/PlanAndFilterCheck', filtersController.PlanAndFilter); //
@@ -187,5 +191,4 @@ module.exports = (app) => {
   
   app.get('/api/reternEventsOfGroup222/:group_id', eventsController.reternEventsOfGroup); // ok
   
-
 };

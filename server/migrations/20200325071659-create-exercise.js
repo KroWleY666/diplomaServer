@@ -22,6 +22,10 @@ module.exports = {
       type:  {
         allowNull: false,
         type: Sequelize.STRING
+      },
+      muscle:  {
+        allowNull: false,
+        type: Sequelize.STRING
       }/*,
       duration: {
         type: Sequelize.INTEGER

@@ -28,7 +28,8 @@ module.exports = (sequelize, DataTypes) => {
     DateTrain.belongsToMany(models.Train, {
       through: models.DETrain,
       as: 'trains',
-      foreignKey: 'dt_id'
+      foreignKey: 'dt_id',
+      otherKey: 'train_id'
     }),
     DateTrain.belongsTo(models.Participant, {
       // as: 'exercises', 
