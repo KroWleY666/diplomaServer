@@ -72,6 +72,29 @@ module.exports = {
         })
         .catch((error) => res.status(400).send(error));
     },
+    
+    /*----------список тренировок и их упражнений----------*/
+    listOneTrain(req, res) {
+      return Train
+        .findOne({ where: {train_id: train_id.params.train_id},
+          include: [{
+            model: Exercise,
+            as: 'exercises'
+          }/*,{
+            model: DateTrain,
+            as: 'dates'
+          }*/]
+        })
+        .then((train) => {
+          if (!train) {
+            return res.status(404).send({
+              message: 'Тренировка не найдена!',
+            });
+          }
+          return res.status(200).send(train);
+        })
+        .catch((error) => res.status(400).send(error));
+    },
 
     /*-----список планов с зависимыми моделями-----*/
 listPlan(req, res) {

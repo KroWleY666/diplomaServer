@@ -26,7 +26,16 @@ module.exports = {
       muscle:  {
         allowNull: false,
         type: Sequelize.STRING
-      }/*,
+      },
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      timestamps: false/*,
       duration: {
         type: Sequelize.INTEGER
       },
@@ -35,15 +44,7 @@ module.exports = {
       },
       count: {
         type: Sequelize.INTEGER
-      }*/,
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      }
+      }*/
     });
   },
   down: (queryInterface, Sequelize) => {

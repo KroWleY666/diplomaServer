@@ -15,7 +15,7 @@ module.exports = {
     createStandart(req, res) {
         Participant.findByPk(req.params.participant_id)
         .then(part => {
-            return Standart.create({
+          return Standart.create({ //
                 test: req.body.test,
                 data: req.body.data,
                 value: req.body.value,

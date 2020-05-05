@@ -145,10 +145,10 @@ module.exports = {
 
     /*---------добавить в тренировку упражнение---------*/
     addExerciseToTrain(req, res) {
-      Exercise.findAll({ where: { exercise_id: req.body.exercise_id } }) //return
+      Exercise.findAll({ where: { exercise_id: req.params.exercise_id } }) //return
       .then(newExercise => {
             var exerciseToAdd = newExercise;
-            Train.findOne({ where: { train_id: req.body.train_id } }) //return
+            Train.findOne({ where: { train_id: req.params.train_id } }) //return
       .then(train => {
               train.addExercise(exerciseToAdd) //return
               .then(function(ans){
@@ -185,7 +185,7 @@ module.exports = {
   /*----- информация об одном упражнении -----*/
   oneExercise(req, res) {
     return Exercise
-      .findOne({ where: {exercise_id: req.body.exercise_id}})
+      .findAll({ where: {exercise_id: req.body.exercise_id}})
       .then((exercise) => {
         if (!exercise) {
           return res.status(404).send({

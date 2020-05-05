@@ -11,15 +11,16 @@ module.exports = {
       title: {
         allowNull: false,
         type: Sequelize.STRING
-      },
-      createdAt: {
+      }
+      /*createdAt: {
         allowNull: false,
         type: Sequelize.DATE
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
-      }
+      },
+      timestamps: false*/
     });
   },
   down: (queryInterface, Sequelize) => {
