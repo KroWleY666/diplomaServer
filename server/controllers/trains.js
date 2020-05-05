@@ -1,5 +1,6 @@
 const DateTrain = require('../models').DateTrain
 const Train = require('../models').Train
+const Exercise = require('../models').Exercise
 const Participant = require('../models').Participant
 const TrainExercise = require('../models').TrainExercise
 
@@ -55,6 +56,26 @@ module.exports = {
           return res.status(200).send(train);        
         })
         .catch(error => res.status(400).send(error));
+      }, 
+      
+      /*-----тренировки из даты-----*/
+      allTrainExercisesInfo(req, res) {
+        Train.findOne({where: {train_id: req.params.train_id}})
+          .then(train=>{
+            if (!train) {          
+              return res.status(404).send({
+                message: 'Тренировки нет!'
+              })
+            }
+            train.getExercises().then(ex => {
+              for(exer of ex){          
+                console.log("exercise:", exer.name);                
+              }
+              return res.status(200).send(ex)
+            })
+            .catch(error => res.status(400).send(error))
+        })
+        .catch(error => res.status(400).send(error))
       },
     
     /*----------создать дату для тренировки----------*/

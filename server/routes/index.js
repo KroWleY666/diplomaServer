@@ -94,6 +94,8 @@ module.exports = (app) => {
 
 
 
+
+
   /*----------------- exercises -----------------*/
   // создать упражнение без привязки к тренировке             !!!!!
   app.post('/api/newExercises', exercisesController.create); // ok
@@ -109,6 +111,9 @@ module.exports = (app) => {
   app.get('/api/listOnlyExercise', exercisesController.listOnlyExercise); // ok
   // обновить 2 параметра к упражнению (по его id в коде)           !!!!!
   app.put('/api/updateCharToExer/:character_id', exercisesController.updateCharToExer); // ok
+  
+
+
   
 
 
@@ -181,6 +186,11 @@ module.exports = (app) => {
 
   // создать событие отдельно                    !!!!!
  // app.post('/api/updateDateTrain', trainsController.updateDateTrain); // ok
+
+
+ app.get('/api/allTrainExercisesInfo/:train_id', trainsController.allTrainExercisesInfo); // ok
+
+
 
   // 
   //берем параметром id тренировки и получаем список ее id упражнений 
