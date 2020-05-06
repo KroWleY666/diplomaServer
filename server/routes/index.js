@@ -86,7 +86,7 @@ module.exports = (app) => {
   // добавить в план тренировки(создать трентровку в ид плана)         !!!!!
   app.post('/api/newTrainToPlan', plansController.addTrainToPlan); //ok 
   // добавить в тренировку упражнение(добавить ид упражнения в ид тренировки)         !!!!! 
-  app.post('/api/newExerciseToTrain/:train_id/:exercise_id', exercisesController.addExerciseToTrain); // ok
+  app.post('/api/newExerciseToTrain/:train_id', exercisesController.addExerciseToTrain); // ok
   // удалить тренировку по ее id                      !!!!!
   app.delete('/api/delTrain/:train_id', plansController.destroyTrain); // ok
   // удалить план по его id                      !!!!!

@@ -1,5 +1,8 @@
 # diplomaServer
-npm run dev
+1) npm i - установить зависимости
+2) npm run dev - запустить сервер
 
-npx sequelize db:migrate
-npx sequelize db:migrate:undo
+миграции:
+1) npx sequelize db:migrate
+2) npx sequelize db:migrate:undo
+3) npx sequelize db:seed:all
