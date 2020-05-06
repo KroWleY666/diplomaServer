@@ -123,14 +123,14 @@ module.exports = {
       return Exercise
         .findAll({
          // attributes: ['name', 'definition'],//,'count','duration','approach'
-          include: [{
+         /* include: [{
             model: Train,
             as: 'trains'
           },
           {
             model: Character,
             as: 'characters'
-          }]
+          }]*/
         })
         .then((exercise) => {
           if (!exercise) {
@@ -145,7 +145,7 @@ module.exports = {
 
     /*---------добавить в тренировку упражнение---------*/
     addExerciseToTrain(req, res) {
-      Exercise.findAll({ where: { exercise_id: req.params.exercise_id } }) //return
+      Exercise.findAll({ where: { exercise_id: req.body.exercise_id } }) //return
       .then(newExercise => {
             var exerciseToAdd = newExercise;
             Train.findOne({ where: { train_id: req.params.train_id } }) //return

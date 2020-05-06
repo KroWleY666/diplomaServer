@@ -54,13 +54,13 @@ module.exports = {
     listTrain(req, res) {
       return Train
         .findAll({
-          include: [{
+          /*include: [{
             model: Exercise,
             as: 'exercises'
           },{
             model: DateTrain,
             as: 'dates'
-          }]
+          }]*/
         })
         .then((train) => {
           if (!train) {
