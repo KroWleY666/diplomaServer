@@ -41,7 +41,9 @@ module.exports = (sequelize, DataTypes) => {
   Participant.associate = models => {
     Participant.belongsTo(models.Group, {
       foreignKey: 'group_id',
-      onDelete: 'CASCADE'
+      targetKey: 'group_id',
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
     }),
     Participant.hasMany(models.Standart, {
       foreignKey: 'participant_id',

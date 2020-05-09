@@ -24,8 +24,8 @@ module.exports = (sequelize, DataTypes) => {
     }),
     Event.belongsTo(models.Participant, {
       foreignKey: 'participant_id',
-     // as: 'participants'
-      onDelete: 'CASCADE'
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
     })
     // associations can be defined here
   };

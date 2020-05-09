@@ -64,28 +64,34 @@ module.exports = {
       addParticipant(req, res) {  
         Participant.findOne({where: {email: req.body.email}}) 
         .then((allPart) => {
+          console.log('прошли здесь')
           // если такой email уже есть
           if(allPart) {
             return res.status(404).send({
               message: 'Участник с таким email уже существует!'
             });            
           } else {
-            //allPart.age  
-            return Participant.create({ 
-              name: req.body.name,
-              surname: req.body.surname,
-              email: req.body.email,
-              sex: req.body.sex,
-              age: req.body.age,
-              heigth: req.body.heigth,
-              weigth: req.body.weigth,
-              group_id: req.body.group_id
-          })
-          .then((participant) => {
-            //Group.findOne({where: {group_id: req.params.group_id}}) 
-           // return
-            res.status(200).send(participant)
-          })
+            let gr_id = req.body.group_id
+            Group.findByPk(gr_id)
+            .then(gr => {
+              let group_name = gr.title
+             // console.log(`${gr_n}`)
+              Participant.create({ 
+                name: req.body.name,
+                surname: req.body.surname,
+                email: req.body.email,
+                sex: req.body.sex,
+                age: req.body.age,
+                heigth: req.body.heigth,
+                weigth: req.body.weigth,
+                group_id: req.body.group_id
+              })
+              .then((participant) => {
+               // console.log(`${gr_n}`)
+                res.status(200).send({participant,group_name})
+                return {participant,group_name}
+              })
+            })
           .catch((error) => res.status(400).send(error));
           }        
         }).catch((error) => res.status(400).send(error)); 
@@ -137,12 +143,8 @@ module.exports = {
       /*-----удалить группу с участниками-----*/
       destroyGroup(req, res) {
         return Group
-          .findOne({
-            where: {
-              group_id: req.params.group_id
-            }
-          })
-          .then(group => {
+          .findOne({where: {group_id: req.params.group_id}})
+          .then(group => {         
             if (!group) {              
               return res.status(404).send({
                 message: 'Группа не найдена!',

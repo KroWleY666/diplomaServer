@@ -1,6 +1,9 @@
 const Exercise = require('../models').Exercise
 const Train = require('../models').Train
 const Character = require('../models').Character
+const ExercParam = require('../models').ExercParam
+const Muscle = require('../models').Muscle
+const TypeEx = require('../models').TypeEx
 
 module.exports = {
 
@@ -13,20 +16,75 @@ module.exports = {
           message: 'Упражнение уже существует!',
         })
       } else {
-        return Exercise
-        .create({
-          name: req.body.name,
-          definition: req.body.definition,
-          img: req.body.img,
+        ExercParam.findOne({where: {
+          te_id: req.body.te_id,
+          mscl_id: req.body.mscl_id
+        }})
+          .then(par => {         
+            if(par) {
+              return Exercise
+                .create({
+                  name: req.body.name,
+                  definition: req.body.definition,
+                  img: req.body.img,
+                  exp_id: par.exp_id
+                })
+                .then(exercise => res.status(201).send(exercise))
+                .catch(error => res.status(400).send(error));
+            }else {
+              ExercParam.create({
+                te_id: req.body.te_id,
+                mscl_id: req.body.mscl_id
+              })
+              .then(crP => {
+                return Exercise
+                .create({
+                  name: req.body.name,
+                  definition: req.body.definition,
+                  img: req.body.img,
+                  exp_id: crP.exp_id
+                })
+                .then(exercise => res.status(201).send(exercise))
+                .catch(error => res.status(400).send(error));
+              })
+            }
+          })
+          .catch(error => res.status(400).send(error));         
+        }
+      })
+      .catch(error => res.status(400).send(error));      
+    },
+    
+    
+    /*----- добавить упражнение -----*/
+    createExercParam(req, res) {
+      ExercParam.findOne({where: {
           type: req.body.type,
           muscle: req.body.muscle
-        })
-        .then(exercise => res.status(201).send(exercise))
-        .catch(error => res.status(400).send(error));         
-      }
-    })
-    .catch(error => res.status(400).send(error));      
-    },
+        }})
+          .then(par => {         
+            if(par) {
+              return res.status(404).send({
+                message: 'Уже существует!',
+              })
+            } else {
+
+            }
+              console.log(`прошли 1 ${par}`)
+              return ExercParam
+                .create({
+                  type: req.body.type,
+                  muscle: req.body.muscle
+                })
+                .then(exercise => { console.log(`прошли 2 ${exercise}`)
+                res.status(201).send(exercise)})
+                .catch(error => res.status(400).send(error));
+              })
+        //.catch(error => res.status(400).send(error));         
+             // }
+          //  })
+         // .catch(error => res.status(400).send(error));      
+          },
     
     /*----- список только упражнений -----*/
     listOnlyExercise(req, res) {
@@ -147,6 +205,25 @@ module.exports = {
     addExerciseToTrain(req, res) {
       Exercise.findAll({ where: { exercise_id: req.body.exercise_id } }) //return
       .then(newExercise => {
+        Character.findOne({where: {
+          approach: req.body.approach,
+          count: req.body.count
+        }})
+        .then(char => {          
+          if(!char) {
+            Character.create({
+              approach: req.body.approach,
+              count: req.body.count
+            })
+            .then(character =>  {
+              newExercise.addCharacter(character)
+            })
+          }else {
+            newExercise.addCharacter(char)
+          }
+        })       
+        //.catch(error => res.status(400).send(error));
+
             var exerciseToAdd = newExercise;
             Train.findOne({ where: { train_id: req.params.train_id } }) //return
       .then(train => {

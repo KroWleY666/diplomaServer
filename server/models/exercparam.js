@@ -7,16 +7,30 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       type: DataTypes.INTEGER
     },
-    type: {
+    te_id: {
       allowNull: false,
-      type: DataTypes.STRING
+      type: DataTypes.INTEGER
     },
-    muscle: {
+    mscl_id: {
       allowNull: false,
-      type: DataTypes.STRING
+      type: DataTypes.INTEGER
     }
   });
   ExercParam.associate = models => {
+    ExercParam.hasMany(models.Exercise, {
+      foreignKey: 'exp_id',
+      as: 'exercises'
+    }),
+    ExercParam.hasMany(models.Muscle, {
+      foreignKey: 'mscl_id',      
+      as: 'muscles'
+    }),
+    ExercParam.hasOne(models.TypeEx, {
+      foreignKey: 'te_id',
+      targetKey: 'te_id'
+    })
+
+    
     // associations can be defined here
   };
   return ExercParam;

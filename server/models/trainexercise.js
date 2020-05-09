@@ -21,12 +21,14 @@ module.exports = (sequelize, DataTypes) => {
     TrainExercise.belongsTo(models.Train, {
       foreignKey: 'train_id',
      // as: 'participants'
-      onDelete: 'CASCADE'
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
     }),
     TrainExercise.belongsTo(models.Exercise, {
       foreignKey: 'exercise_id',
      // as: 'participants'
-      onDelete: 'CASCADE'
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
     })
     // associations can be defined here
   };

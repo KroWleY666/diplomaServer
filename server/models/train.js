@@ -34,6 +34,7 @@ module.exports = (sequelize, DataTypes) => {
       as: 'plans',
       foreignKey: 'train_id',
       onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
     }),
     Train.belongsToMany(models.DateTrain, {
       through: models.DETrain,
@@ -45,7 +46,9 @@ module.exports = (sequelize, DataTypes) => {
     Train.belongsToMany(models.Exercise, {
       as: 'exercises', 
       through: models.TrainExercise,
-      foreignKey: 'train_id'//,
+      foreignKey: 'train_id',
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
       //otherKey: 'exercise_id'
     })
   };

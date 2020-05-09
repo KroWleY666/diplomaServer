@@ -23,7 +23,8 @@ module.exports = (sequelize, DataTypes) => {
   Parameter.associate = models => {
     Parameter.belongsTo(models.Participant, {
       foreignKey: 'participant_id',
-      onDelete: 'CASCADE'
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
     })
     // associations can be defined here
   };

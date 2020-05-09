@@ -1,8 +1,43 @@
 const Filter = require('../models').Filter
 const Plan = require('../models').Plan
 const PlanFilter = require('../models').PlanFilter
+const Muscle = require('../models').Muscle
+const TypeEx = require('../models').TypeEx
 
 module.exports = {
+  /*-----создать фильтр-----*/
+  listMuscle(req, res) {
+    Muscle.findAll()
+    .then((filter) => {
+      if (!filter) {
+        return res.status(404).send({
+          message: 'Muscle нет!',
+        });
+      }
+      return res.status(200).send(filter);
+    })
+    .catch((error) => res.status(400).send(error));
+  },
+  
+  /*-----создать фильтр-----*/
+  listTypeEx(req, res) {
+    TypeEx.findAll()
+    .then((filter) => {
+      if (!filter) {
+        return res.status(404).send({
+          message: 'TypeEx нет!',
+        });
+      }
+      return res.status(200).send(filter);
+    })
+    .catch((error) => res.status(400).send(error));
+  },
+
+
+
+
+
+
 
     /*-----создать фильтр-----*/
     create(req, res) {

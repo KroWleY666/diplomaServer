@@ -72,13 +72,10 @@ module.exports = (app) => {
   app.post('/api/newPlan', plansController.create); // ok
   // список планов с привязанными к ним фильтрами и тренировками         !!!!!
   app.get('/api/listPlan', plansController.listPlan); // ok
-  // создать тренировку отдельно                                 !!!!!
-  app.post('/api/newTrain', plansController.createTrain); // ok 
-  // список тренировок                                     !!!!!
-  app.get('/api/listTrain', plansController.listTrain); // ok
+
 
   //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  app.get('/api/listOneTrain/:train_id', plansController.listOneTrain); // ok
+  //app.get('/api/listOneTrain/:train_id', plansController.listOneTrain); // ok
 
   
 
@@ -87,8 +84,7 @@ module.exports = (app) => {
   app.post('/api/newTrainToPlan', plansController.addTrainToPlan); //ok 
   // добавить в тренировку упражнение(добавить ид упражнения в ид тренировки)         !!!!! 
   app.post('/api/newExerciseToTrain/:train_id', exercisesController.addExerciseToTrain); // ok
-  // удалить тренировку по ее id                      !!!!!
-  app.delete('/api/delTrain/:train_id', plansController.destroyTrain); // ok
+
   // удалить план по его id                      !!!!!
   app.delete('/api/delPlan/:plan_id', plansController.destroyPlan); // ok
 
@@ -112,8 +108,6 @@ module.exports = (app) => {
   // обновить 2 параметра к упражнению (по его id в коде)           !!!!!
   app.put('/api/updateCharToExer/:character_id', exercisesController.updateCharToExer); // ok
   
-
-
   
 
 
@@ -177,9 +171,24 @@ module.exports = (app) => {
 
 
   /*-------------------- trains,datetrain --------------------*/
+
+
+
+  // создать тренировку отдельно                                 !!!!!
+  app.post('/api/newTrain', trainsController.createTrain); // ok 
+  // список всех тренировок без моделей                                     !!!!!
+  app.get('/api/listTrain', trainsController.listTrain); // ok
+  // удалить тренировку по ее id                      !!!!!
+  app.delete('/api/delTrain/:train_id', trainsController.destroyTrain); // ok
+  
+
   // создать событие отдельно                    !!!!!
   app.post('/api/newDateTrain/:participant_id', trainsController.createDT); // ok
+
+  // список всех тренировок без моделей                                     !!!!!
+  app.get('/api/allDateTrainsInfo/:participant_id', trainsController.allDateTrainsInfo); // ok
   
+
   // создать событие отдельно                    !!!!!
   //app.post('/api/createDT/:participant_id', trainsController.createDT); // не работает
   
@@ -194,14 +203,21 @@ module.exports = (app) => {
 
   // 
   //берем параметром id тренировки и получаем список ее id упражнений 
-  app.get('/api/listTrainWithExercise/:train_id', trainsController.listTrainWithExercise); // ok
+ // app.delete('/api/listTrainWithExercise', trainsController.listTrainWithExercise); // ok
   //
-
-  // проверка связки моделей НЕ РАБОТАЕТ(не требуется вроде)
-  app.get('/api/PlanAndFilterCheck', filtersController.PlanAndFilter); //
+  
+ // app.get('/api/reternEventsOfGroup222/:group_id', eventsController.reternEventsOfGroup); // ok
   
 
-  
-  app.get('/api/reternEventsOfGroup222/:group_id', eventsController.reternEventsOfGroup); // ok
-  
+
+
+
+
+ app.get('/api/listMuscle', filtersController.listMuscle); // ok
+
+
+ app.get('/api/listTypeEx', filtersController.listTypeEx); // ok
+
+
+
 };

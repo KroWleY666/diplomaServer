@@ -10,20 +10,25 @@ module.exports = {
       },
       dt_id: {
         allowNull: false,
-        type: Sequelize.INTEGER
-       // onDelete: 'CASCADE',
-       /* references: {
-          model: 'DateTrain',
-          key: 'dt_id'
-        }*/
+        type: Sequelize.INTEGER,
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
+        references: {
+          model: 'DateTrains',
+          key: 'dt_id',
+          as: 'dt_id'
+        }
       },
       train_id: {
         allowNull: false,
-        type: Sequelize.INTEGER
-       /* references: {
-          model: 'DateTrain',
-          key: 'train_id'
-        }*/
+        type: Sequelize.INTEGER,
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
+        references: {
+          model: 'Trains',
+          key: 'train_id',
+          as: 'trains'
+        }
       },
       createdAt: {
         allowNull: false,

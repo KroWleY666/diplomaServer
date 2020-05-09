@@ -12,7 +12,12 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING
     }
   });
-  Muscle.associate = function(models) {
+  Muscle.associate = models => {
+    Muscle.belongsTo(models.ExercParam, {
+      foreignKey: 'mscl_id',
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
+    })
     // associations can be defined here
   };
   return Muscle;

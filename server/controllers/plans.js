@@ -26,76 +26,9 @@ module.exports = {
       .catch(error => res.status(400).send(error));     
     },
 
-    /*----------создать отдельно тренировку----------*/
-    createTrain(req, res) {
-      Train.findOne({where : {name: req.body.name}})
-      .then(tr => {
-        if(tr) {
-          return res.status(404).send({
-            message: 'Тренировка уже существует!',
-          })
-        }else {
-          return Train
-          .create({
-            name: req.body.name,
-            type: req.body.type,
-            duration: req.body.duration,
-            level: req.body.level,
-            definition: req.body.definition
-          })
-          .then(train => res.status(201).send(train))   
-          .catch(error => res.status(400).send(error)); 
-        }
-      })      
-        .catch(error => res.status(400).send(error));
-    },
-
-    /*----------список тренировок и их упражнений----------*/
-    listTrain(req, res) {
-      return Train
-        .findAll({
-          /*include: [{
-            model: Exercise,
-            as: 'exercises'
-          },{
-            model: DateTrain,
-            as: 'dates'
-          }]*/
-        })
-        .then((train) => {
-          if (!train) {
-            return res.status(404).send({
-              message: 'Тренировки не найдены!',
-            });
-          }
-          return res.status(200).send(train);
-        })
-        .catch((error) => res.status(400).send(error));
-    },
     
-    /*----------список тренировок и их упражнений----------*/
-    listOneTrain(req, res) {
-      return Train
-        .findOne({ where: {train_id: train_id.params.train_id},
-          include: [{
-            model: Exercise,
-            as: 'exercises'
-          }/*,{
-            model: DateTrain,
-            as: 'dates'
-          }*/]
-        })
-        .then((train) => {
-          if (!train) {
-            return res.status(404).send({
-              message: 'Тренировка не найдена!',
-            });
-          }
-          return res.status(200).send(train);
-        })
-        .catch((error) => res.status(400).send(error));
-    },
 
+    
     /*-----список планов с зависимыми моделями-----*/
 listPlan(req, res) {
   return Plan
@@ -138,25 +71,7 @@ listPlan(req, res) {
     .catch((error) => res.status(400).send(error));
   },
 
-  /*-----удалить тренировку-----*/
-  destroyTrain(req, res) {
-    return Train
-      .findByPk(req.params.train_id)
-      .then(train => {
-        if (!train) {          
-          return res.status(404).send({
-            message: 'Тренировка не найдена!'
-          });
-        }
-        return train
-          .destroy()
-          .then(() => res.status(200).send({
-            message: 'Тренировка удалена!'
-          }))
-          .catch(error => res.status(400).send(error));
-      })
-      .catch(error => res.status(400).send(error));
-  },
+  
 
     /*-----удалить план-----*/
     destroyPlan(req, res) {

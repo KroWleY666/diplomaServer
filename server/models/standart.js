@@ -23,7 +23,8 @@ module.exports = (sequelize, DataTypes) => {
   Standart.associate = function(models) {
     Standart.belongsTo(models.Participant, {
       foreignKey: 'participant_id',
-      onDelete: 'CASCADE'
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
     })
     // associations can be defined here
   };

@@ -17,42 +17,28 @@ module.exports = (sequelize, DataTypes) => {
     img:  {
       allowNull: false,
       type: DataTypes.STRING
-    },
-    type:  {
-      allowNull: false,
-      type: DataTypes.STRING
-    },
-    muscle:  {
-      allowNull: false,
-      type: DataTypes.STRING
-    }/*,
-    duration:  {
-      type: DataTypes.INTEGER
-    },
-    approach: {
-      type: DataTypes.INTEGER
-    },
-    count: {
-      type: DataTypes.INTEGER
-    },
-    day: {
-      type: DataTypes.STRING //в тренировки
-    }*/
+    }
   });
   Exercise.associate  = models => {
     Exercise.belongsToMany(models.Train, {
       as: 'trains', 
       through: models.TrainExercise,
-      foreignKey: 'exercise_id'
+      foreignKey: 'exercise_id',
+      onUpdate: 'CASCADE'
     }),
-    Exercise.hasMany(models.ExercParam, {
+    /*Exercise.hasMany(models.ExercParam, {
       foreignKey: 'exercise_id',
       as: 'filters'
-    }),
+    }),*/
     Exercise.belongsToMany(models.Character, {
       as: 'characters', 
       through: models.CharEx,
       foreignKey: 'exercise_id'
+    }),
+    Exercise.belongsTo(models.ExercParam, {
+      foreignKey: 'exp_id',
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
     })
     // associations can be defined here
   };

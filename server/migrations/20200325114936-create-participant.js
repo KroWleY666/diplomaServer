@@ -38,13 +38,14 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false
       },
-      group_id: {
+      group_id: { //group_id
         type: Sequelize.INTEGER,
         onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
         references: {
           model: 'Groups',
           key: 'group_id',
-          as: 'group_id'
+          as: 'group_id'//group_id
         }
       },
       createdAt: {
@@ -58,6 +59,7 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
+   // sequelize.sync();
     return queryInterface.dropTable('Participants');
   }
 };

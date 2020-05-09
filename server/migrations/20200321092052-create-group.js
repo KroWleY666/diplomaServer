@@ -36,6 +36,8 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
+   // sequelize.sync();
     return queryInterface.dropTable('Groups');
   }
+  
 };
