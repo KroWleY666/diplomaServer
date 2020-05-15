@@ -33,7 +33,9 @@ module.exports = (sequelize, DataTypes) => {
     Exercise.belongsToMany(models.Character, {
       as: 'characters', 
       through: models.CharEx,
-      foreignKey: 'exercise_id'
+      foreignKey: 'exercise_id',
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
     }),
     Exercise.belongsTo(models.ExercParam, {
       foreignKey: 'exp_id',

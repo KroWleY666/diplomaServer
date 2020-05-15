@@ -13,7 +13,11 @@ module.exports = (sequelize, DataTypes) => {
     }
   });
   
-  ParamName.associate = function(models) {
+  ParamName.associate = models => {
+    ParamName.hasMany(models.Parameter, {
+      foreignKey: 'pn_id',      
+      as: 'parameters'
+    })
     // associations can be defined here
   };
   return ParamName;

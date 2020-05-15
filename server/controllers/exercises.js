@@ -4,6 +4,9 @@ const Character = require('../models').Character
 const ExercParam = require('../models').ExercParam
 const Muscle = require('../models').Muscle
 const TypeEx = require('../models').TypeEx
+const CharEx = require('../models').CharEx
+const FilterPlan = require('../models').FilterPlan
+const PlanTrain = require('../models').PlanTrain
 
 module.exports = {
 
@@ -273,5 +276,26 @@ module.exports = {
         return exercise
       })
       .catch((error) => res.status(400).send(error));
-    }    
+    },
+
+    /*-----удалить упражнение-----*/
+    destroyCharExes(req, res) {
+    return PlanTrain
+      .findOne({where: {pt_id: req.body.ce_id}})
+      .then(exercise => {
+        if (!exercise) {          
+          return res.status(404).send({
+            message: 'Упражнение не найдено!'
+          });
+        }
+        return exercise
+          .destroy()
+          .then(() => res.status(200).send({
+            message: 'Упражнение удалено!'
+          }))
+          .catch(error => res.status(400).send(error));
+      })
+     // .catch(error => res.status(400).send(error));
+  },
+    
 }

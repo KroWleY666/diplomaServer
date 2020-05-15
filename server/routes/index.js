@@ -108,8 +108,9 @@ module.exports = (app) => {
   // обновить 2 параметра к упражнению (по его id в коде)           !!!!!
   app.put('/api/updateCharToExer/:character_id', exercisesController.updateCharToExer); // ok
   
+  app.delete('/api/destroyCharExes', exercisesController.destroyCharExes); // ok
   
-
+  
 
   /*-------------------- events --------------------*/
   // создать событие отдельно                    !!!!!

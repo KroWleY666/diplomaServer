@@ -1,27 +1,16 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('ExercParams', {
-      exp_id: {
+    return queryInterface.createTable('TypeTrains', {
+      type_train_id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      te_id: {
+      name: {
         allowNull: false,
-        type: Sequelize.INTEGER,
-        onDelete: 'CASCADE',
-        onUpdate: 'CASCADE',
-        references: {
-          model: 'TypeExes',
-          key: 'te_id',
-          as: 'te_id'
-        }
-      },
-      mscl_id: {
-        allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
@@ -34,6 +23,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('ExercParams');
+    return queryInterface.dropTable('TypeTrains');
   }
 };

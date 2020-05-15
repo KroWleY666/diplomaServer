@@ -39,6 +39,17 @@ module.exports = {
           as: 'participant_id'
         }
       },
+      pn_id: { 
+        type: Sequelize.INTEGER,  
+        allowNull: false,      
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
+        references: {
+          model: 'ParamNames',
+          key: 'pn_id',
+          as: 'pn_id'
+        }
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

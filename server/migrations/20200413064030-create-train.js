@@ -28,6 +28,17 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
+      type_train_id: {
+        type: Sequelize.INTEGER,
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
+        allowNull: false,
+        references: {
+          model: 'TypeTrains',
+          key: 'type_train_id',
+          as: 'type_train_id'
+        }
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

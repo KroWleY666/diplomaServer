@@ -1,4 +1,3 @@
-'use strict';
 module.exports = (sequelize, DataTypes) => {
   const Parameter = sequelize.define('Parameter', {
     param_id: {
@@ -25,8 +24,14 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'participant_id',
       onDelete: 'CASCADE',
       onUpdate: 'CASCADE'
+    }),
+    Parameter.belongsTo(models.ParamName, {
+      foreignKey: 'pn_id',
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
     })
-    // associations can be defined here
   };
   return Parameter;
 };
+
+

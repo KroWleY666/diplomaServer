@@ -1,4 +1,3 @@
-'use strict';
 module.exports = (sequelize, DataTypes) => {
   const Standart = sequelize.define('Standart', {
     standart_id:  {
@@ -25,8 +24,12 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'participant_id',
       onDelete: 'CASCADE',
       onUpdate: 'CASCADE'
+    }),
+    Standart.belongsTo(models.StandName, {
+      foreignKey: 'stn_id',
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
     })
-    // associations can be defined here
   };
   return Standart;
 };

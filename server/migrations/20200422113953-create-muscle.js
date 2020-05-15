@@ -14,6 +14,7 @@ module.exports = {
       },
       mscl_id: {
         type: Sequelize.INTEGER,
+        allowNull: false,
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
         references: {
@@ -31,6 +32,7 @@ module.exports = {
         type: Sequelize.DATE
       },
       timestamps: false*/
+      timestamps: false
     });
   },
   down: (queryInterface, Sequelize) => {

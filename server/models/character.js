@@ -1,4 +1,3 @@
-'use strict';
 module.exports = (sequelize, DataTypes) => {
   const Character = sequelize.define('Character', {
     character_id:  {
@@ -7,10 +6,6 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       type: DataTypes.INTEGER
     },
-    /*duration: {
-      allowNull: false,
-      type: DataTypes.INTEGER
-    },*/
     count: {
       allowNull: false,
       type: DataTypes.INTEGER
@@ -24,9 +19,12 @@ module.exports = (sequelize, DataTypes) => {
     Character.belongsToMany(models.Exercise, {
       as: 'exercises', 
       through: models.CharEx,
-      foreignKey: 'character_id'
+      foreignKey: 'character_id',
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
     })
-    // associations can be defined here
   };
   return Character;
 };
+
+

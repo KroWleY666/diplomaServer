@@ -1,25 +1,23 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const TypeEx = sequelize.define('TypeEx', {
-    te_id: {
+  const StandName = sequelize.define('StandName', {
+    stn_id: {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
       type: DataTypes.INTEGER
     },
-    type: {
+    name: {
       allowNull: false,
       type: DataTypes.STRING
     }
   });
-  TypeEx.associate = models => {
-    TypeEx.hasMany(models.ExercParam, {
-      foreignKey: 'te_id',
-      as: 'exParams'
-     // onDelete: 'CASCADE',
-     // onUpdate: 'CASCADE'
+  StandName.associate = models => {
+    StandName.hasMany(models.Standart, {
+      foreignKey: 'stn_id',      
+      as: 'standarts'
     })
     // associations can be defined here
   };
-  return TypeEx;
+  return StandName;
 };

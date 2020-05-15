@@ -30,6 +30,17 @@ module.exports = {
           as: 'participant_id'
         }
       },
+      stn_id: {
+        type: Sequelize.INTEGER,
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
+        allowNull: false,
+        references: {
+          model: 'StandNames',
+          key: 'stn_id',
+          as: 'stn_id'
+        }
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

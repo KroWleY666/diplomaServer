@@ -50,6 +50,11 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: 'CASCADE',
       onUpdate: 'CASCADE'
       //otherKey: 'exercise_id'
+    }),
+    Train.belongsTo(models.TypeTrain, {
+      foreignKey: 'type_train_id',
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
     })
   };
   return Train;

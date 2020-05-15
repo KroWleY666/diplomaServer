@@ -1,4 +1,3 @@
-'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('Characters', {
@@ -8,10 +7,6 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      /*duration: {
-        allowNull: false,
-        type: Sequelize.INTEGER
-      },*/
       count: {
         allowNull: false,
         type: Sequelize.INTEGER
@@ -28,7 +23,6 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       }
-     // timestamps: false
     });
   },
   down: (queryInterface, Sequelize) => {
