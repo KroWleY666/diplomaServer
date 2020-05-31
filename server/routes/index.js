@@ -195,9 +195,6 @@ module.exports = (app) => {
 
 
   
-
-  // список всех упражнений с зависимыми тренировками         !!!!!
-  app.get('/api/listExercises', exercisesController.listExercise); // ok
   // удалить упражнение по его id                      !!!!!
   app.delete('/api/delExercise/:exercise_id', exercisesController.destroyExercise); // ok
   // информация об упражнении БЕЗ тренировки           !!!!!
