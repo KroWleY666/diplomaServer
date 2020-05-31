@@ -12,7 +12,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
-      mscl_id: {
+     /* mscl_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         onDelete: 'CASCADE',
@@ -22,17 +22,17 @@ module.exports = {
           key: 'mscl_id',
           as: 'mscl_id'
         }
-      },
-      /*createdAt: {
+      },*/
+      createdAt: {
         allowNull: false,
         type: Sequelize.DATE
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
-      },
-      timestamps: false*/
-      timestamps: false
+      }
+      /*timestamps: false*/
+      //timestamps: false
     });
   },
   down: (queryInterface, Sequelize) => {

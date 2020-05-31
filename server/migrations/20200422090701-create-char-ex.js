@@ -10,11 +10,27 @@ module.exports = {
       },
       character_id: {
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
+        references: {
+          model: 'Characters',
+          key: 'character_id',
+          as: 'character_id'
+        }
       },
       exercise_id: {
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
+        references: {
+          model: 'Exercises',
+          key: 'exercise_id',
+          as: 'exercise_id'
+        }
       },
       createdAt: {
         allowNull: false,

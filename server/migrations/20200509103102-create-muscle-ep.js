@@ -12,7 +12,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER
       },
-      exp_id: {
+      exercise_id: {
         allowNull: false,
         type: Sequelize.INTEGER
       },

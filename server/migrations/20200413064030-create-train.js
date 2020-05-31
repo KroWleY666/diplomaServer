@@ -12,23 +12,23 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
-      type: {
+     /* type: {
         allowNull: false,
         type: Sequelize.STRING
-      },
+      },*/
       duration: {
         allowNull: false,
         type: Sequelize.INTEGER
       },
-      level: {
+      /*level: {
         allowNull: false,
         type: Sequelize.STRING
-      },
+      },*/
       definition: {
         allowNull: false,
         type: Sequelize.STRING
       },
-      type_train_id: {
+     /* type_train_id: {
         type: Sequelize.INTEGER,
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
@@ -38,7 +38,7 @@ module.exports = {
           key: 'type_train_id',
           as: 'type_train_id'
         }
-      },
+      },*/
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

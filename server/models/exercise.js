@@ -17,7 +17,15 @@ module.exports = (sequelize, DataTypes) => {
     img:  {
       allowNull: false,
       type: DataTypes.STRING
+    },
+    te_id: { //тип упражнения только один
+      allowNull: false,
+      type: DataTypes.INTEGER
     }
+    /*exp_id:  {
+      allowNull: false,
+      type: DataTypes.INTEGER
+    }*/
   });
   Exercise.associate  = models => {
     Exercise.belongsToMany(models.Train, {
@@ -26,10 +34,6 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'exercise_id',
       onUpdate: 'CASCADE'
     }),
-    /*Exercise.hasMany(models.ExercParam, {
-      foreignKey: 'exercise_id',
-      as: 'filters'
-    }),*/
     Exercise.belongsToMany(models.Character, {
       as: 'characters', 
       through: models.CharEx,
@@ -37,8 +41,22 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: 'CASCADE',
       onUpdate: 'CASCADE'
     }),
-    Exercise.belongsTo(models.ExercParam, {
+    /*Exercise.belongsTo(models.ExercParam, {
       foreignKey: 'exp_id',
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
+    }),*/
+    Exercise.belongsTo(models.TypeEx, {
+      //as: 'types', 
+      //through: models.CharEx,
+      foreignKey: 'te_id',
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
+    }),
+    Exercise.belongsToMany(models.Muscle, {
+      as: 'muscles', 
+      through: models.MuscleEP,
+      foreignKey: 'exercise_id',
       onDelete: 'CASCADE',
       onUpdate: 'CASCADE'
     })

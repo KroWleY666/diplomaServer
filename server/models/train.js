@@ -10,18 +10,18 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       type: DataTypes.STRING
     },
-    type: {
+    /*type: {
       allowNull: false,
       type: DataTypes.STRING
-    },
+    },*/
     duration: {
       allowNull: false,
       type: DataTypes.INTEGER
     },
-    level: {
+    /*level: {
       allowNull: false,
       type: DataTypes.STRING
-    },
+    },*/
     definition: {
       allowNull: false,
       type: DataTypes.STRING

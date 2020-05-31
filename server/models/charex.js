@@ -16,7 +16,17 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER
     }
   });
-  CharEx.associate = function(models) {
+  CharEx.associate = models => {
+    CharEx.belongsTo(models.Character, {
+      foreignKey: 'character_id',
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
+    }),
+    CharEx.belongsTo(models.Exercise, {
+      foreignKey: 'exercise_id',
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
+    })
     // associations can be defined here
   };
   return CharEx;

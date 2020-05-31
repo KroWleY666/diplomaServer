@@ -18,16 +18,19 @@ module.exports = {
       img:  {
         allowNull: false,
         type: Sequelize.STRING
-      }/*,
-      type:  {
-        allowNull: false,
-        type: Sequelize.STRING
       },
-      muscle:  {
+      te_id: {
         allowNull: false,
-        type: Sequelize.STRING
-      }*/,
-      exp_id: {
+        type: Sequelize.INTEGER,
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
+        references: {
+          model: 'TypeExes',
+          key: 'te_id',
+          as: 'te_id'
+        }
+      },
+      /*exp_id: {
         type: Sequelize.INTEGER,
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
@@ -36,7 +39,7 @@ module.exports = {
           key: 'exp_id',
           as: 'exp_id'
         }
-      },
+      },*/
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
@@ -45,7 +48,6 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       }
-     // timestamps: false
     });
   },
   down: (queryInterface, Sequelize) => {

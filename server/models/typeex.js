@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   });
   TypeEx.associate = models => {
-    TypeEx.hasMany(models.ExercParam, {
+    TypeEx.hasMany(models.Exercise, {
       foreignKey: 'te_id',
       as: 'exParams'
      // onDelete: 'CASCADE',

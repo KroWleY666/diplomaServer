@@ -11,12 +11,13 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false
     },
-    exp_id: {
+    exercise_id: {
       type: DataTypes.INTEGER,
       allowNull: false
     }
   });
-  MuscleEP.associate = function(models) {
+  MuscleEP.associate = models => {
+    
     // associations can be defined here
   };
   return MuscleEP;

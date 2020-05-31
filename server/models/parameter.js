@@ -6,10 +6,14 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       type: DataTypes.INTEGER
     },
-    measure: {
-      type: DataTypes.STRING,
+    pn_id: {
+      type: DataTypes.INTEGER,
       allowNull: false
     },
+   /* measure: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },*/
     data: {
       type: DataTypes.STRING,
       allowNull: false

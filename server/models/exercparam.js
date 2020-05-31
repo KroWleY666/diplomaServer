@@ -17,28 +17,25 @@ module.exports = (sequelize, DataTypes) => {
     }
   });
   ExercParam.associate = models => {
-    ExercParam.hasMany(models.Exercise, {
+    /*ExercParam.hasMany(models.Exercise, {
       foreignKey: 'exp_id',
-      as: 'exercises'
+      as: 'exercises',
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
     }),
-    /*ExercParam.hasMany(models.Muscle, {
-      foreignKey: 'mscl_id',      
-      as: 'muscles'
-    }),*/
     ExercParam.belongsTo(models.TypeEx, {
       foreignKey: 'te_id',      
       onDelete: 'CASCADE',
       onUpdate: 'CASCADE'
      // targetKey: 'te_id'
-    }),
-    ExercParam.belongsToMany(models.Muscle, {
+    }),*/
+   /* ExercParam.belongsToMany(models.Muscle, {
       as: 'muscles', 
       through: models.MuscleEP,
       foreignKey: 'exp_id',
       onDelete: 'CASCADE',
       onUpdate: 'CASCADE'
-    })    
-    // associations can be defined here
+    })    */
   };
   return ExercParam;
 };

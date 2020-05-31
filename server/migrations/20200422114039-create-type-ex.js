@@ -11,8 +11,8 @@ module.exports = {
       type: {
         allowNull: false,
         type: Sequelize.STRING
-      }
-      /*createdAt: {
+      },
+      createdAt: {
         allowNull: false,
         type: Sequelize.DATE
       },
@@ -20,7 +20,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       },
-      timestamps: false*/
+      /*timestamps: false*/
     });
   },
   down: (queryInterface, Sequelize) => {
