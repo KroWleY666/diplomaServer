@@ -139,6 +139,26 @@ module.exports = {
     }})
     .catch(error => res.status(400).send({error, message: 'Что-то пошло не так...'}));      
   },
+  
+  /*-----удалить упражнение-----*/
+  destroyExercise(req, res) {
+    Exercise.findByPk(req.params.exercise_id)
+      .then(exercise => {
+        if (!exercise) {          
+          return res.status(404).send({
+            message: 'Упражнение не найдено!'
+          });
+        }
+        exercise.destroy()
+          .then(() => {
+            return Exercise.findAll()
+            .then(exerc => res.status(200).send({exerc, message: 'Упражнение удалено!'}))
+            .catch(error => res.status(400).send({error, message: 'Что-то пошло не так...'}));
+            })
+          .catch(error => res.status(400).send(error));
+      })
+      .catch(error => res.status(400).send(error));
+  },
 
     
     
@@ -260,25 +280,7 @@ module.exports = {
     .catch((error) => res.status(400).send(error));*/
   },
 
-  /*-----удалить упражнение-----*/
-  destroyExercise(req, res) {
-    return Exercise
-      .findByPk(req.params.exercise_id)
-      .then(exercise => {
-        if (!exercise) {          
-          return res.status(404).send({
-            message: 'Упражнение не найдено!'
-          });
-        }
-        return exercise
-          .destroy()
-          .then(() => res.status(200).send({
-            message: 'Упражнение удалено!'
-          }))
-          .catch(error => res.status(400).send(error));
-      })
-      .catch(error => res.status(400).send(error));
-  },
+  
 
   /*----- информация об одном упражнении -----*/
   oneExercise(req, res) {

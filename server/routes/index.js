@@ -116,11 +116,43 @@ module.exports = (app) => {
 
 
 
+  /*-------------- добавление/просмотр/удаление exercises --------------*/
+
+  /*----------------- exercises -----------------*/
+
+  // создать упражнение без привязки к тренировке             !!!!!
+  app.post('/api/newExercises', exercisesController.createExercise); // ok
+  // добавить 3 параметра к упражнению (по его id в коде)           !!!!!
+  app.post('/api/addCharToExer', exercisesController.addCharToExer); // ok
+  // удалить упражнение по его id                      !!!!!
+  app.delete('/api/delExercise/:exercise_id', exercisesController.destroyExercise); // ok
+  // список базы упражненийс характеристиками               !!!!!
+  app.get('/api/listOnlyExercise', exercisesController.listOnlyExercise); // ok
+
+
+  // список мышц           !!!!!
+  app.get('/api/listMuscle', exercisesController.listMuscle); // ok
+  // список типов упражнений           !!!!!
+  app.get('/api/listTypeEx', exercisesController.listTypeEx); // ok
 
 
 
 
 
+  /*-------------- добавление/просмотр/удаление trains --------------*/
+
+
+
+
+
+  // информация об упражнении БЕЗ тренировки           !!!!!
+  app.post('/api/oneExercise', exercisesController.oneExercise); // ok
+  // обновить 2 параметра к упражнению (по его id в коде)           !!!!!
+  app.put('/api/updateCharToExer/:character_id', exercisesController.updateCharToExer); // ok
+  
+  app.delete('/api/destroyCharExes', exercisesController.destroyCharExes); // ok
+  
+  
 
 
 
@@ -188,26 +220,6 @@ module.exports = (app) => {
 
   /*-------------- добавление/просмотр/удаление exercises --------------*/
 
-  /*----------------- exercises -----------------*/
-
-  // создать упражнение без привязки к тренировке             !!!!!
-  app.post('/api/newExercises', exercisesController.createExercise); // ok
-
-
-  
-  // удалить упражнение по его id                      !!!!!
-  app.delete('/api/delExercise/:exercise_id', exercisesController.destroyExercise); // ok
-  // информация об упражнении БЕЗ тренировки           !!!!!
-  app.post('/api/oneExercise', exercisesController.oneExercise); // ok
-  // добавить 3 параметра к упражнению (по его id в коде)           !!!!!
-  app.post('/api/addCharToExer', exercisesController.addCharToExer); // ok
-  // список только упражнений, без других моделей           !!!!!
-  app.get('/api/listOnlyExercise', exercisesController.listOnlyExercise); // ok
-  // обновить 2 параметра к упражнению (по его id в коде)           !!!!!
-  app.put('/api/updateCharToExer/:character_id', exercisesController.updateCharToExer); // ok
-  
-  app.delete('/api/destroyCharExes', exercisesController.destroyCharExes); // ok
-  
   
 
   /*-------------------- events --------------------*/
