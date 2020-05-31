@@ -12,12 +12,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   });
   LevelTrain.associate = models => {
-    LevelTrain.belongsToMany(models.Train, {
+    LevelTrain.hasMany(models.Train, {
       as: 'trains', 
-      through: models.TrLevId,
-      foreignKey: 'level_train_id',
-      onDelete: 'CASCADE',
-      onUpdate: 'CASCADE'
+     // through: models.TrLevId,
+      foreignKey: 'level_train_id'
     })
     // associations can be defined here
   };

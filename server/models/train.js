@@ -10,18 +10,18 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       type: DataTypes.STRING
     },
-    /*type: {
+    type_train_id: {
       allowNull: false,
-      type: DataTypes.STRING
-    },*/
+      type: DataTypes.INTEGER
+    },
     duration: {
       allowNull: false,
       type: DataTypes.INTEGER
     },
-    /*level: {
+    level_train_id: {
       allowNull: false,
-      type: DataTypes.STRING
-    },*/
+      type: DataTypes.INTEGER
+    },
     definition: {
       allowNull: false,
       type: DataTypes.STRING
@@ -51,17 +51,17 @@ module.exports = (sequelize, DataTypes) => {
       onUpdate: 'CASCADE'
       //otherKey: 'exercise_id'
     }),
-    Train.belongsToMany(models.TypeTrain, {
+    Train.belongsTo(models.TypeTrain, {
       as: 'types', 
-      through: models.TrTypeId,
-      foreignKey: 'train_id',
+     // through: models.TrTypeId,
+      foreignKey: 'type_train_id',
       onDelete: 'CASCADE',
       onUpdate: 'CASCADE'
     }),
-    Train.belongsToMany(models.LevelTrain, {
+    Train.belongsTo(models.LevelTrain, {
       as: 'levels', 
-      through: models.TrLevId,
-      foreignKey: 'train_id',
+      //through: models.TrLevId,
+      foreignKey: 'level_train_id',
       onDelete: 'CASCADE',
       onUpdate: 'CASCADE'
     })

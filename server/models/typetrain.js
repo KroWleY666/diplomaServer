@@ -13,12 +13,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   });
   TypeTrain.associate = models => {
-    TypeTrain.belongsToMany(models.Train, {
+    TypeTrain.hasMany(models.Train, {
       as: 'trains', 
-      through: models.TrTypeId,
-      foreignKey: 'type_train_id',
-      onDelete: 'CASCADE',
-      onUpdate: 'CASCADE'
+     // through: models.TrTypeId,
+      foreignKey: 'type_train_id'
     })
     // associations can be defined here
   };

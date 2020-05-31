@@ -1,17 +1,14 @@
 const Exercise = require('../models').Exercise
 const Train = require('../models').Train
 const Character = require('../models').Character
-const ExercParam = require('../models').ExercParam
 const Muscle = require('../models').Muscle
 const TypeEx = require('../models').TypeEx
-const CharEx = require('../models').CharEx
-const FilterPlan = require('../models').FilterPlan
 const PlanTrain = require('../models').PlanTrain
 
 module.exports = { 
   
   /*----- добавить упражнение с его типом и мышцами -----*/
-  createExercise(req, res) {                                  //ТЕЕЕЕЕЕЕЕСТ
+  createExercise(req, res) {      
     Exercise.findOne({where: {name: req.body.name}})
     .then(ex => {
       if(ex) {
@@ -26,7 +23,7 @@ module.exports = {
         te_id: req.body.type
       })
       .then((exercise) => {
-        Muscle.findOne({where: {mscl_id: req.body.muscle}})
+        Muscle.findAll({where: {mscl_id: req.body.muscle}})
         .then(ms => {   // console.log(`${}`)  console.log('прошли')
           exercise.addMuscle(ms)
           return Exercise.findAll({include: [{
@@ -44,6 +41,24 @@ module.exports = {
   .catch(error => res.status(400).send({error, message: 'Возможно пустое название!'}));                   
   },
   
+  /*----- список только мышц упражнения -----*/
+  listOneExAndMuscles(req, res) {
+    Exercise.findOne({where: {exercise_id: req.body.exercise_id}})
+    .then(ec=>{
+      if (!ec) {          
+        return res.status(404).send({
+          message: 'Упражнения нет!'
+        })
+      }
+      ec.getMuscles().then(ex => {
+        for(exer of ex){ console.log("muscle:", exer.title) }
+        return res.status(200).send(ex)
+      })
+      .catch(error => res.status(400).send({error, message: 'Мышц у упражнения нет!'}))
+  })
+  .catch(error => res.status(400).send({error, message: 'Нет такого id упражнения!'}))
+  },
+  
   /*----- список только мышц -----*/
   listMuscle(req, res) {
     return Muscle.findAll()
@@ -56,17 +71,20 @@ module.exports = {
     .catch((error) => res.status(400).send(error));  
   },
   
-  /*----- список только типов упражнений -----*/
+  /*----- список только мышц -----*/
   listTypeEx(req, res) {
     return TypeEx.findAll()
     .then((te) => {
       if (!te) {
-        return res.status(404).send({message: 'Мышц нет!'});
+        return res.status(404).send({message: 'Типов упражнений нет!'});
       }
       return res.status(200).send(te);
     })
     .catch((error) => res.status(400).send(error));  
   },
+
+
+
   
   /*----- список только упражнений с его характеристиками -----*/
   listOnlyExercise(req, res) {
@@ -90,54 +108,43 @@ module.exports = {
     Exercise.findOne({where: {exercise_id: req.body.exercise_id}})
     .then(ex => {
       if(!ex) {
-        return res.status(404).send({
-        message: 'Упражнение не найдено!',
-      })
+        return res.status(404).send({message: 'Упражнение не найдено!'})
     }else {
      Character.findOne({where: {
         approach: req.body.approach,
         duration: req.body.duration,
         count: req.body.count
       }})
-      .then(char => {          
-        if(!char) {
-          Character
-          .create({
-            approach: req.body.approach,
-            duration: req.body.duration,
-            count: req.body.count
+      .then(char => {  
+        Train.findOne({ where: { train_id: req.params.train_id } }) //return
+        .then(train => {
+          if(!char) {
+            Character.create({
+              approach: req.body.approach,
+              duration: req.body.duration,
+              count: req.body.count
+            })
+            .then(character =>  {            
+              ex.addCharacter(character)
+              train.addExercise(ex) //return
+              .then(ans => {return res.status(201).send({train,
+                message: 'Упражнение в тренировку добавлено!'})})
+              .catch((error) => res.status(400).send({error, message: 'Что-то пошло не так...'}));
           })
-          .then(character =>  {            
-            ex.addCharacter(character)
-            return Exercise.findAll({include: [{
-              model: Character,
-              as: 'characters'
-            },
-            {
-              model: Muscle,
-              as: 'muscles'
-            }]})
-            .then(ch =>  res.status(201).send({ch, message: 'Новые подходы добавлены!'}))
-            .catch(error => res.status(400).send({error, message: 'Что-то пошло не так...'}));
-          })
-          .catch(error => res.status(400).send({error, message: 'Возможно некорректные поля!'}));
+          .catch((error) => res.status(400).send({error, message: 'Возможно некорректные поля!'}));
         }else {
           ex.addCharacter(char)
-          return Exercise.findAll({include: [{
-            model: Character,
-            as: 'characters'
-          },
-          {
-            model: Muscle,
-            as: 'muscles'
-          }]})
-          .then(ch =>  res.status(201).send({ch, message: 'Существующие подходы добавлены!'}))
-          .catch(error => res.status(400).send({error, message: 'Что-то пошло не так...'}));
+          train.addExercise(ex) //return
+            .then(ans => {return res.status(201).send({train,
+              message: 'Упражнение в тренировку добавлено!'})})
+            .catch((error) => res.status(400).send({error, message: 'Что-то пошло не так...'}));
         }
       })       
       .catch(error => res.status(400).send({error, message: 'Возможно некорректные поля!'}));
-    }})
-    .catch(error => res.status(400).send({error, message: 'Что-то пошло не так...'}));      
+    })
+    .catch(error => res.status(400).send({error, message: 'Что-то пошло не так...'}));  
+  }})
+  .catch(error => res.status(400).send({error, message: 'Что-то пошло не так...'}));  
   },
   
   /*-----удалить упражнение-----*/
@@ -162,6 +169,9 @@ module.exports = {
 
     
     
+
+
+
     
     /*----- обновить параметры упражнения -----*/
     updateCharToExer(req, res) {

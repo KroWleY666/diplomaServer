@@ -1,15 +1,19 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
       return queryInterface.bulkInsert('Muscles', [{
+        title: 'Плечи',
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },{
         title: 'Бицепс',
         createdAt: new Date(),
         updatedAt: new Date()
       },{
-        title: 'Шея',
+        title: 'Трицепс',
         createdAt: new Date(),
         updatedAt: new Date()
       },{
-        title: 'Плечи',
+        title: 'Широчайшие',
         createdAt: new Date(),
         updatedAt: new Date()
       },{
@@ -17,11 +21,11 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date()
       },{
-        title: 'Пресс',
+        title: 'Грудь',
         createdAt: new Date(),
         updatedAt: new Date()
       },{
-        title: 'Трицепс',
+        title: 'Пресс',
         createdAt: new Date(),
         updatedAt: new Date()
       },{
@@ -30,6 +34,14 @@ module.exports = {
         updatedAt: new Date()
       },{
         title: 'Ягодицы',
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },{
+        title: 'Квадрицепсы',
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },{
+        title: 'Икры',
         createdAt: new Date(),
         updatedAt: new Date()
       }]);

@@ -123,19 +123,40 @@ module.exports = (app) => {
   // создать упражнение без привязки к тренировке             !!!!!
   app.post('/api/newExercises', exercisesController.createExercise); // ok
   // добавить 3 параметра к упражнению (по его id в коде)           !!!!!
-  app.post('/api/addCharToExer', exercisesController.addCharToExer); // ok
+  app.post('/api/addCharToExer/:train_id', exercisesController.addCharToExer); // ok
   // удалить упражнение по его id                      !!!!!
   app.delete('/api/delExercise/:exercise_id', exercisesController.destroyExercise); // ok
   // список базы упражненийс характеристиками               !!!!!
-  app.get('/api/listOnlyExercise', exercisesController.listOnlyExercise); // ok
+  app.get('/api/listExercises', exercisesController.listOnlyExercise); // ok
 
 
   // список мышц           !!!!!
   app.get('/api/listMuscle', exercisesController.listMuscle); // ok
   // список типов упражнений           !!!!!
   app.get('/api/listTypeEx', exercisesController.listTypeEx); // ok
+  // список мышц id упражнения                                 !!!!!
+  app.get('/api/listOneExAndMuscles', exercisesController.listOneExAndMuscles); // ok 
 
 
+
+  /*-------------- добавление/просмотр/удаление trains --------------*/
+
+  /*----------------- trains -----------------*/
+
+
+  // список уровней           !!!!!
+  app.get('/api/listLevelTrain', trainsController.listLevelTrain); // ok
+  // список типов тренировок           !!!!!
+  app.get('/api/listTypeTrain', trainsController.listTypeTrain); // ok
+  
+
+  // создать тренировку отдельно                                 !!!!!
+  app.post('/api/newTrain', trainsController.createTrain); // ok 
+
+  // список всех тренировок без моделей                                     !!!!!
+  app.get('/api/listTrain', trainsController.listTrain); // ok
+
+  
 
 
 
@@ -250,10 +271,6 @@ module.exports = (app) => {
 
 
 
-  // создать тренировку отдельно                                 !!!!!
-  app.post('/api/newTrain', trainsController.createTrain); // ok 
-  // список всех тренировок без моделей                                     !!!!!
-  app.get('/api/listTrain', trainsController.listTrain); // ok
   // удалить тренировку по ее id                      !!!!!
   app.delete('/api/delTrain/:train_id', trainsController.destroyTrain); // ok
   

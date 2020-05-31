@@ -44,11 +44,7 @@ module.exports = {
         allowNull: false,      
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
-        references: {
-          model: 'ParamNames',
-          key: 'pn_id',
-          as: 'pn_id'
-        }
+        references: { model: 'ParamNames', key: 'pn_id', as: 'pn_id'}
       },
       createdAt: {
         allowNull: false,

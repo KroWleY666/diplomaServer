@@ -24,11 +24,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
-        references: {
-          model: 'TypeExes',
-          key: 'te_id',
-          as: 'te_id'
-        }
+        references: {model: 'TypeExes', key: 'te_id', as: 'te_id'}
       },
       /*exp_id: {
         type: Sequelize.INTEGER,

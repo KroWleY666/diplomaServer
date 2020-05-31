@@ -35,11 +35,7 @@ module.exports = {
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
         allowNull: false,
-        references: {
-          model: 'StandNames',
-          key: 'stn_id',
-          as: 'stn_id'
-        }
+        references: {model: 'StandNames', key: 'stn_id', as: 'stn_id'}
       },
       createdAt: {
         allowNull: false,
