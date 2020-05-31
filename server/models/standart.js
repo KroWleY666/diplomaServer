@@ -6,10 +6,10 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       type: DataTypes.INTEGER
     },
-    test: {
+    /*test: {
       type: DataTypes.STRING,
       allowNull: false
-    },
+    },*/
     data: {
       type: DataTypes.STRING,
       allowNull: false

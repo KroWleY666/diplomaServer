@@ -1,22 +1,39 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
       return queryInterface.bulkInsert('Muscles', [{
-        title: 'Бицепс'
+        title: 'Бицепс',
+        createdAt: new Date(),
+        updatedAt: new Date()
       },{
-        title: 'Шея'
+        title: 'Шея',
+        createdAt: new Date(),
+        updatedAt: new Date()
       },{
-        title: 'Плечи'
+        title: 'Плечи',
+        createdAt: new Date(),
+        updatedAt: new Date()
       },{
-        title: 'Предплечья'
+        title: 'Предплечья',
+        createdAt: new Date(),
+        updatedAt: new Date()
       },{
-        title: 'Пресс'
+        title: 'Пресс',
+        createdAt: new Date(),
+        updatedAt: new Date()
       },{
-        title: 'Трицепс'
+        title: 'Трицепс',
+        createdAt: new Date(),
+        updatedAt: new Date()
       },{
-        title: 'Бедра'
+        title: 'Бедра',
+        createdAt: new Date(),
+        updatedAt: new Date()
       },{
-        title: 'Ягодицы'
+        title: 'Ягодицы',
+        createdAt: new Date(),
+        updatedAt: new Date()
       }]);
+      
   },
 
   down: (queryInterface, Sequelize) => {

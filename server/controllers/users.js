@@ -1,9 +1,159 @@
 //const UserRole = require('../models').UserRole;
 const User = require('../models').User
+const Role = require('../models').Role
+const config = require('../config/roles.js');
 const bcrypt = require('bcryptjs')
+
+var jwt = require('jsonwebtoken');
+
 const passport = require('passport')
 
 module.exports = {
+
+    signup(req, res) {
+        // Save User to Database
+        console.log("Processing func -> SignUp");
+        
+        User.create({
+         // name: req.body.name,
+         // username: req.body.username,
+          email: req.body.email,
+          password: req.body.password,
+          salt: bcrypt.hashSync(req.body.password, 10)
+        }).then(user => {
+          Role.findAll({
+            where: {
+            role_name: 
+              /*[Op.or]: */req.body.roles.map(role => role.toUpperCase())
+            
+            }
+          }).then(roles => {
+            user.setRoles(roles).then(() => {
+              res.send("User registered successfully!");
+                  });
+          }).catch(err => {
+            res.status(500).send("Error -> " + err);
+          });
+        }).catch(err => {
+          res.status(500).send("Fail! Error -> " + err);
+        })
+      },
+
+      signin(req, res) {
+        console.log("Sign-In");
+        
+        User.findOne({
+          where: {
+            email: req.body.email
+          }
+        }).then(user => {
+          if (!user) {
+            return res.status(404).send('User Not Found.');
+          }
+       
+          var passwordIsValid = bcrypt.compareSync(req.body.password, user.salt);
+          if (!passwordIsValid) {
+            return res.status(401).send({ auth: false, accessToken: null, reason: "Invalid Password!" });
+          }
+          
+          var token = jwt.sign({ user_id: user.user_id }, config.secret, {
+            expiresIn: 86400 // expires in 24 hours
+          });
+          
+          res.status(200).send({ auth: true, accessToken: token });
+          return { auth: true, accessToken: token }
+          
+        }).catch(err => {
+          res.status(500).send('Error -> ' + err);
+        });
+      },
+
+      userContent(req, res) {
+        User.findOne({
+          where: {user_id: req.user_id},
+          attributes: ['email'],
+          include: [{
+            model: Role,
+            attributes: ['role_id', 'role_name'],
+            through: {
+              attributes: ['user_id', 'role_id'],
+            }
+          }]
+        }).then(user => {
+          res.status(200).json({
+            "description": "User Content Page",
+            "user": user
+          });
+        }).catch(err => {
+          res.status(500).json({
+            "description": "Can not access User Page",
+            "error": err
+          });
+        })
+      },
+
+      adminBoard (req, res) {
+        User.findOne({
+            where: {user_id: req.user_id},
+            attributes: ['email'],
+            include: [{
+              model: Role,
+              attributes: ['role_id', 'role_name'],
+              through: {
+                attributes: ['user_id', 'role_id'],
+              }
+          }]
+        }).then(user => {
+          res.status(200).json({
+            "description": "Admin Board",
+            "user": user
+          });
+        }).catch(err => {
+          res.status(500).json({
+            "description": "Can not access Admin Board",
+            "error": err
+          });
+        })
+      },
+
+      managementBoard(req, res) {
+        User.findOne({
+            where: {user_id: req.user_id},
+            attributes: ['email'],
+            include: [{
+              model: Role,
+              attributes: ['role_id', 'role_name'],
+              through: {
+                attributes: ['user_id', 'role_id'],
+              }
+          }]
+        }).then(user => {
+          res.status(200).json({
+            "description": "Management Board",
+            "user": user
+          });
+        }).catch(err => {
+          res.status(500).json({
+            "description": "Can not access Management Board",
+            "error": err
+          });
+        })
+      },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     /*--------регистрация участников системы--------*/
     register(req, res){

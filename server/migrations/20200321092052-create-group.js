@@ -15,7 +15,7 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       }*/,
-      user_id: {
+     /* user_id: {
         type: Sequelize.INTEGER,
         onDelete: 'CASCADE',
         references: {
@@ -23,7 +23,7 @@ module.exports = {
           key: 'user_id',
           as: 'user_id'
         }
-      },
+      },*/
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
@@ -39,5 +39,4 @@ module.exports = {
    // sequelize.sync();
     return queryInterface.dropTable('Groups');
   }
-  
 };

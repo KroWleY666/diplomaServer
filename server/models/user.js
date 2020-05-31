@@ -54,15 +54,17 @@ module.exports = (sequelize, DataTypes) => {
     };*/
 
     User.associate = models => {
-      User.belongsTo(models.UserRole, {
+      User.belongsToMany(models.Role, {
+        through: models.UserRole,
         foreignKey: 'user_id',
+        otherKey: 'role_id',
         onDelete: 'CASCADE',
-        
-      }),
+        onUpdate: 'CASCADE',
+      })/*,
       User.hasMany(models.Group, {
         foreignKey: 'user_id',
         as: 'userGroups'
-      })
+      })*/
     };
     return User;
   };

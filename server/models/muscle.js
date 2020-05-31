@@ -15,15 +15,15 @@ module.exports = (sequelize, DataTypes) => {
   Muscle.associate = models => {
     Muscle.belongsTo(models.ExercParam, {
       foreignKey: 'mscl_id',
-      onDelete: 'CASCADE',
-      onUpdate: 'CASCADE'
+     // onDelete: 'CASCADE',
+     // onUpdate: 'CASCADE'
     }),
     Muscle.belongsToMany(models.ExercParam, {
       as: 'exParams', 
       through: models.MuscleEP,
       foreignKey: 'mscl_id',
-      onDelete: 'CASCADE',
-      onUpdate: 'CASCADE'
+     // onDelete: 'CASCADE',
+     // onUpdate: 'CASCADE'
     })
     // associations can be defined here
   };

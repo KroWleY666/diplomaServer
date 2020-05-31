@@ -12,11 +12,11 @@ module.exports = (sequelize, DataTypes) => {
     }
   });
   Group.associate = models => {
-    Group.belongsTo(models.User, {
+    /*Group.belongsTo(models.User, {
       foreignKey: 'user_id',
       onDelete: 'CASCADE'
      // as: 'ownerOfGroup'
-    }),
+    }),*/
     Group.belongsToMany(models.Event, {
       as: 'events', 
       through: models.GroupEvent,

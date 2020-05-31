@@ -6,11 +6,8 @@ const session = require('express-session')
 
 const createError = require('http-errors');
 
-
-
 // Set up the express app
 const app = express();
-
 
 // Log requests to the console.
 app.use(logger('dev'));
@@ -19,6 +16,13 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+
+const db = require('./server/models/index.js');
+// force: true will drop the table if it already exists
+/*db.sequelize.sync({force: true}).then(() => {
+  console.log('Drop and Resync with { force: true }');
+  initial();
+});*/
 
 
 //проверка входа

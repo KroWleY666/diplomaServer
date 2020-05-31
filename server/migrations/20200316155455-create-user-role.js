@@ -10,12 +10,12 @@ module.exports = {
       role_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        onDelete: 'CASCADE',
+        /*onDelete: 'CASCADE',
         references: {
           model: 'Roles',
           key: 'role_id',
           as: 'role_id',
-        },
+        },*/
       },
       user_id: {
         type: Sequelize.INTEGER,

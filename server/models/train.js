@@ -51,8 +51,17 @@ module.exports = (sequelize, DataTypes) => {
       onUpdate: 'CASCADE'
       //otherKey: 'exercise_id'
     }),
-    Train.belongsTo(models.TypeTrain, {
-      foreignKey: 'type_train_id',
+    Train.belongsToMany(models.TypeTrain, {
+      as: 'types', 
+      through: models.TrTypeId,
+      foreignKey: 'train_id',
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
+    }),
+    Train.belongsToMany(models.LevelTrain, {
+      as: 'levels', 
+      through: models.TrLevId,
+      foreignKey: 'train_id',
       onDelete: 'CASCADE',
       onUpdate: 'CASCADE'
     })

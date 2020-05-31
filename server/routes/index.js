@@ -1,3 +1,8 @@
+// файлы для регистрации, токен, роли пользователей
+const verifySignUp = require('./verifySignUp');
+const authJwt = require('./verifyJwtToken');
+
+// список контроллеров
 const rolesController = require('../controllers').roles;
 const userRolesController = require('../controllers').userRoles;
 const usersController = require('../controllers').users;
@@ -14,15 +19,27 @@ module.exports = (app) => {
     message: 'Welcome to the Todos API!',
   }));
 
+  app.delete('/api/delPN', userRolesController.destroyParam);
+ 
+  // регистрация *************ПО ТОКЕНАМ*************
+  app.post('/api/auth/signup', [verifySignUp.checkDuplicateUserNameOrEmail, verifySignUp.checkRolesExisted], usersController.signup);
+  // вход зареганного
+  app.post('/api/auth/signin', usersController.signin);
+  
+  app.get('/api/test/user', [authJwt.verifyToken], usersController.userContent);
+  
+  app.get('/api/test/pm', [authJwt.verifyToken, authJwt.isPmOrAdmin], usersController.managementBoard);
+  
+  app.get('/api/test/admin', [authJwt.verifyToken, authJwt.isAdmin], usersController.adminBoard);
+
+
+  // регистрация *************ПО PASSPORT*************
   app.post('/api/roles', rolesController.create);
   app.get('/api/roles', rolesController.list);
   app.get('/api/roles/:role_id', rolesController.retrieve); // получить один по id
   app.put('/api/roles/:role_id', rolesController.update);
   app.delete('/api/roles/:role_id', rolesController.destroy);
-
   app.post('/api/roles/:role_id/userRoles', userRolesController.create);
-
-
 
   /*-------------------- users --------------------*/
   // регистрация пользователей (тренеры)                      !!!!!
@@ -37,19 +54,98 @@ module.exports = (app) => {
 
 
 
-  /*-------------------- groups --------------------*/
-  // добавить группу к пользователю с id: userId, создать     !!!!!
-  app.post('/api/:userId/newGroup', groupsController.create); //ok
-  // список групп пользователя с id: userId, создать          !!!!!  req.user?????
-  app.get('/api/groupList', groupsController.list); //ok
-  // добавить спортсмена в группу с id группы: groupId        !!!!!
+
+
+
+
+
+
+  /*-------------------- ВСЕ БЕЗ РЕГИСТРАЦИИ !!!!!!!!!!--------------------*/
+
+  /*-------------------- добавление/просмотр/удаление groups --------------------*/
+
+  
+  // добавить группу                                                                !!!!!
+  app.post('/api/newGroup', groupsController.createGroup); //ok
+  // удалить группу                                                                 !!!!!
+  app.delete('/api/delGroup/:group_id', groupsController.destroyGroup); //ok
+  // список групп                                                                   !!!!!
+  app.get('/api/groupList', groupsController.listGroups); //ok
+
+
+  /*-------------------- добавление/просмотр/удаление group participants --------------------*/
+
+
+  // добавить спортсмена в группу с id группы                                       !!!!!
   app.post('/api/newParticipant', groupsController.addParticipant); //ok
+  // удалить спортсмена из группы                                                   !!!!!
+  app.delete('/api/delSportsmen/:participant_id', groupsController.destroyParticipant); //ok
+
+
+  /*-------------- добавление/просмотр/удаление standarts, parameters, events --------------*/
+
+  /*---------- НОРМАТИВ Standart ----------*/
+
+  // создать НОРМАТИВ с id спортсмена                                               !!!!!
+  app.post('/api/newStandart/:participant_id', participantsController.createStandart); // ok
+  // все названия нормативов                                                        !!!!!
+  app.get('/api/listStandarts', participantsController.listStandarts); // ok 
+  // создать событие отдельно для id спортсмена                                     !!!!!
+  app.get('/api/listPartStandart/:participant_id', participantsController.listPartStandart); // ok   
+  // удалить норматив по id                                                         !!!!!
+  app.delete('/api/delStandart/:standart_id', participantsController.destroyStandart); // ok 
+  
+  /*---------- ИЗМЕРЕНИЕ Parameter ----------*/
+
+  // создать ИЗМЕРЕНИЕ с id спортсмена                                              !!!!!
+  app.post('/api/newParameter/:participant_id', participantsController.createParameter); // ok
+  // список измерений спортсмена                                                    !!!!!
+  app.get('/api/listPartParameter/:participant_id', participantsController.listPartParameter); // ok
+  // удалить измерение по id                                                        !!!!!
+  app.delete('/api/delParameter/:param_id', participantsController.destroyParameter); // ok  
+ 
+
+  /*---------- СОБЫТИЕ Event ----------*/
+
+  // создать СОБЫТИЕ с id спортсмена                                                !!!!!
+  app.post('/api/newEvent/:participant_id', participantsController.createEvent); // ok
+  // список событий                                                                 !!!!!
+  app.get('/api/listPartEvent/:participant_id', participantsController.listPartEvent); // ok
+  // удалить событие по id                                                          !!!!!
+  app.delete('/api/delEvent/:event_id', participantsController.destroyEvent); // ok 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  /*-------------------- standarts,parameters --------------------*/
+      
+  
+    // получить всю инфу ОДНОГО спортсмена по ИД                    !!!!!
+    app.get('/api/listONEPartModels/:participant_id', participantsController.listONEPartModels); // ok
+    // получить записи тренировки ОДНОГО спортсмена по ИД                    !!!!!
+    app.get('/api/listPartDates/:participant_id', participantsController.listPartDates); // ok
+    // получить записи тренировки ОДНОГО спортсмена по ИД                    !!!!!
+    //app.get('/api/listALLDates/:participant_id', participantsController.listALLDates); // ok
+    
+    
+  
+    
+
   // поиск спортсмена по имя-фамилия БЕЗ id группы: groupId        !!!!!
   app.get('/api/findParicipant', groupsController.findParticipant); //ok
-  // удалить спортсмена из группы                             !!!!!
-  app.delete('/api/delSportsmen/:participant_id', groupsController.destroyParticipant); //ok
-  // удалить группу                                           !!!!!
-  app.delete('/api/delGroup/:group_id', groupsController.destroyGroup); //ok
+
   // вывод ВСЕХ спортсменов и их id групп                    !!!!!
   app.get('/api/listPartWithGroup', participantsController.listPartWithGroup); // ok
   
@@ -90,11 +186,16 @@ module.exports = (app) => {
 
 
 
-
+  /*-------------- добавление/просмотр/удаление exercises --------------*/
 
   /*----------------- exercises -----------------*/
+
   // создать упражнение без привязки к тренировке             !!!!!
-  app.post('/api/newExercises', exercisesController.create); // ok
+  app.post('/api/newExercises', exercisesController.createExercise); // ok
+
+
+  
+
   // список всех упражнений с зависимыми тренировками         !!!!!
   app.get('/api/listExercises', exercisesController.listExercise); // ok
   // удалить упражнение по его id                      !!!!!
@@ -134,41 +235,6 @@ module.exports = (app) => {
 
 
 
-  /*-------------------- standarts,parameters --------------------*/
-  // создать НОРМАТИВ с id спортсмена                    !!!!!
-  app.post('/api/newStandart/:participant_id', participantsController.createStandart); // ok
-  // создать ИЗМЕРЕНИЕ с id спортсмена                     !!!!!
-  app.post('/api/newParameter/:participant_id', participantsController.createParameter); // ok
-  // создать СОБЫТИЕ с id спортсмена                     !!!!!
-  app.post('/api/newEvent/:participant_id', participantsController.createEvent); // ok
-
-  // получить всю инфу ОДНОГО спортсмена по ИД                    !!!!!
-  app.get('/api/listONEPartModels/:participant_id', participantsController.listONEPartModels); // ok
-  // получить записи тренировки ОДНОГО спортсмена по ИД                    !!!!!
-  app.get('/api/listPartDates/:participant_id', participantsController.listPartDates); // ok
-  // получить записи тренировки ОДНОГО спортсмена по ИД                    !!!!!
-  //app.get('/api/listALLDates/:participant_id', participantsController.listALLDates); // ok
-  
-  
-
-  
-  // удалить измерение по id                       !!!!!
-  app.delete('/api/delParameter/:param_id', participantsController.destroyParameter); // ok  
-  // удалить норматив по id                       !!!!!
-  app.delete('/api/delStandart/:standart_id', participantsController.destroyStandart); // ok  
-  // удалить событие по id                       !!!!!
-  app.delete('/api/delEvent/:event_id', participantsController.destroyEvent); // ok  
-  
-
-  
-   // создать событие отдельно                    !!!!!
-   app.get('/api/listPartStandart/:participant_id', participantsController.listPartStandart); // ok
-   // список событий и групп для них                    !!!!!
-   app.get('/api/listPartParameter/:participant_id', participantsController.listPartParameter); // ok
- 
-   // список событий и групп для них                    !!!!!
-   app.get('/api/listPartEvent/:participant_id', participantsController.listPartEvent); // ok
- 
 
 
   /*-------------------- trains,datetrain --------------------*/

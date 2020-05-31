@@ -13,6 +13,10 @@ module.exports = (sequelize, DataTypes) => {
     approach: {
       allowNull: false,
       type: DataTypes.INTEGER
+    },
+    duration: {
+      allowNull: false,
+      type: DataTypes.INTEGER
     }
   });
   Character.associate = models => {

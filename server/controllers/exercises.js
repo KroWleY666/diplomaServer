@@ -9,54 +9,114 @@ const FilterPlan = require('../models').FilterPlan
 const PlanTrain = require('../models').PlanTrain
 
 module.exports = {
-
-    /*----- добавить упражнение -----*/
-    create(req, res) {
-      Exercise.findOne({where: {name: req.body.name}})
-      .then(ex => {
-        if(ex) {
-          return res.status(404).send({
-          message: 'Упражнение уже существует!',
-        })
-      } else {
-        ExercParam.findOne({where: {
-          te_id: req.body.te_id,
-          mscl_id: req.body.mscl_id
-        }})
-          .then(par => {         
-            if(par) {
-              return Exercise
-                .create({
-                  name: req.body.name,
-                  definition: req.body.definition,
-                  img: req.body.img,
-                  exp_id: par.exp_id
-                })
-                .then(exercise => res.status(201).send(exercise))
-                .catch(error => res.status(400).send(error));
-            }else {
-              ExercParam.create({
-                te_id: req.body.te_id,
-                mscl_id: req.body.mscl_id
+  
+  /*----- добавить упражнение с его типом и мышцами -----*/
+  createExercise(req, res) {                                  //ТЕЕЕЕЕЕЕЕСТ
+    Exercise.findOne({where: {name: req.body.name}})
+    .then(ex => {
+      if(ex) {
+        return res.status(404).send({
+        message: 'Упражнение уже существует!',
+      })
+    } else {
+      ExercParam.findOne({where: {
+        te_id: req.body.type, //te_id
+        mscl_id: req.body.muscle //mscl_id
+      }})
+        .then(par => {         
+          if(par) {
+            Exercise
+              .create({
+                name: req.body.name,
+                definition: req.body.definition,
+                img: req.body.img,
+                exp_id: par.exp_id
               })
-              .then(crP => {
-                return Exercise
-                .create({
-                  name: req.body.name,
-                  definition: req.body.definition,
-                  img: req.body.img,
-                  exp_id: crP.exp_id
+              .then(exercise => {
+                return Exercise.findAll()
+                  .then((part) => res.status(200).send(part))
+                  .catch((error) => res.status(400).send(error))
                 })
-                .then(exercise => res.status(201).send(exercise))
-                .catch(error => res.status(400).send(error));
+              .catch(error => res.status(400).send(error));
+          }else {
+            ExercParam.create({
+              te_id: req.body.type, //te_id
+              mscl_id: req.body.muscle //mscl_id
+            })
+            .then(crP => {
+              Exercise
+              .create({
+                name: req.body.name,
+                definition: req.body.definition,
+                img: req.body.img,
+                exp_id: crP.exp_id
               })
+              .then(exercise => {
+                return Exercise.findAll()
+                  .then((part) => res.status(200).send(part))
+                  .catch((error) => res.status(400).send(error))
+                })
+              .catch(error => res.status(400).send(error));
+            })
+              .catch(error => res.status(400).send(error));
             }
           })
-          .catch(error => res.status(400).send(error));         
+          .catch(error => res.status(400).send(error));
         }
       })
-      .catch(error => res.status(400).send(error));      
-    },
+      .catch(error => res.status(400).send(error));            
+  },
+  
+  /*----- список только упражнений -----*/
+  listOnlyExercise(req, res) {
+    return Exercise.findAll()
+    .then((exercise) => {
+      if (!exercise) {
+        return res.status(404).send({message: 'Упражнений нет!'});
+      }
+      return res.status(200).send(exercise);
+    })
+    .catch((error) => res.status(400).send(error));  
+  },
+  
+  /*----- добавить подходы и разы в упражнение -----*/
+  addCharToExer(req, res) {
+    Exercise.findOne({where: {exercise_id: req.body.exercise_id}})
+    .then(ex => {
+      if(!ex) {
+        return res.status(404).send({
+        message: 'Упражнение не найдено!',
+      })
+    } else {
+     Character.findOne({where: {
+        approach: req.body.approach,
+        //duration: req.body.duration,
+        count: req.body.count
+      }})
+      .then(char => {          
+        if(!char) {
+          return Character
+          .create({
+            approach: req.body.approach,
+            //duration: req.body.duration,
+            count: req.body.count
+          })
+          .then(character =>  {
+            ex.addCharacter(character)
+            res.status(201).send(character)
+          })
+        }else {
+          ex.addCharacter(char)
+          res.status(201).send(char)
+        }
+      })       
+      .catch(error => res.status(400).send(error));
+    }
+  })
+  .catch(error => res.status(400).send(error));      
+  },
+
+    
     
     
     /*----- добавить упражнение -----*/
@@ -89,60 +149,9 @@ module.exports = {
          // .catch(error => res.status(400).send(error));      
           },
     
-    /*----- список только упражнений -----*/
-    listOnlyExercise(req, res) {
-      return Exercise
-      .findAll({
-       // attributes: ['name', 'definition']//,'count','duration','approach'
-      })
-      .then((exercise) => {
-        if (!exercise) {
-          return res.status(404).send({
-            message: 'Упражнений нет!',
-          });
-        }
-        return res.status(200).send(exercise);
-      })
-      .catch((error) => res.status(400).send(error));  
-    },
     
-    /*----- добавить упражнение -----*/
-    addCharToExer(req, res) {
-      Exercise.findOne({where: {exercise_id: req.body.exercise_id}})
-      .then(ex => {
-        if(!ex) {
-          return res.status(404).send({
-          message: 'Упражнение не найдено!',
-        })
-      } else {
-       Character.findOne({where: {
-          approach: req.body.approach,
-          //duration: req.body.duration,
-          count: req.body.count
-        }})
-        .then(char => {          
-          if(!char) {
-            return Character
-            .create({
-              approach: req.body.approach,
-              //duration: req.body.duration,
-              count: req.body.count
-            })
-            .then(character =>  {
-             // res.render('/api/newExerciseToTrain')
-              ex.addCharacter(character)
-              res.status(201).send(character)
-            })
-          }else {
-            ex.addCharacter(char)
-            res.status(201).send(char)
-          }
-        })       
-        .catch(error => res.status(400).send(error));
-      }
-    })
-    .catch(error => res.status(400).send(error));      
-    },
+    
+    
     
     /*----- обновить параметры упражнения -----*/
     updateCharToExer(req, res) {
@@ -205,17 +214,19 @@ module.exports = {
       },
 
     /*---------добавить в тренировку упражнение---------*/
-    addExerciseToTrain(req, res) {
+    addExerciseToTrain(req, res) {                                  //ТЕЕЕЕЕЕЕЕСТ
       Exercise.findAll({ where: { exercise_id: req.body.exercise_id } }) //return
       .then(newExercise => {
         Character.findOne({where: {
           approach: req.body.approach,
+          duration: req.body.duration,
           count: req.body.count
         }})
         .then(char => {          
           if(!char) {
             Character.create({
               approach: req.body.approach,
+              duration: req.body.duration,
               count: req.body.count
             })
             .then(character =>  {
