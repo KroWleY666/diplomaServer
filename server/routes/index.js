@@ -88,20 +88,22 @@ module.exports = (app) => {
 
   // создать НОРМАТИВ с id спортсмена                                               !!!!!
   app.post('/api/newStandart/:participant_id', participantsController.createStandart); // ok
-  // все названия нормативов                                                        !!!!!
+  // все названия НОРМАТИВОВ                                                        !!!!!
   app.get('/api/listStandarts', participantsController.listStandarts); // ok 
-  // создать событие отдельно для id спортсмена                                     !!!!!
+  // создать НОРМАТИВ отдельно для id спортсмена                                     !!!!!
   app.get('/api/listPartStandart/:participant_id', participantsController.listPartStandart); // ok   
-  // удалить норматив по id                                                         !!!!!
+  // удалить НОРМАТИВ по id                                                         !!!!!
   app.delete('/api/delStandart/:standart_id', participantsController.destroyStandart); // ok 
   
   /*---------- ИЗМЕРЕНИЕ Parameter ----------*/
 
   // создать ИЗМЕРЕНИЕ с id спортсмена                                              !!!!!
   app.post('/api/newParameter/:participant_id', participantsController.createParameter); // ok
-  // список измерений спортсмена                                                    !!!!!
+  // все названия ИЗМЕРЕНИЙ                                                        !!!!!
+  app.get('/api/listParameters', participantsController.listParameters); // ok 
+  // список ИЗМЕРЕНИЙ спортсмена                                                    !!!!!
   app.get('/api/listPartParameter/:participant_id', participantsController.listPartParameter); // ok
-  // удалить измерение по id                                                        !!!!!
+  // удалить ИЗМЕРЕНИЕ по id                                                        !!!!!
   app.delete('/api/delParameter/:param_id', participantsController.destroyParameter); // ok  
  
 
@@ -126,7 +128,7 @@ module.exports = (app) => {
   app.post('/api/addCharToExer/:train_id', exercisesController.addCharToExer); // ok
   // удалить упражнение по его id                      !!!!!
   app.delete('/api/delExercise/:exercise_id', exercisesController.destroyExercise); // ok
-  // список базы упражненийс характеристиками               !!!!!
+  // список базы упражнений с характеристиками               !!!!!
   app.get('/api/listExercises', exercisesController.listOnlyExercise); // ok
 
 
@@ -135,7 +137,7 @@ module.exports = (app) => {
   // список типов упражнений           !!!!!
   app.get('/api/listTypeEx', exercisesController.listTypeEx); // ok
   // список мышц id упражнения                                 !!!!!
-  app.get('/api/listOneExAndMuscles', exercisesController.listOneExAndMuscles); // ok 
+  app.get('/api/listOneExAndMuscles/:exercise_id', exercisesController.listOneExAndMuscles); // ok 
 
 
 
@@ -160,11 +162,6 @@ module.exports = (app) => {
 
 
 
-  /*-------------- добавление/просмотр/удаление trains --------------*/
-
-
-
-
 
   // информация об упражнении БЕЗ тренировки           !!!!!
   app.post('/api/oneExercise', exercisesController.oneExercise); // ok
@@ -174,11 +171,6 @@ module.exports = (app) => {
   app.delete('/api/destroyCharExes', exercisesController.destroyCharExes); // ok
   
   
-
-
-
-
-
 
 
 

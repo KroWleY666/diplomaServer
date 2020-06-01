@@ -3,10 +3,9 @@ const Standart = require('../models').Standart
 const Parameter = require('../models').Parameter
 const Event = require('../models').Event
 const DateTrain = require('../models').DateTrain
-const DETrain = require('../models').DETrain
-const Train = require('../models').Train
 
 const StandName = require('../models').StandName
+const ParamName = require('../models').ParamName
 
 module.exports = {
 
@@ -37,9 +36,7 @@ module.exports = {
     return StandName.findAll()
       .then((part) => {
         if (!part) {
-          return res.status(404).send({
-            message: 'Стандартов нет!',
-          });
+          return res.status(404).send({message: 'Нормативов нет!'});
         }
         return res.status(200).send(part);
       })
@@ -48,43 +45,11 @@ module.exports = {
   
   /*--------список с стандартами--------*/
   listPartStandart(req, res) {
-    let name = []
-    let standart = {}
-    //  Standart.findAll({ where: {participant_id: req.params.participant_id}})
-    //  .then(st => { // console.log(`${st.length}`)
-     /*   for (let i in st)
-        {            
-          //console.log(`${st[i].standart_id}`)
-          StandName.findByPk(st[i].stn_id)
-          .then(sn => {
-            name[i] = sn.name
-            //console.log(`${name[i]}`)
-           // console.log(`${mas}`)
-           standart = {standarts: [
-             st[i].standart_id,
-             st[i].data, 
-             st[i].value
-           ], 
-            name: name[i]
-          }
-         
-            console.log(`${standart.standarts}`)
-          })
-        }
-        return res.status(200).send(standart);
-
-      })
-      */
-     // .catch((error) => res.status(400).send(error));
-      
     return Standart
-      .findAll({ where: {participant_id: req.params.participant_id}
-      })
+      .findAll({ where: {participant_id: req.params.participant_id}})
       .then((part) => {
         if (!part) {
-          return res.status(404).send({
-            message: 'Стандартов нет!',
-          });
+          return res.status(404).send({message: 'Нормативов нет!'});
         }
         return res.status(200).send(part);
       })
@@ -96,15 +61,13 @@ module.exports = {
     Standart.findOne({ where: {standart_id: req.params.standart_id}})
       .then(standart => {
         if (!standart) {              
-          return res.status(404).send({
-            message: 'Стандарт не найден!',
-          });
+          return res.status(404).send({message: 'Норматив не найден!'});
         }
         standart.destroy()
           .then((st) => {
             return Standart.findAll({where: {participant_id: req.params.participant_id}})
               .then((part) => {
-                res.status(200).send({part,message: 'Стандарт удален!'})})
+                res.status(200).send({part,message: 'Норматив удален!'})})
               .catch((error) => res.status(400).send(error))
             })
           .catch(error => res.status(400).send(error));
@@ -122,7 +85,7 @@ module.exports = {
     Participant.findByPk(req.params.participant_id)
     .then(part => {
       Parameter.create({
-        measure: req.body.measure,
+        pn_id: req.body.measure,
         data: req.body.data,
         value: req.body.value,
         participant_id: req.params.participant_id
@@ -137,6 +100,18 @@ module.exports = {
     .catch(error => res.status(400).send(error));        
   },
   
+  /*--------список только с измерениями--------*/
+  listParameters(req, res) {
+    return ParamName.findAll()
+      .then((part) => {
+        if (!part) {
+          return res.status(404).send({message: 'Параметров нет!'});
+        }
+        return res.status(200).send(part);
+      })
+      .catch((error) => res.status(400).send(error));
+  },
+  
   /*--------список с измерениями--------*/
   listPartParameter(req, res) {
     return Parameter
@@ -144,9 +119,7 @@ module.exports = {
       })
       .then((part) => {
         if (!part) {
-          return res.status(404).send({
-            message: 'Параметров нет!',
-          });
+          return res.status(404).send({message: 'Параметров нет!'});
         }
         return res.status(200).send(part);
       })
@@ -158,14 +131,12 @@ module.exports = {
     return Parameter.findOne({ where: { param_id: req.params.param_id}})
       .then(parameter => {
         if (!parameter) {              
-          return res.status(404).send({
-            message: 'Измерение не найдено!',
-          });
+          return res.status(404).send({message: 'Параметр не найден!'});
         }
         parameter.destroy()
           .then((par) => {
             return Parameter.findAll({ where: {participant_id: req.params.participant_id}})
-              .then(part => res.status(200).send({part, message: 'Измерение удалено!'}))
+              .then(part => res.status(200).send({part, message: 'Параметр удален!'}))
             })
               .catch((error) => res.status(400).send(error))
         })
@@ -204,9 +175,7 @@ module.exports = {
       })
       .then((part) => {
         if (!part) {
-          return res.status(404).send({
-            message: 'Событий нет!',
-          });
+          return res.status(404).send({message: 'Событий нет!'});
         }
         return res.status(200).send(part);
       })
@@ -218,12 +187,9 @@ module.exports = {
     return Event.findOne({ where: {event_id: req.params.event_id}})
       .then(event => {
         if (!event) {              
-          return res.status(404).send({
-            message: 'Событие не найдено!',
-          });
+          return res.status(404).send({message: 'Событие не найдено!'});
         }
-        return event
-          .destroy()
+        event.destroy()
           .then(() => {
             return Event.findAll({ where: {participant_id: req.params.participant_id}})
               .then((part) => res.status(200).send({part, message: 'Событие удалено!'}))

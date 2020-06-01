@@ -65,10 +65,6 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'participant_id',
       as: 'datesOfTrain'
     })
-   /* Participant.belongsTo(models.Plan, {
-      foreignKey: 'plan_id',
-      as: 'partPlan'
-    })*/
   };
   return Participant;
 };

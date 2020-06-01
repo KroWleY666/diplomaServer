@@ -23,14 +23,16 @@ module.exports = {
         te_id: req.body.type
       })
       .then((exercise) => {
-        Muscle.findAll({where: {mscl_id: req.body.muscle}})
+        Muscle.findAll({where: {mscl_id: req.body.muscle }})
         .then(ms => {   // console.log(`${}`)  console.log('прошли')
-          exercise.addMuscle(ms)
-          return Exercise.findAll({include: [{
+          exercise.addMuscle(ms)          
+          return Exercise.findAll(/*{include: [{
             model: Muscle,
             as: 'muscles'
-          }]})
-          .then(exerc => res.status(200).send({exerc, message: 'Упражнение добавлено!'}))
+          }]}*/)
+          .then(exerc => {
+           // exerc.getMuscles()
+            res.status(200).send({exerc, message: 'Упражнение добавлено!'})})
           .catch(error => res.status(400).send(error));
         })
         .catch(error => res.status(400).send({error, message: 'Не найдены мышцы!'}));
@@ -43,7 +45,7 @@ module.exports = {
   
   /*----- список только мышц упражнения -----*/
   listOneExAndMuscles(req, res) {
-    Exercise.findOne({where: {exercise_id: req.body.exercise_id}})
+    Exercise.findOne({where: {exercise_id: req.params.exercise_id}})
     .then(ec=>{
       if (!ec) {          
         return res.status(404).send({
@@ -58,6 +60,24 @@ module.exports = {
   })
   .catch(error => res.status(400).send({error, message: 'Нет такого id упражнения!'}))
   },
+  
+  /*----- список ВСЕХ УПРАЖНЕНИЙ С МЫШЦАМИ -----*/
+ /* listOneExAndMuscles(req, res) {
+    Exercise.findAll({include: [{
+      model: Muscle,
+      as: 'muscles'
+    }]})
+    .then(ec=>{
+      if (!ec) {          
+        return res.status(404).send({
+          message: 'Упражнения нет!'
+        })
+      }
+        return res.status(200).send(ec)
+      .catch(error => res.status(400).send({error, message: 'Мышц у упражнения нет!'}))
+  })
+  .catch(error => res.status(400).send({error, message: 'Нет такого id упражнения!'}))
+  },*/
   
   /*----- список только мышц -----*/
   listMuscle(req, res) {
