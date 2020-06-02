@@ -13,6 +13,7 @@ const plansController = require('../controllers').plans;
 const eventsController = require('../controllers').events;
 const participantsController = require('../controllers').participants;
 const trainsController = require('../controllers').trains;
+const analyticsController = require('../controllers').analytics;
 
 module.exports = (app) => {
   app.get('/api', (req, res) => res.status(200).send({
@@ -146,6 +147,12 @@ module.exports = (app) => {
   /*----------------- trains -----------------*/
 
 
+
+  // список id упражнений                                 !!!!!
+  app.get('/api/extractExerToTrain/:train_id', exercisesController.extractExerToTrain); // ok   
+  // список характеристик одного id упражнения                                 !!!!!
+  app.get('/api/extractCharToOneExer', exercisesController.extractCharToOneExer); // ok 
+  
   // список уровней           !!!!!
   app.get('/api/listLevelTrain', trainsController.listLevelTrain); // ok
   // список типов тренировок           !!!!!
@@ -159,6 +166,15 @@ module.exports = (app) => {
   app.get('/api/listTrain', trainsController.listTrain); // ok
 
   
+
+
+  /*-------------- аналитика standarts, parameters --------------*/
+
+  // извлечь НОРМАТИВ по его ид и ид спортсмена                                    !!!!!
+  app.get('/api/extractStandart/:participant_id/:stn_id', analyticsController.extractStandart); // ok
+  // извлечь ПАРАМЕТР по его ид и ид спортсмена                                    !!!!!
+  app.get('/api/extractParameter/:participant_id/:pn_id', analyticsController.extractParameter); // ok
+
 
 
 

@@ -8,12 +8,8 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-     /* test: {
-        type: Sequelize.STRING,
-        allowNull: false
-      },*/
       data: {
-        type: Sequelize.STRING,
+        type: Sequelize.DATE,      
         allowNull: false
       },
       value: {
@@ -36,16 +32,7 @@ module.exports = {
         onUpdate: 'CASCADE',
         allowNull: false,
         references: {model: 'StandNames', key: 'stn_id', as: 'stn_id'}
-      },
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE
       }
-     // timestamps: false
     });
   },
   down: (queryInterface, Sequelize) => {

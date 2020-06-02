@@ -11,6 +11,7 @@ const exercises = require('./exercises')
 const events = require('./events')
 const participants = require('./participants')
 const trains = require('./trains')
+const analytics = require('./analytics')
 
 module.exports = {
     roles,
@@ -22,5 +23,6 @@ module.exports = {
     exercises,
     events,
     participants,
-    trains
+    trains,
+    analytics
 }

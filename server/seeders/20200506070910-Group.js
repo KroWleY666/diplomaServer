@@ -3,13 +3,13 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.bulkInsert('Groups', [{
-      title: 'КИ16-17',
+      title: 'КИ16-17'/*
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date()*/
     },{
-      title: 'ЦМ12-08', 
+      title: 'ЦМ12-08'/*
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date()*/
     }]);
   },
 

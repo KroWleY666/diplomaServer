@@ -167,6 +167,46 @@ module.exports = {
   .catch(error => res.status(400).send({error, message: 'Что-то пошло не так...'}));  
   },
   
+  /*----- вывод упражнений тренировки с характеристиками и подходами -----*/
+  extractExerToTrain(req, res) {
+    Train.findOne({where: {train_id: req.params.train_id}})
+    .then(tr => {
+      if(!tr) {
+        return res.status(404).send({message: 'Тренировка не найдена!'})
+    }else {
+      tr.getExercises({include: [{
+        model: Character,
+        as: 'characters'
+      }]})
+      .then(trEx => {
+        return res.status(201).send({trEx, message: 'Список id упражнений получен!'})})
+        .catch((error) => res.status(400).send({error, message: 'Что-то пошло не так...'}))
+      }})
+      .catch(er => res.status(404).send({er, message: 'Нет такого id тренировки!'}))
+  },
+  
+  /*----- вывод характеристик упражнения -----*/
+  extractCharToOneExer(req, res) {
+    Exercise.findOne({where: {exercise_id: req.body.exercise_id}})
+    .then(ex => {
+      if(!ex) {
+        return res.status(404).send({message: 'Нет упражнения!'})
+    }else {
+      /*let mas = []
+      for (c in ex){
+        rt = ex[c].getCharacters()
+        console.log(`${rt}`)
+        mas = [rt]
+      }*/
+      ex.getCharacters()
+      .then(charEx => {
+        return res.status(201).send({charEx, message: 'Список характеристик id упражнения получен!'})
+      })
+        .catch((error) => res.status(400).send({error, message: 'Что-то пошло не так...'}))
+      }})
+      .catch(er => res.status(404).send({er, message: 'Нет такого id упражнения!'}))
+  },
+  
   /*-----удалить упражнение-----*/
   destroyExercise(req, res) {
     Exercise.findByPk(req.params.exercise_id)

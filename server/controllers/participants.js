@@ -21,14 +21,16 @@ module.exports = {
         value: req.body.value,
         participant_id: req.params.participant_id
       })
+      //console.log(`${standart.data}`)
       .then(standart => {
+        console.log(`${standart.data}`)
         return Standart.findAll({where: {participant_id: req.params.participant_id}})
           .then((part) => res.status(200).send(part))
-          .catch((error) => res.status(400).send(error));
+          //.catch((error) => res.status(400).send(error));
       })
-      .catch(error => res.status(400).send(error));  
+      //.catch(error => res.status(400).send(error));  
     })
-    .catch(error => res.status(400).send(error));        
+    //.catch(error => res.status(400).send(error));        
   },
   
   /*--------список с стандартами--------*/

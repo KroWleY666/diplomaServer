@@ -47,14 +47,6 @@ module.exports = {
           key: 'group_id',
           as: 'group_id'//group_id
         }
-      },
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE
       }
     });
   },

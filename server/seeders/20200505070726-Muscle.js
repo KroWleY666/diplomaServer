@@ -1,49 +1,49 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
       return queryInterface.bulkInsert('Muscles', [{
-        title: 'Плечи',
+        title: 'Плечи'/*
         createdAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date()*/
       },{
-        title: 'Бицепс',
+        title: 'Бицепс'/*
         createdAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date()*/
       },{
-        title: 'Трицепс',
+        title: 'Трицепс'/*
         createdAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date()*/
       },{
-        title: 'Широчайшие',
+        title: 'Широчайшие'/*
         createdAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date()*/
       },{
-        title: 'Предплечья',
+        title: 'Предплечья'/*
         createdAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date()*/
       },{
-        title: 'Грудь',
+        title: 'Грудь'/*
         createdAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date()*/
       },{
-        title: 'Пресс',
+        title: 'Пресс'/*
         createdAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date()*/
       },{
-        title: 'Бедра',
+        title: 'Бедра'/*
         createdAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date()*/
       },{
-        title: 'Ягодицы',
+        title: 'Ягодицы'/*
         createdAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date()*/
       },{
-        title: 'Квадрицепсы',
+        title: 'Квадрицепсы'/*
         createdAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date()*/
       },{
-        title: 'Икры',
+        title: 'Икры'/*
         createdAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date()*/
       }]);
       
   },

@@ -29,7 +29,7 @@ module.exports = {
           key: 'train_id',
           as: 'trains'
         }
-      },
+      }/*,
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
@@ -37,7 +37,7 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
-      }
+      }*/
     });
   },
   down: (queryInterface, Sequelize) => {

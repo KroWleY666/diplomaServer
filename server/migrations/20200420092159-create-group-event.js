@@ -15,7 +15,7 @@ module.exports = {
       group_id: {
         allowNull: false,
         type: Sequelize.INTEGER
-      },
+      }/*,
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
@@ -23,7 +23,7 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
-      }
+      }*/
       //timestamps: false
     });
   },

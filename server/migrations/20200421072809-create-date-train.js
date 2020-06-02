@@ -34,7 +34,7 @@ module.exports = {
           key: 'participant_id',
           as: 'participant_id'
         }
-      },
+      }/*,
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
@@ -42,7 +42,7 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
-      }
+      }*/
     });
   },
   down: (queryInterface, Sequelize) => {

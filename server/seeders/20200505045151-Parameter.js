@@ -2,21 +2,21 @@ module.exports = {
   up: (queryInterface, Sequelize) => {
     
      return queryInterface.bulkInsert('ParamNames', [{
-        name: 'Вес',  
-        createdAt: new Date(),
-        updatedAt: new Date()
+        name: 'Вес'  
+        // createdAt: new Date(),
+        // updatedAt: new Date()
       },{
-        name: 'Рост',
+        name: 'Рост'/*
         createdAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date()*/
       },{
-        name: 'Сердцебиение',
+        name: 'Сердцебиение'/*
         createdAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date()*/
       },{
-        name: 'Доля жира',
+        name: 'Доля жира'/*
         createdAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date()*/
       }]
     );    
   },

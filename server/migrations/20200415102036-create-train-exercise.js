@@ -29,14 +29,6 @@ module.exports = {
           key: 'exercise_id',
           as: 'exercises'
         }
-      },
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE
       }
     });
   },

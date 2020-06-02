@@ -2,25 +2,25 @@ module.exports = {
   up: (queryInterface, Sequelize) => {
     
      return queryInterface.bulkInsert('LevelTrains', [{
-        name: 'Предельный',  
+        name: 'Предельный'/*
         createdAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date()*/
       },{
-        name: 'Большой',
+        name: 'Большой'/*
         createdAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date()*/
       },{
-        name: 'Существенный',
+        name: 'Существенный'/*
         createdAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date()*/
       },{
-        name: 'Средний',
+        name: 'Средний'/*
         createdAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date()*/
       },{
-        name: 'Небольшой',
+        name: 'Небольшой'/*
         createdAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date()*/
       }]
     );    
   },

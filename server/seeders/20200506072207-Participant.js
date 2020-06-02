@@ -10,9 +10,9 @@ module.exports = {
       age: '12.09.1984',
       heigth: 174,
       weigth: 75,
-      group_id: 1,
+      group_id: 1/*
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date()*/
     },{
       name: 'Федор',
       surname: 'Федорович',
@@ -21,9 +21,9 @@ module.exports = {
       age: '26.11.1983',
       heigth: 166,
       weigth: 56,
-      group_id: 2,
+      group_id: 2/*
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date()*/
     }]);
   },
 

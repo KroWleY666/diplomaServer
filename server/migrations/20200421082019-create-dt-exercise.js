@@ -16,7 +16,7 @@ module.exports = {
       },
       exercise_id: {
         type: Sequelize.INTEGER
-      },
+      }/*,
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
@@ -24,7 +24,7 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
-      }
+      }*/
     });
   },
   down: (queryInterface, Sequelize) => {
