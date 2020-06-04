@@ -1,6 +1,6 @@
 // файлы для регистрации, токен, роли пользователей
 const verifySignUp = require('./verifySignUp');
-const authJwt = require('./verifyJwtToken');
+const authJwt = require('./authJwt');
 
 // список контроллеров
 const rolesController = require('../controllers').roles;
@@ -16,6 +16,14 @@ const trainsController = require('../controllers').trains;
 const analyticsController = require('../controllers').analytics;
 
 module.exports = (app) => {
+  app.use(function(req, res, next) {
+    res.header(
+      "Access-Control-Allow-Headers",
+      "x-access-token, Origin, Content-Type, Accept"
+    );
+    next();
+  });
+
   app.get('/api', (req, res) => res.status(200).send({
     message: 'Welcome to the Todos API!',
   }));
@@ -23,15 +31,15 @@ module.exports = (app) => {
   app.delete('/api/delPN', userRolesController.destroyParam);
  
   // регистрация *************ПО ТОКЕНАМ*************
-  app.post('/api/auth/signup', [verifySignUp.checkDuplicateUserNameOrEmail, verifySignUp.checkRolesExisted], usersController.signup);
+  app.post('/api/auth/register', [verifySignUp.checkDuplicateUserNameOrEmail, verifySignUp.checkRolesExisted], usersController.signup);
   // вход зареганного
   app.post('/api/auth/signin', usersController.signin);
   
   app.get('/api/test/user', [authJwt.verifyToken], usersController.userContent);
   
-  app.get('/api/test/pm', [authJwt.verifyToken, authJwt.isPmOrAdmin], usersController.managementBoard);
+  app.get('/api/test/pm', [authJwt.verifyToken, authJwt.isTrOrSp], usersController.managementBoard);
   
-  app.get('/api/test/admin', [authJwt.verifyToken, authJwt.isAdmin], usersController.adminBoard);
+  app.get('/api/test/admin', [authJwt.verifyToken, authJwt.isTrainer], usersController.adminBoard);
 
 
   // регистрация *************ПО PASSPORT*************
@@ -140,7 +148,9 @@ module.exports = (app) => {
   // список мышц id упражнения                                 !!!!!
   app.get('/api/listOneExAndMuscles/:exercise_id', exercisesController.listOneExAndMuscles); // ok 
 
-
+  // список мышц id упражнения                                 !!!!!
+  app.post('/api/filterExercise', exercisesController.filterExercise); // ok 
+  
 
   /*-------------- добавление/просмотр/удаление trains --------------*/
 
@@ -166,7 +176,9 @@ module.exports = (app) => {
   app.get('/api/listTrain', trainsController.listTrain); // ok
 
   
-
+  // фильтр тренировки                                     !!!!!
+  app.post('/api/filterTrain', trainsController.filterTrain); // ok
+  
 
   /*-------------- аналитика standarts, parameters --------------*/
 

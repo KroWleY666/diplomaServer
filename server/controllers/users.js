@@ -1,10 +1,12 @@
 //const UserRole = require('../models').UserRole;
 const User = require('../models').User
 const Role = require('../models').Role
-const config = require('../config/roles.js');
+const config = require('../config/auth.js');
 const bcrypt = require('bcryptjs')
-
 var jwt = require('jsonwebtoken');
+
+const db = require('../models/index')
+const Op = db.Sequelize.Op;
 
 const passport = require('passport')
 
@@ -12,7 +14,7 @@ module.exports = {
 
     signup(req, res) {
         // Save User to Database
-        console.log("Processing func -> SignUp");
+        console.log("Идет процесс регистрации");
         
         User.create({
          // name: req.body.name,
@@ -21,50 +23,68 @@ module.exports = {
           password: req.body.password,
           salt: bcrypt.hashSync(req.body.password, 10)
         }).then(user => {
-          Role.findAll({
-            where: {
-            role_name: 
-              /*[Op.or]: */req.body.roles.map(role => role.toUpperCase())
-            
-            }
-          }).then(roles => {
+          if (req.body.roles) {
+          Role.findAll({where: {
+            role_name: {
+              [Op.or]: req.body.roles
+            }//req.body.roles.map(role => role/*.toUpperCase()*/)
+          }})
+          .then(roles => {
             user.setRoles(roles).then(() => {
-              res.send("User registered successfully!");
-                  });
+              res.send({user, roles, message: "Пользователь успешно зарегестрирован!"})});
+            
           }).catch(err => {
-            res.status(500).send("Error -> " + err);
+            res.status(500).send({err, message: "Error -> "});
           });
+          }else {
+            // user role = 1
+            user.setRoles([1]).then(() => {
+              res.send({ message: "Пользователь успешно зарегестрирован (без роли как спортсмен)!" });
+            })
+          }
         }).catch(err => {
-          res.status(500).send("Fail! Error -> " + err);
+          res.status(500).send({err, message: "Error -> "});
         })
       },
 
       signin(req, res) {
-        console.log("Sign-In");
+        console.log("Идет процесс авторизации");
         
-        User.findOne({
-          where: {
-            email: req.body.email
-          }
-        }).then(user => {
+        User.findOne({ where: {email: req.body.email}})
+        .then(user => {
           if (!user) {
-            return res.status(404).send('User Not Found.');
+            return res.status(404).send({ message: 'Пользователь не найден.'});
           }
        
           var passwordIsValid = bcrypt.compareSync(req.body.password, user.salt);
           if (!passwordIsValid) {
-            return res.status(401).send({ auth: false, accessToken: null, reason: "Invalid Password!" });
+            return res.status(401).send({ auth: false, accessToken: null, message: "Неверный пароль!" });
           }
           
           var token = jwt.sign({ user_id: user.user_id }, config.secret, {
             expiresIn: 86400 // expires in 24 hours
           });
           
-          res.status(200).send({ auth: true, accessToken: token });
-          return { auth: true, accessToken: token }
+          var authorities = [];
+          user.getRoles().then(roles => {
+            for (let i = 0; i < roles.length; i++) {
+              authorities.push("ROLE_" + roles[i].role_name.toUpperCase());
+            }
+            res.status(200).send({
+              user_id: user.user_id,
+              //username: user.username,
+              email: user.email,
+              roles: authorities,
+              accessToken: token
+            });
+          });
+          
+          
+          //res.status(200).send({ auth: true, accessToken: token });
+          //return { auth: true, accessToken: token }
           
         }).catch(err => {
-          res.status(500).send('Error -> ' + err);
+          res.status(500).send({ message:'Error -> ' });
         });
       },
 
@@ -81,7 +101,7 @@ module.exports = {
           }]
         }).then(user => {
           res.status(200).json({
-            "description": "User Content Page",
+            "description": "Общая страница",
             "user": user
           });
         }).catch(err => {
@@ -105,7 +125,7 @@ module.exports = {
           }]
         }).then(user => {
           res.status(200).json({
-            "description": "Admin Board",
+            "description": "Зашел на страницу тренер",
             "user": user
           });
         }).catch(err => {

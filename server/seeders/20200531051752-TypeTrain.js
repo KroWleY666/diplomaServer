@@ -2,21 +2,13 @@ module.exports = {
   up: (queryInterface, Sequelize) => {
     
      return queryInterface.bulkInsert('TypeTrains', [{
-        name: 'Кардио'/*
-        createdAt: new Date(),
-        updatedAt: new Date()*/
+        name: 'Кардио'
       },{
-        name: 'Силовая'/*
-        createdAt: new Date(),
-        updatedAt: new Date()*/
+        name: 'Силовая'
       },{
-        name: 'На выносливость'/*
-        createdAt: new Date(),
-        updatedAt: new Date()*/
+        name: 'На выносливость'
       },{
-        name: 'На скорость'/*
-        createdAt: new Date(),
-        updatedAt: new Date()*/
+        name: 'На скорость'
       }]
     );    
   },

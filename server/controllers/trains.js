@@ -90,6 +90,30 @@ module.exports = {
       })
       .catch(error => res.status(400).send(error));
   },
+  
+  /*----- список только мышц упражнения -----*/
+  filterTrain(req, res) {
+  //  let k = Train.findAll({where: {type_train_id: req.body.type,level_train_id: req.body.level}})
+  //  let l = Train.findAll({where: {type_train_id: req.body.type}})
+  //  let m = Train.findAll({where: {level_train_id: req.body.level}})
+    Train.findAll({where: 
+      {type_train_id: req.body.type,
+      level_train_id: {$in: [req.body.level]}}})
+       .then(tr => {return res.status(200).send({tr, message: 'Есть тренировки с указанными типом и уровнем!'})})
+     // .catch(er => res.status(400).send({er, message: 'Что-то пошло не так...'}))
+     // type_train_id:  {$any: m},
+     // level_train_id:  {$any: l}
+    //}}
+     /* $or: [{type_train_id: req.body.type}]
+    },{
+      $or: [{level_train_id: req.body.level}]
+   // }]}*///}})
+      //.then(tr => {return res.status(200).send({tr, message: 'Есть тренировки с указанными типом и уровнем!'})})
+     // .catch(er => res.status(400).send({er, message: 'Что-то пошло не так...'}))
+     /*if(k || l || m){
+     return res.status(200).send({k, message: 'Есть тренировки с указанными типом и уровнем!'})
+     }*/
+  },
     
     
     

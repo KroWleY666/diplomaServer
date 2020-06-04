@@ -7,6 +7,41 @@ const DateTrain = require('../models').DateTrain
 const StandName = require('../models').StandName
 const ParamName = require('../models').ParamName
 
+var sortDate = function(birth) {
+ 
+  var today = new Date();
+  var nowyear = today.getFullYear();
+  var nowmonth = today.getMonth() +1
+  if (nowmonth < 10) nowmonth = '0' + nowmonth;
+  var nowday = today.getDate();
+  if (nowday < 10) nowday = '0' + nowday;
+  var datePat = /^(\d{1,2})\.(\d{1,2})\.(\d{4})$/;
+ 
+  var matchArray = birth.match(datePat); // is the format ok?
+    if (matchArray == null) {
+        msg = "Date is not in a valid format.";
+        return msg;
+    }
+ 
+  var birthday = matchArray[1];
+  var birthmonth = matchArray[2]; // parse date into variables
+  var birthyear = matchArray[3];
+
+  var age = nowyear - birthyear;
+  var age_month = nowmonth - birthmonth;
+  var age_day = nowday - birthday;
+  let mas = true
+ /* console.log(`год сейчас событие${nowyear} ${birthyear}`)
+  console.log(`месяц сейчас событие${nowmonth} ${birthmonth}`)
+  console.log(`день сейчас событие${nowday} ${birthday}`)
+  console.log(`разница год месяц день${age} ${age_month} ${age_day}`)*/
+  if(age>0 || age_month > 0 || (age_month==0 && age_day>0)) {
+    mas = false //удаляем
+  }else{mas = true }
+  //console.log(`${mas}`)
+  return mas
+}
+
 module.exports = {
 
   /*---------------СТАНДАРТ-----СТАНДАРТ-----СТАНДАРТ---------------*/
@@ -45,15 +80,31 @@ module.exports = {
       .catch((error) => res.status(400).send(error));
   },
   
+  
+  
   /*--------список с стандартами--------*/
   listPartStandart(req, res) {
-    return Standart
-      .findAll({ where: {participant_id: req.params.participant_id}})
-      .then((part) => {
+    Standart
+      .findAll({ where: {participant_id: req.params.participant_id},
+        limit: 10, order: [['data', 'ASC']]})//ASC - возрастание DESC-убывание limit: 10 ограничение вывода
+      .then(part => {
         if (!part) {
           return res.status(404).send({message: 'Нормативов нет!'});
         }
-        return res.status(200).send(part);
+        for(dt in part){
+          let m = sortDate(part[dt].data)
+          console.log(m)
+          if (m==false){
+            console.log('были здесь')
+            part[dt].destroy()
+            .then(ms => console.log('удалили'))
+            .catch(console.log('почему то не удалили'))
+          }
+      }
+      Standart.findAll({ where: {participant_id: req.params.participant_id},
+        limit: 10, order: [['data', 'ASC']]})//ASC - возрастание DESC-убывание limit: 10 ограничение вывода
+      .then(pt => {return res.status(200).send(pt);})
+      .catch((error) => res.status(400).send(error));
       })
       .catch((error) => res.status(400).send(error));
   },

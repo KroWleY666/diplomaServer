@@ -22,6 +22,25 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false
     },
+    birthday: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      get() {
+        var date = new Date(this.getDataValue('birthday'))
+        //получаем день
+        var dd = date.getDate();
+        if (dd < 10) dd = '0' + dd;
+  
+        //получаем месяц
+        var mm = date.getMonth() + 1;
+        if (mm < 10) mm = '0' + mm;
+
+        //получаем год
+        var yy = date.getFullYear() ;
+
+        return dd + '.' + mm + '.' + yy;
+      },
+    },
     heigth: {
       type: DataTypes.INTEGER,
       allowNull: false

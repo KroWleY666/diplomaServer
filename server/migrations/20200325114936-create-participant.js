@@ -30,6 +30,13 @@ module.exports = {
           isDate: true,
         }
       },
+      birthday: {
+        type: Sequelize.DATE,
+        allowNull: false,
+        validation: {
+          isDate: true,
+        }
+      },
       heigth: {
         type: Sequelize.INTEGER,
         allowNull: false
