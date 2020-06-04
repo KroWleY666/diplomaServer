@@ -80,9 +80,25 @@ console.log(dateOutput)
     },
       /*hooks: {
           beforeCreate: function(){
-            
-        Standart.data = moment(new Date(this.getDataValue('data'))).format("DD/MM/YYYY HH:mm:ss");
+
+            format: function(value, options) {
+    var format = options.dateOnly ? "YYYY-MM-DD" : "YYYY-MM-DD hh:mm:ss";
+    return moment.utc(value).format(format);
+  }
+        //Standart.data = moment(new Date(this.getDataValue('data'))).format("DD/MM/YYYY HH:mm:ss");
         console.log(data)
+          },
+          beforeValidate: function(transaction, options, fn) {
+            console.log('beforeCreate hook')
+            var ObjectToHash = transaction.get();
+            console.log(ObjectToHash)
+            makehash(ObjectToHash)
+            .then(function(res){
+              console.log('hash created for: '+transaction.id)
+              transaction.hash = res;
+              fn(null, transaction)
+            })
+    
           }
       }*/
   

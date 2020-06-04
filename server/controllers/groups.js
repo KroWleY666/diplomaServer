@@ -145,10 +145,10 @@ module.exports = {
             heigth: req.body.heigth,
             weigth: req.body.weigth,
             group_id: req.body.group_id,
-            birthday: req.body.birthday
+           // birthday: req.body.birthday
           })
           .then(participant => {
-            let age = getAge(participant.birthday)
+            let age = getAge(participant.age)
             res.status(200).send({participant,group_name, age})
             return {participant,group_name, age}
           })

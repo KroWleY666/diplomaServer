@@ -19,14 +19,10 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     age: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    birthday: {
       type: DataTypes.DATE,
       allowNull: false,
       get() {
-        var date = new Date(this.getDataValue('birthday'))
+        var date = new Date(this.getDataValue('age'))
         //получаем день
         var dd = date.getDate();
         if (dd < 10) dd = '0' + dd;

@@ -11,7 +11,7 @@ module.exports = {
         Standart.findAll({ where: {
             participant_id: req.params.participant_id,
             stn_id: req.params.stn_id
-        }, attributes: [ 'data', 'value']}) // return moment.utc(this.getDataValue('data')).format('%d-%m-%Y');//DD-MM-YYYY
+        }, attributes: [ 'data', 'value'], order: [['data', 'ASC']]}) // return moment.utc(this.getDataValue('data')).format('%d-%m-%Y');//DD-MM-YYYY
         .then(standart => {return res.status(200).send({standart, message: 'Поиск прошел учпешно!'})})
         .catch((error) => res.status(400).send({error, message: 'Поиск провалился!'}))
     })
@@ -25,7 +25,7 @@ module.exports = {
             Parameter.findAll({ where: {
               participant_id: req.params.participant_id,
               pn_id: req.params.pn_id
-          }, attributes: ['data', 'value']})
+          }, attributes: ['data', 'value'], order: [['data', 'ASC']]})
           .then(standart => {return res.status(200).send({standart, message: 'Поиск прошел учпешно!'})})
           .catch(error => res.status(400).send({error, message: 'Параметр не найден!'}))
         })

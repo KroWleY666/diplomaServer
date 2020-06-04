@@ -57,15 +57,15 @@ module.exports = {
         participant_id: req.params.participant_id
       })
       //console.log(`${standart.data}`)
-      .then(standart => {
-        console.log(`${standart.data}`)
-        return Standart.findAll({where: {participant_id: req.params.participant_id}})
-          .then((part) => res.status(200).send(part))
-          //.catch((error) => res.status(400).send(error));
+      .then(standart => {//{return res.status(200).send({standart, message: 'Норматив создан!'})})
+       // console.log(`${standart.data}`)
+        return Standart.findAll({where: {participant_id: req.params.participant_id}, order: [['data', 'ASC']]})
+          .then((part) => res.status(200).send({part, message: 'Норматив создан!'}))
+          .catch((error) => res.status(400).send({error, message: 'Не корректные поля!'}));
       })
-      //.catch(error => res.status(400).send(error));  
+      .catch(error => res.status(400).send({error, message: 'Не найден спортсмен!'}));  
     })
-    //.catch(error => res.status(400).send(error));        
+    .catch(error => res.status(400).send({error, message: 'Не найден спортсмен (конец)!'})); 
   },
   
   /*--------список с стандартами--------*/
@@ -80,31 +80,14 @@ module.exports = {
       .catch((error) => res.status(400).send(error));
   },
   
-  
-  
   /*--------список с стандартами--------*/
   listPartStandart(req, res) {
-    Standart
-      .findAll({ where: {participant_id: req.params.participant_id},
-        limit: 10, order: [['data', 'ASC']]})//ASC - возрастание DESC-убывание limit: 10 ограничение вывода
+    Standart.findAll({ where: {participant_id: req.params.participant_id}, order: [['data', 'ASC']]})//ASC - возрастание DESC-убывание limit: 10 ограничение вывода
       .then(part => {
         if (!part) {
           return res.status(404).send({message: 'Нормативов нет!'});
         }
-        for(dt in part){
-          let m = sortDate(part[dt].data)
-          console.log(m)
-          if (m==false){
-            console.log('были здесь')
-            part[dt].destroy()
-            .then(ms => console.log('удалили'))
-            .catch(console.log('почему то не удалили'))
-          }
-      }
-      Standart.findAll({ where: {participant_id: req.params.participant_id},
-        limit: 10, order: [['data', 'ASC']]})//ASC - возрастание DESC-убывание limit: 10 ограничение вывода
-      .then(pt => {return res.status(200).send(pt);})
-      .catch((error) => res.status(400).send(error));
+        return res.status(200).send(part);
       })
       .catch((error) => res.status(400).send(error));
   },
@@ -117,7 +100,7 @@ module.exports = {
           return res.status(404).send({message: 'Норматив не найден!'});
         }
         standart.destroy()
-          .then((st) => {
+          .then((st) => {//return res.status(200).send({st,message: 'Норматив удален!'})})
             return Standart.findAll({where: {participant_id: req.params.participant_id}})
               .then((part) => {
                 res.status(200).send({part,message: 'Норматив удален!'})})
@@ -125,7 +108,7 @@ module.exports = {
             })
           .catch(error => res.status(400).send(error));
         })
-      .catch(error => res.status(400).send(error));
+        .catch(error => res.status(400).send(error));
   },
 
     
@@ -144,13 +127,13 @@ module.exports = {
         participant_id: req.params.participant_id
       })
       .then(parameter => {
-        return Parameter.findAll({ where: {participant_id: req.params.participant_id}})
+        return Parameter.findAll({ where: {participant_id: req.params.participant_id}, order: [['data', 'ASC']]})
           .then(part => res.status(200).send(part))
           .catch((error) => res.status(400).send(error));
         })
-        .catch(error => res.status(400).send(error));  
-    })
-    .catch(error => res.status(400).send(error));        
+        //.catch(error => res.status(400).send(error));    
+      })
+      //.catch(error => res.status(400).send(error));     
   },
   
   /*--------список только с измерениями--------*/
@@ -168,8 +151,7 @@ module.exports = {
   /*--------список с измерениями--------*/
   listPartParameter(req, res) {
     return Parameter
-      .findAll({ where: {participant_id: req.params.participant_id}
-      })
+      .findAll({ where: {participant_id: req.params.participant_id}, order: [['data', 'ASC']]})
       .then((part) => {
         if (!part) {
           return res.status(404).send({message: 'Параметров нет!'});
@@ -188,7 +170,7 @@ module.exports = {
         }
         parameter.destroy()
           .then((par) => {
-            return Parameter.findAll({ where: {participant_id: req.params.participant_id}})
+            return Parameter.findAll({ where: {participant_id: req.params.participant_id}, order: [['data', 'ASC']]})
               .then(part => res.status(200).send({part, message: 'Параметр удален!'}))
             })
               .catch((error) => res.status(400).send(error))
@@ -212,7 +194,7 @@ module.exports = {
         participant_id: req.params.participant_id
       })
       .then(parameter => {
-        return Event.findAll({ where: {participant_id: req.params.participant_id}})
+        return Event.findAll({ where: {participant_id: req.params.participant_id}, order: [['data', 'ASC']]})
           .then((part) => res.status(200).send(part))
           .catch((error) => res.status(400).send(error))
         })
@@ -223,17 +205,28 @@ module.exports = {
   
   /*--------список с событиями--------*/
   listPartEvent(req, res) {
-    return Event
-      .findAll({ where: {participant_id: req.params.participant_id}
-      })
+    Event.findAll({ where: {participant_id: req.params.participant_id}, order: [['data', 'ASC']]})
       .then((part) => {
         if (!part) {
           return res.status(404).send({message: 'Событий нет!'});
         }
-        return res.status(200).send(part);
+        for(dt in part){
+          let m = sortDate(part[dt].data)
+          console.log(m)
+          if (m==false){
+            console.log('были здесь')
+            part[dt].destroy()
+            .then(ms => console.log('удалили'))
+            .catch(console.log('почему то не удалили'))
+          }
+      }
+      Event.findAll({ where: {participant_id: req.params.participant_id}, order: [['data', 'ASC']]})//ASC - возрастание DESC-убывание limit: 10 ограничение вывода
+      .then(pt => {return res.status(200).send(pt);})
+      .catch((error) => res.status(400).send(error));
+        //return res.status(200).send(part);
       })
       .catch((error) => res.status(400).send(error));
-  },
+  },  
   
   /*-----удалить событие-----*/
   destroyEvent(req, res) {
@@ -244,7 +237,7 @@ module.exports = {
         }
         event.destroy()
           .then(() => {
-            return Event.findAll({ where: {participant_id: req.params.participant_id}})
+            return Event.findAll({ where: {participant_id: req.params.participant_id}, order: [['data', 'ASC']]})
               .then((part) => res.status(200).send({part, message: 'Событие удалено!'}))
               .catch((error) => res.status(400).send(error))
             })

@@ -10,7 +10,7 @@ module.exports = {
       },
       data: {
         allowNull: false,
-        type: Sequelize.STRING,
+        type: Sequelize.DATE,
         /*validation: {
           isDate: true,
         },
