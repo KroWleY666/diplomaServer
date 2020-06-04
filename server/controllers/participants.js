@@ -131,9 +131,9 @@ module.exports = {
           .then(part => res.status(200).send(part))
           .catch((error) => res.status(400).send(error));
         })
-        //.catch(error => res.status(400).send(error));    
+        .catch(error => res.status(400).send(error));    
       })
-      //.catch(error => res.status(400).send(error));     
+      .catch(error => res.status(400).send(error));     
   },
   
   /*--------список только с измерениями--------*/
