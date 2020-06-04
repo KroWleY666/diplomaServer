@@ -7,6 +7,9 @@ const TrainExercise = require('../models').TrainExercise
 const LevelTrain = require('../models').LevelTrain
 const TypeTrain = require('../models').TypeTrain
 
+const db = require('../models/index')
+const Op = db.Sequelize.Op;
+
 module.exports = {
 
   /********************* ТРЕНИРОВКИ/УПРАЖНЕНИЯ *********************/
@@ -97,8 +100,8 @@ module.exports = {
   //  let l = Train.findAll({where: {type_train_id: req.body.type}})
   //  let m = Train.findAll({where: {level_train_id: req.body.level}})
     Train.findAll({where: 
-      {type_train_id: req.body.type,
-      level_train_id: {$in: [req.body.level]}}})
+      {type_train_id: {[Op.or]: req.body.type},
+      level_train_id: {[Op.or]: req.body.level}}})
        .then(tr => {return res.status(200).send({tr, message: 'Есть тренировки с указанными типом и уровнем!'})})
      // .catch(er => res.status(400).send({er, message: 'Что-то пошло не так...'}))
      // type_train_id:  {$any: m},
