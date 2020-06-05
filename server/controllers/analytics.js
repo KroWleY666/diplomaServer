@@ -16,10 +16,10 @@ module.exports = {
           var mas1 = []
           var mas2 = []
           for(let h in standart){
-            mas1[h] = standart[h].data
+            mas1[h] = standart[h].data.toString()
             mas2[h] = standart[h].value
           }
-          return res.status(200).send({mas1,mas2})})
+          return res.status(200).send({mas1,mas2})})//mas1,mas2
         .catch((error) => res.status(400).send({error, message: 'Поиск провалился!'}))
     })
     .catch(error => res.status(400).send(error));        
@@ -44,5 +44,5 @@ module.exports = {
           .catch(error => res.status(400).send({error, message: 'Параметр не найден!'}))
         })
       .catch(error => res.status(400).send(error));        
-    }
+    }    
 }  

@@ -21,9 +21,10 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: 'CASCADE',
       onUpdate: 'CASCADE'
     }),
-    UserRole.hasMany(models.User, {
+    UserRole.belongsTo(models.User, {
       foreignKey: 'user_id',
       onUpdate: 'CASCADE',
+      onDelete: 'CASCADE'
     })
     // associations can be defined here
   };

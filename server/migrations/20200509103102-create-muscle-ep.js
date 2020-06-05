@@ -12,13 +12,23 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER,
         onDelete: 'CASCADE',
-        onUpdate: 'CASCADE'
+        onUpdate: 'CASCADE',
+        references: {
+          model: 'Muscles',
+          key: 'mscl_id',
+          as: 'mscl_id'//group_id
+        }
       },
       exercise_id: {
         allowNull: false,
         type: Sequelize.INTEGER,
         onDelete: 'CASCADE',
-        onUpdate: 'CASCADE'
+        onUpdate: 'CASCADE',
+        references: {
+          model: 'Exercises',
+          key: 'exercise_id',
+          as: 'exercise_id'//group_id
+        }
       }
     });
   },

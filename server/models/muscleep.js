@@ -17,7 +17,20 @@ module.exports = (sequelize, DataTypes) => {
     }
   });
   MuscleEP.associate = models => {
-    
+    MuscleEP.belongsTo(models.Muscle, {
+      //as: 'types', 
+      //through: models.CharEx,
+      foreignKey: 'exercise_id',
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
+    }),
+    MuscleEP.belongsTo(models.Exercise, {
+      //as: 'types', 
+      //through: models.CharEx,
+      foreignKey: 'mscl_id',
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
+    })
     // associations can be defined here
   };
   return MuscleEP;
