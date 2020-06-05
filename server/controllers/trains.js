@@ -6,6 +6,8 @@ const TrainExercise = require('../models').TrainExercise
 
 const LevelTrain = require('../models').LevelTrain
 const TypeTrain = require('../models').TypeTrain
+const DETrain = require('../models').DETrain
+
 
 const db = require('../models/index')
 const Op = db.Sequelize.Op;
@@ -190,37 +192,34 @@ module.exports = {
   /********************* ТРЕНИРОВКИ/ДАТЫ *********************/
  
     /*----------создать дату для тренировки----------*/
-    createDT(req, res) {
+  createDT(req, res) {
         DateTrain.findOne({where: {
           from: req.body.from,
           to: req.body.to,
-          title: req.body.title, //train_id
-          type: req.body.type,
           participant_id: req.params.participant_id
         }}).then(nDT => {
           if(!nDT) {
             DateTrain.create({
               from: req.body.from,
               to: req.body.to,
-              title: req.body.title,
-              type: req.body.type,
               participant_id: req.params.participant_id
             }).then(newDT => {
-              var DTtoAdd = newDT;
               Train.findOne({ where: { train_id: req.body.train_id } }) //return
-                .then(train => {   
-                  res.status(201).send(DTtoAdd)            
-                  train.addDate(DTtoAdd)
-                  return DTtoAdd
+                .then(train => {  
+                  train.addDate(newDT) 
+                  console.log(train)
+                  res.status(201).send(newDT)    
+                  //return newDT
               })
               .catch((error) => res.status(400).send(error))
             })
           } else {
             Train.findOne({ where: { train_id: req.body.train_id } }) //return
-              .then(train => {      
-                res.status(201).send(nDT)          
-                train.addDate(nDT)     
-                return nDT          
+              .then(train => {           
+                train.addDate(nDT)   
+                console.log(train)
+                res.status(201).send(nDT)       
+               // return nDT          
             })
             .catch((error) => res.status(400).send(error));
           }
@@ -229,8 +228,45 @@ module.exports = {
     },
     
     /*-----вся инфа об датах тренировок одного спортсмена-----*/
-    allDateTrainsInfo(req, res) {
-      DateTrain.findOne({where: {participant_id: req.params.participant_id}})
+  async allDateTrainsInfo(req, res) {
+
+      let mas=[]
+      const deTr = await DateTrain.findAll({where: {participant_id: req.params.participant_id},raw: true})
+        for (u in deTr){
+          let dt_id = deTr[u].dt_id
+          let participant_id = deTr[u].participant_id
+          let from = deTr[u].from
+          let to = deTr[u].to
+         // console.log('g = ' + g)
+         
+          const k = await DETrain.findAll({where: {dt_id: deTr[u].dt_id},raw: true})
+          for(w in k){
+            let deTr_id = k[w].detrain_id
+            let train_id = k[w].train_id
+
+            let trn = await Train.findOne({where: {train_id: k[w].train_id},raw: true})
+            let type = await TypeTrain.findOne({where: {type_train_id: trn.type_train_id},raw: true})
+            let nameTrain = trn.name
+            let type_train_id = type.type_train_id
+            let nameType = type.name
+
+            mas[w] = {//[u]
+              dt_id: dt_id,
+              participant_id: participant_id,
+              detrain_id: deTr_id,
+              train_id: train_id,
+              nameTrain: nameTrain,
+              nameType: nameType,
+              type_train_id: type_train_id,
+              from: from,
+              to: to
+             }
+            }
+          }
+          
+          return res.status(200).send(mas)//{mas, obj}
+
+     /* DateTrain.findOne({where: {participant_id: req.params.participant_id}})
         .then(dt=>{
           if (!dt) {          
             return res.status(404).send({
@@ -245,7 +281,7 @@ module.exports = {
           })
           .catch(error => res.status(400).send(error))
       })
-      .catch(error => res.status(400).send(error))
+      .catch(error => res.status(400).send(error))*/
     },
     
     /*-----удалить даты в тренировке-----*/

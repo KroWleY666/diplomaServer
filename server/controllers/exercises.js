@@ -141,171 +141,43 @@ module.exports = {
   },
   
   /*----- список только мышц упражнения -----*/
-  filterExercise(req, res) {
-    /*Exercise.findAll({where: {te_id:{ $in: req.body.type}}})
-    Muscle.findAll({where: {mscl_id:{ $in: req.body.muscle}}})
-    let mas = []
-    for (m in mscl){
-      mas[m] = mscl.getExercises({where: {te_id:{ $in: req.body.type}})
-    }*/
-    /*.then(ex => {
-      Muscle.findAll({where: {mscl_id:{ $in: req.body.muscle}}})
-      .then(ms => {
-        if(ex && ms){
-          ms.getExercises(ex)
-          .then(mt => {return res.status(200).send({mt, message: 'Есть упражнения с указанными типами и мышцами!'})})
-          .catch(er => res.status(400).send({er, message: 'Что-то пошло не так...'}))
-        }else{
-
+  async filterExercise(req, res) {
+    let filter = req.body.filter
+    let m = req.body.muscle
+    let t = req.body.type
+    let findArgs = {}
+    for (let key in filter) {
+      if (filter[key].length > 0) {
+        if (key === "muscle") {
+          findArgs[key] = {
+            $gte: filter[key][0],
+            $lte: filter[key][1]
         }
-        
-      })
-    })
-
-    const mscls = Muscle.findAll({where: {mscl_id:{ $in: req.body.muscle}}})
-    const type = Exercise.findAll({where: {te_id:{ $in: req.body.type}}})
-    if(mscls || type){
-      if(mscls){
-       // Exercise.findAll().then(ex => {
-          mscls.getExercises()
-          .then(ex1 => {
-            if(type && ex1){
-              ex1.findAll({where: {te_id:{ $in: req.body.type}}})
-              .then(exEnd => {return res.status(200).send({exEnd, message: 'Есть упражнения с указанными типами и мышцами!'})})
-              .catch(er => res.status(400).send({er, message: 'Что-то пошло не так...'}))
-            }else{
-
-            }
-            })
-          }
-            //return res.status(200).send({ex1, message: 'Есть упражнения с указанными типами и мышцами!'})})
-         // .catch(er => res.status(400).send({er, message: 'Что-то пошло не так...'}))
-       // })
-        //.catch(er => res.status(400).send({er, message: 'Что-то пошло не так...'}))
-        
-     // }else{
-     //   return res.status(200).send({type, message: 'Есть упражнения указанными типами!'})
-     // }
-      //return res.status(400).send({type, message: 'Есть упражнения указанными типами!'})
-    }*/
-  },
-  
-
-  //РАБОТАЕТ НОРМ
-  /*----- добавить подходы и разы в упражнение, вывод упражнений с характеристиками и подходами -----*/
- /* addCharToExer(req, res) {
-    Exercise.findOne({where: {exercise_id: req.body.exercise_id}})
-    .then(ex => {
-      if(!ex) {
-        return res.status(404).send({message: 'Упражнение не найдено!'})
-    }else {
-     Character.findOne({where: {
-        approach: req.body.approach,
-        duration: req.body.duration,
-        count: req.body.count
-      }})
-      .then(char => {  
-        Train.findOne({ where: { train_id: req.params.train_id } }) //return
-        .then(train => {
-          if(!char) {
-            Character.create({
-              approach: req.body.approach,
-              duration: req.body.duration,
-              count: req.body.count
-            })
-            .then(character =>  {            
-              ex.addCharacter(character)
-              train.addExercise(ex) //return
-              .then(ans => {
-                console.log('Упражнение в тренировку добавлено!')
-                return res.status(201).send(train)})
-              .catch((error) => res.status(400).send({error, message: 'Что-то пошло не так...'}));
-          })
-          .catch((error) => res.status(400).send({error, message: 'Возможно некорректные поля!'}));
-        }else {
-          ex.addCharacter(char)
-          train.addExercise(ex) //return
-            .then(ans => {
-              console.log('Упражнение в тренировку добавлено!')
-              return res.status(201).send(train)})
-            .catch((error) => res.status(400).send({error, message: 'Что-то пошло не так...'}));
+      }
+        if (key === "type") {
+          findArgs[key] = {
+            $gte: req.body.filters[key][0],
+            $lte: req.body.filters[key][1]
         }
-      })       
-      .catch(error => res.status(400).send({error, message: 'Возможно некорректные поля!'}));
-    })
-    .catch(error => res.status(400).send({error, message: 'Что-то пошло не так...'}));  
-  }})
-  .catch(error => res.status(400).send({error, message: 'Что-то пошло не так...'}));  
-  },*/
-  
-  
-  /*----- вывод упражнений тренировки с характеристиками и подходами -----*/
-  /*extractExerToTrain(req, res) {
-    Train.findOne({where: {train_id: req.params.train_id}})
-    .then(tr => {
-      if(!tr) {
-        return res.status(404).send({message: 'Тренировка не найдена!'})
-    }else {
-      tr.getExercises({include: [{
-        model: Character,
-        as: 'characters', 
-       // required: true//,
-        //through: { attributes: ['character_id'] }
-      }], attributes: ['exercise_id', 'name']})
-      .then(trEx => {  
-        //console.log(trEx.exercise_id)
-      //  trEx.getExercises()
-      let exMs = {}
-      for (let k in trEx){
-        
-        Exercise.findOne({where: {exercise_id: trEx[k].exercise_id}})
-        .then(exs => {
-         // CharEx.findOne()
-          //Character.findAll().then(rt => {
-           /* exs.getCharacters().then(t => {
-              console.log('getCharacters 1 '+t)
-            })*/
-         // })
-         /* exs.getCharacters({where: {exercise_id: trEx[k].exercise_id}})
-          .then(t => {
-            console.log('getCharacters 2 '+t)
-          })
-          console.log('exs ' + exs)
-        })
+        }
+      }else {
+        findArgs[key] = filter[key];
+    }
+    Exercise.findAll({where: {}})
+
+    }
+
+    for(ms in filter){
+      let k
+      if(filter[ms] === 'muscle'){
 
       }
+      if(filter[ms] === 'type'){
         
-        let mas = {} 
-        for (let g in trEx){
-         // console.log(g)
-          mas[g] = {
-            exercise_id: trEx[g].exercise_id,
-            ex_name: trEx[g].name,
-           // ex_char: trEx[g].Character.characters
-          }
-          
-          console.log(mas)
-
-        }
-        for (let k in mas){
-
-        }
-
-        /*var id_map = {};
-        for (var i = 0; i < trEx.length; i++) {
-          id_map[trEx[i].character_id] = 1;
-          console.log(`${trEx[i].character_id}`)
-        }
-        Exercise.findAll({
-          where: { exercise_id: [Object.keys(id_map)] }
-        })
-        .then(m => {return res.status(201).send({m, message: 'Список id упражнений получен!'})})
-        .catch(res.status(400).send({error, message: 'Что-то пошло не так...'}))*/
-       /* return res.status(201).send({trEx, message: 'Список id упражнений получен!'})})
-      .catch((error) => res.status(400).send({error, message: 'Что-то пошло не так...'}))
-      }})
-      .catch(er => res.status(404).send({er, message: 'Нет такого id тренировки!'}))
-  },*/
+      }
+    }
+  },
+  
   
   /*----- вывод характеристик упражнения -----*/
   extractCharToOneExer(req, res) {
@@ -352,8 +224,6 @@ module.exports = {
     
     
 
-
-
     
     /*----- обновить параметры упражнения -----*/
     updateCharToExer(req, res) {
@@ -389,91 +259,6 @@ module.exports = {
     .catch(error => res.status(400).send(error));      
     },
 
-
-    /*---------добавить в тренировку упражнение---------*/
-    addExerciseToTrain(req, res) {  
-      Character.findOne({where: {
-        approach: req.body.approach,
-        duration: req.body.duration,
-        count: req.body.count }})
-      .then(char => { 
-        Exercise.findAll({ where: { exercise_id: req.body.exercise_id } }) //return
-        .then(newExercise => {
-          if(!char) {
-          Character.create({
-            approach: req.body.approach,
-            duration: req.body.duration,
-            count: req.body.count
-          })
-          .then(character =>  {
-            return newExercise.addCharacter(character)
-          })
-          .catch((error) => res.status(400).send(error));
-        }else {
-          return newExercise.addCharacter(char)
-        }
-
-        
-      })       
-      //.catch((error) => res.status(400).send(error));
-      var exerciseToAdd = newExercise;
-            Train.findOne({ where: { train_id: req.params.train_id } }) //return
-      .then(train => {
-              train.addExercise(exerciseToAdd) //return
-              .then(function(ans){
-                res.status(201).send(exerciseToAdd)
-                exerciseToAdd;//return
-              })
-              .catch((error) => res.status(400).send(error));
-            })
-      .catch((error) => res.status(400).send(error));
-      //.catch((error) => res.status(400).send(error));
-    })
-    .catch((error) => res.status(400).send(error));
-      
-      
-      
-      //ТЕЕЕЕЕЕЕЕСТ
-     /* Exercise.findAll({ where: { exercise_id: req.body.exercise_id } }) //return
-      .then(newExercise => {
-        Character.findOne({where: {
-          approach: req.body.approach,
-          duration: req.body.duration,
-          count: req.body.count
-        }})
-        .then(char => {          
-          if(!char) {
-            Character.create({
-              approach: req.body.approach,
-              duration: req.body.duration,
-              count: req.body.count
-            })
-            .then(character =>  {
-              newExercise.addCharacter(character)
-            })
-          }else {
-            newExercise.addCharacter(char)
-          }
-        })       
-        //.catch(error => res.status(400).send(error));
-
-            var exerciseToAdd = newExercise;
-            Train.findOne({ where: { train_id: req.params.train_id } }) //return
-      .then(train => {
-              train.addExercise(exerciseToAdd) //return
-              .then(function(ans){
-                res.status(201).send(exerciseToAdd)
-                exerciseToAdd;//return
-              })
-              .catch((error) => res.status(400).send(error));
-            })
-      .catch((error) => res.status(400).send(error));
-    })
-    .catch((error) => res.status(400).send(error));*/
-  },
-
-  
-
   /*----- информация об одном упражнении -----*/
   oneExercise(req, res) {
     return Exercise
@@ -507,11 +292,12 @@ module.exports = {
           }))
           .catch(error => res.status(400).send(error));
       })
-     // .catch(error => res.status(400).send(error));
+      .catch(error => res.status(400).send(error));
   },
   
   /* создание упражнения к тренировке ПО НОВЫМ СВЯЗЯМ */
   addCharToExer(req, res) {
+    //console.log('addCharToExer работает здесь')
     Exercise.findOne({where: {exercise_id: req.body.exercise_id}})
     .then(ex => {
       if(!ex) {
@@ -573,24 +359,24 @@ module.exports = {
     }})
     .catch(error => res.status(400).send('Возможно некорректные поля TrainExercise!'+error))
   },
-  
-  /*вывод списка упражнений тренировки ПО НОВОЙ СХЕМЕ */
+
+  /*вывод упражнений тренировки с характеристиками и подходами ПО НОВОЙ СХЕМЕ */
   async extractExerToTrain(req, res) {
     let mas=[]
     const trEx = await TrainExercise.findAll({where: {train_id: req.params.train_id},raw: true})
       for (u in trEx){
         let g = trEx[u].train_ex_id
-        console.log('g = ' + g)
+       // console.log('g = ' + g)
         
         let k = await Exercise.findOne({where: {exercise_id: trEx[u].exercise_id},raw: true})
         let exName = k.name
-        console.log('exName'+exName);
+        //console.log('exName'+exName);
         
         let m = await Character.findOne({where: {character_id: trEx[u].character_id},raw: true})
         let approach = m.approach
         let count = m.count
         let duration = m.duration
-        console.log('approach '+approach+' count '+count+' duration '+duration);
+        //console.log('approach '+approach+' count '+count+' duration '+duration);
         
         mas[u] = {//[u]
           exercise_id: trEx[u].exercise_id,
@@ -600,13 +386,9 @@ module.exports = {
           count: count,
           duration: duration
          }
-         
         }
-       // let le = {}
-       // le = {obj}
-        //obj={massiv: [{mas}]}
         return res.status(200).send(mas)//{mas, obj}
-        .catch(er => res.status(404).send('Нет такого id тренировки!'+er))
+       // .catch(er => res.status(404).send('Нет такого id тренировки!'+er))
   },
     
 }

@@ -15,14 +15,14 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       },
-      title: {
+     /* title: {
         type: Sequelize.STRING,
         allowNull: false
       },
       type: {
         type: Sequelize.STRING,
         allowNull: false
-      },
+      },*/
       participant_id: {
         type: Sequelize.INTEGER,
         onDelete: 'CASCADE',

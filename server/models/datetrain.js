@@ -32,15 +32,15 @@ module.exports = (sequelize, DataTypes) => {
         var yy = date.getFullYear() ;
         return dd + '.' + mm + '.' + yy;
       },
-    },
-    title: {
+    }
+    /*title: {
       type: DataTypes.STRING,
       allowNull: false
     },
     type: {
       type: DataTypes.STRING,
       allowNull: false
-    }
+    }*/
   });
   DateTrain.associate = models => {
     DateTrain.belongsToMany(models.Train, {
