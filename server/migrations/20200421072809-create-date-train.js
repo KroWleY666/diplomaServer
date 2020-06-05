@@ -1,4 +1,3 @@
-'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('DateTrains', {
@@ -10,11 +9,11 @@ module.exports = {
       },
       from: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.DATE
       },
       to: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.DATE
       },
       title: {
         type: Sequelize.STRING,
@@ -34,15 +33,7 @@ module.exports = {
           key: 'participant_id',
           as: 'participant_id'
         }
-      }/*,
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      }*/
+      }
     });
   },
   down: (queryInterface, Sequelize) => {

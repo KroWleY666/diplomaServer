@@ -15,10 +15,23 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       type: DataTypes.INTEGER
     },
+    character_id: {
+      allowNull: false,
+      type: DataTypes.INTEGER
+    },
+    
+     /* get () {
+        this.createdAt = new Date()
+      },
+     /* set () {
+        this.createdAt = new Date()
+      }*/
+    
+  
   });
 
   TrainExercise.associate = models => {
-    TrainExercise.belongsTo(models.Train, {
+    /*TrainExercise.belongsTo(models.Train, {
       foreignKey: 'train_id',
      // as: 'participants'
       onDelete: 'CASCADE',
@@ -29,7 +42,35 @@ module.exports = (sequelize, DataTypes) => {
      // as: 'participants'
       onDelete: 'CASCADE',
       onUpdate: 'CASCADE'
-    })
+    }),*/
+    /*TrainExercise.belongsToMany(models.Character, {
+      as: 'characters', 
+      through: models.CharEx,
+      foreignKey: 'train_ex_id',
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
+    }),*/
+    TrainExercise.belongsTo(models.Character, {
+     // as: 'characters', 
+     // through: models.CharEx,
+      foreignKey: 'character_id',
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
+    }),
+    TrainExercise.belongsTo(models.Exercise, {
+      // as: 'characters', 
+      // through: models.CharEx,
+       foreignKey: 'exercise_id',
+       onDelete: 'CASCADE',
+       onUpdate: 'CASCADE'
+     }),
+     TrainExercise.belongsTo(models.Train, {
+      // as: 'characters', 
+      // through: models.CharEx,
+       foreignKey: 'train_id',
+       onDelete: 'CASCADE',
+       onUpdate: 'CASCADE'
+     })
     // associations can be defined here
   };
   return TrainExercise;

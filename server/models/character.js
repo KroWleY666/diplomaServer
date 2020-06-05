@@ -20,11 +20,25 @@ module.exports = (sequelize, DataTypes) => {
     }
   });
   Character.associate = models => {
-    Character.belongsToMany(models.Exercise, {
+    /*Character.belongsToMany(models.Exercise, {
       as: 'exercises', 
       through: models.CharEx,
       foreignKey: 'character_id',
       onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
+    }),*/
+    /*Character.belongsToMany(models.TrainExercise, {
+      as: 'trExerc', 
+      through: models.CharEx,
+      foreignKey: 'character_id',
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
+    }),*/
+    Character.hasMany(models.TrainExercise, {
+      as: 'trExerc', 
+     // through: models.CharEx,
+      foreignKey: 'character_id',
+      //onDelete: 'CASCADE',
       onUpdate: 'CASCADE'
     })
   };

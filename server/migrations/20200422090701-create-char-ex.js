@@ -13,16 +13,18 @@ module.exports = {
         type: Sequelize.INTEGER,
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
-        references: {
+       /* references: {
           model: 'Characters',
           key: 'character_id',
           as: 'character_id'
-        }
+        }*/
       },
-      exercise_id: {
+      train_ex_id: {
         allowNull: false,
         type: Sequelize.INTEGER,
-        allowNull: false,
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
+        /*allowNull: false,
         type: Sequelize.INTEGER,
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
@@ -30,7 +32,7 @@ module.exports = {
           model: 'Exercises',
           key: 'exercise_id',
           as: 'exercise_id'
-        }
+        }*/
       }
     });
   },

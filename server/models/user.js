@@ -39,27 +39,13 @@ module.exports = (sequelize, DataTypes) => {
       }*/
     });
 
-   /* User.beforeSave((user, options) => {
-      if (user.changed('password')) {
-        user.salt = bcrypt.hashSync(user.password, bcrypt.genSaltSync(10), null);
-      }
-    });
-    User.prototype.comparePassword = function (passw, cb) {
-      bcrypt.compare(passw, this.password, function (err, isMatch) {
-          if (err) {
-              return cb(err);
-          }
-          cb(null, isMatch);
-      });
-    };*/
-
     User.associate = models => {
       User.belongsToMany(models.Role, {
         through: models.UserRole,
         foreignKey: 'user_id',
         otherKey: 'role_id',
         onDelete: 'CASCADE',
-        onUpdate: 'CASCADE',
+        onUpdate: 'CASCADE'
       })/*,
       User.hasMany(models.Group, {
         foreignKey: 'user_id',
