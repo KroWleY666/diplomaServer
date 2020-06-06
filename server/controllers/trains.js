@@ -233,6 +233,8 @@ module.exports = {
       let mas=[]
       const deTr = await DateTrain.findAll({where: {participant_id: req.params.participant_id},raw: true})
         for (u in deTr){
+          var max = 0
+          let uLeng = deTr.length
           let dt_id = deTr[u].dt_id
           let participant_id = deTr[u].participant_id
           let from = deTr[u].from
@@ -241,6 +243,9 @@ module.exports = {
          
           const k = await DETrain.findAll({where: {dt_id: deTr[u].dt_id},raw: true})
           for(w in k){
+            let kLeng = k.length
+           // let max = kLeng+uLeng
+            max = u+w
             let deTr_id = k[w].detrain_id
             let train_id = k[w].train_id
 
@@ -249,23 +254,21 @@ module.exports = {
             let nameTrain = trn.name
             let type_train_id = type.type_train_id
             let nameType = type.name
+           // let g = u+m
 
-            mas[w] = {//[u]
-              dt_id: dt_id,
+            mas[max] = {//[u]
+              dates: [{dt_id: dt_id,from: from,
+                to: to}],
               participant_id: participant_id,
               detrain_id: deTr_id,
               train_id: train_id,
               nameTrain: nameTrain,
               nameType: nameType,
-              type_train_id: type_train_id,
-              from: from,
-              to: to
+              type_train_id: type_train_id
              }
             }
           }
-          
-          return res.status(200).send(mas)//{mas, obj}
-
+          return res.status(200).send(mas)
      /* DateTrain.findOne({where: {participant_id: req.params.participant_id}})
         .then(dt=>{
           if (!dt) {          

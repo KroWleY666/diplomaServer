@@ -140,7 +140,7 @@ module.exports = (app) => {
   // список базы упражнений с характеристиками               !!!!!
   app.get('/api/listExercises', exercisesController.listOnlyExercise); // ok
 
-
+  
   // список мышц           !!!!!
   app.get('/api/listMuscle', exercisesController.listMuscle); // ok
   // список типов упражнений           !!!!!

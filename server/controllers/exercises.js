@@ -360,25 +360,20 @@ module.exports = {
     .catch(error => res.status(400).send('Возможно некорректные поля TrainExercise!'+error))
   },
 
-  /*вывод упражнений тренировки с характеристиками и подходами ПО НОВОЙ СХЕМЕ */
+  /*вывод упражнений тренировки с характеристиками и подходами*/
   async extractExerToTrain(req, res) {
     let mas=[]
+    try{
     const trEx = await TrainExercise.findAll({where: {train_id: req.params.train_id},raw: true})
       for (u in trEx){
         let g = trEx[u].train_ex_id
-       // console.log('g = ' + g)
-        
         let k = await Exercise.findOne({where: {exercise_id: trEx[u].exercise_id},raw: true})
         let exName = k.name
-        //console.log('exName'+exName);
-        
         let m = await Character.findOne({where: {character_id: trEx[u].character_id},raw: true})
         let approach = m.approach
         let count = m.count
         let duration = m.duration
-        //console.log('approach '+approach+' count '+count+' duration '+duration);
-        
-        mas[u] = {//[u]
+        mas[u] = {
           exercise_id: trEx[u].exercise_id,
           name: exName,
           character_id: trEx[u].character_id,
@@ -387,8 +382,11 @@ module.exports = {
           duration: duration
          }
         }
-        return res.status(200).send(mas)//{mas, obj}
-       // .catch(er => res.status(404).send('Нет такого id тренировки!'+er))
+        return res.status(200).send(mas)
+      }
+      catch (err) {
+        res.status(404).send('Ошибка: '+ err)
+      }
   },
     
 }

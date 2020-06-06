@@ -1,23 +1,16 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
     
-     return queryInterface.bulkInsert('StandNames', [{
-        name: 'Бег 100 м'/*
-        createdAt: new Date(),
-        updatedAt: new Date()*/
-      },{
-        name: 'Подтягивание на перекладине'/*
-        createdAt: new Date(),
-        updatedAt: new Date()*/
-      },{
-        name: 'Жим'/*
-        createdAt: new Date(),
-        updatedAt: new Date()*/
-      },{
-        name: 'Поднимание пресса'/*
-        createdAt: new Date(),
-        updatedAt: new Date()*/
-      }]
+     return queryInterface.bulkInsert('StandNames', [
+       { name: 'Бег 60 м (сек)' },
+       { name: 'Бег 100 м (сек)' },
+       { name: 'Бег 3000 м (сек)' },
+       { name: 'Прыжок в длину (см)' },
+       { name: 'Прыжок в высоту (см)' },
+       { name: 'Отжимания в упоре лежа' },
+       { name: 'Подтягивание на перекладине' },
+       { name: 'Становая тяга (кг)' }
+      ]
     );    
   },
 

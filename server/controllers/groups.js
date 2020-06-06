@@ -38,6 +38,38 @@ var getAge = function(birth) {
   return age
 }
 
+  let arr_num = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+  let arr_en = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+  let arr_EN = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+  const compareRandom = ( ) => Math.random() - 0.5;
+
+  const randomInteger = ( min, max ) => Math.round(min - 0.5 + Math.random() * (max - min + 1));
+
+let generatePassword =  function () {
+  let arr = [];
+   arr = arr.concat(arr_num);
+   arr = arr.concat(arr_en);
+   arr = arr.concat(arr_EN);
+
+  arr.sort(compareRandom);
+  let password = '';
+  let passLenght = 10;
+
+  for (let i = 0; i < passLenght; i++) {
+      password += arr[randomInteger(0, arr.length - 1)];
+  }
+  return password
+//  document.querySelector('#result').textContent = password;
+
+ /* var length = 12,
+      charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
+      retVal = "";
+  for (var i = 0, n = charset.length; i < length; ++i) {
+      retVal += charset.charAt(Math.floor(Math.random() * n));
+  }
+  return retVal;*/
+}
+
 
 module.exports = {
 
@@ -148,8 +180,9 @@ module.exports = {
            // birthday: req.body.birthday
           })
           .then(participant => {
+            let psPart = generatePassword()
             let age = getAge(participant.age)
-            res.status(200).send({participant,group_name, age})
+            res.status(200).send({participant,group_name, age, psPart})
             return {participant,group_name, age}
           })
           //.catch((error) => res.status(400).send(error));
