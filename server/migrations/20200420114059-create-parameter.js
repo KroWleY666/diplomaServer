@@ -23,7 +23,7 @@ module.exports = {
       },
       value: {
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.DOUBLE
       },
       participant_id: {
         type: Sequelize.INTEGER,        

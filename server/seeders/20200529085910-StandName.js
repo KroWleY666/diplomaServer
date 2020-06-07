@@ -4,7 +4,7 @@ module.exports = {
      return queryInterface.bulkInsert('StandNames', [
        { name: 'Бег 60 м (сек)' },
        { name: 'Бег 100 м (сек)' },
-       { name: 'Бег 3000 м (сек)' },
+       { name: 'Бег 3000 м (мин)' },
        { name: 'Прыжок в длину (см)' },
        { name: 'Прыжок в высоту (см)' },
        { name: 'Отжимания в упоре лежа' },
