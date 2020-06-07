@@ -30,7 +30,7 @@ module.exports = {
             level_train_id: req.body.level,
             definition: req.body.definition
           })
-          .then(train => res.status(201).send({train, message: 'Тренировка добавлена!'}))   
+          .then(train => res.status(201).send(train))   
           .catch(error => res.status(400).send({error, message: 'Возможно некорректные поля!'})); 
         }
       })      
