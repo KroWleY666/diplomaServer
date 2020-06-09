@@ -97,28 +97,35 @@ module.exports = {
   },
   
   /*----- список только мышц упражнения -----*/
-  filterTrain(req, res) {
-  //  let k = Train.findAll({where: {type_train_id: req.body.type,level_train_id: req.body.level}})
-  //  let l = Train.findAll({where: {type_train_id: req.body.type}})
-  //  let m = Train.findAll({where: {level_train_id: req.body.level}})
-    Train.findAll({where: {[Op.contains]: [{type_train_id: {type_train_id: {[Op.or]: req.body.type}}}
-      ,{level_train_id: {level_train_id: {[Op.or]: req.body.level}}}]}
-    /*  {type_train_id: {[Op.or]: req.body.type},
-    level_train_id: {[Op.or]: req.body.level}}*/})
-       .then(tr => {return res.status(200).send({tr, message: 'Есть тренировки с указанными типом и уровнем!'})})
-     // .catch(er => res.status(400).send({er, message: 'Что-то пошло не так...'}))
-     // type_train_id:  {$any: m},
-     // level_train_id:  {$any: l}
-    //}}
-     /* $or: [{type_train_id: req.body.type}]
-    },{
-      $or: [{level_train_id: req.body.level}]
-   // }]}*///}})
-      //.then(tr => {return res.status(200).send({tr, message: 'Есть тренировки с указанными типом и уровнем!'})})
-     // .catch(er => res.status(400).send({er, message: 'Что-то пошло не так...'}))
-     /*if(k || l || m){
-     return res.status(200).send({k, message: 'Есть тренировки с указанными типом и уровнем!'})
-     }*/
+  async filterTrain(req, res) {
+  try{
+    let t
+    let m
+    if(req.body.type){
+     t = await Train.findAll({where: {type_train_id: {[Op.or]: [req.body.type]}}})
+    }
+    if(req.body.level){
+     m = await Train.findAll({where: {level_train_id: {[Op.or]: [req.body.level]}}})
+  }
+    let y
+    if(t && m){
+      console.log('first if')
+      y = await Train.findAll({where: {level_train_id: req.body.level,
+        type_train_id: req.body.type}})
+        return res.status(200).send({y, message: 'Есть тренировки с указанными типом и уровнем! M&&T'})
+      }else{
+      if(t){
+        console.log('second if')
+        return res.status(200).send({t, message: 'Есть тренировки с указанными типом и уровнем! T'})
+      } 
+      if (m){
+        console.log('third if')
+        return res.status(200).send({m, message: 'Есть тренировки с указанными типом и уровнем! M'})
+      }
+    }
+  }catch(err){
+    return res.status(400).send({err, message: 'error'})
+  }
   },
     
     
@@ -192,7 +199,16 @@ module.exports = {
   /********************* ТРЕНИРОВКИ/ДАТЫ *********************/
  
     /*----------создать дату для тренировки----------*/
-  createDT(req, res) {
+  async createDT(req, res) {
+   /* let v = await DateTrain.findOne({where: {
+      from: req.body.from,
+      to: req.body.to,
+      participant_id: req.params.participant_id
+    }})
+    let tr = await Train.findOne({ where: { train_id: req.body.train_id } })
+    if(!v){
+
+    }*/
         DateTrain.findOne({where: {
           from: req.body.from,
           to: req.body.to,
@@ -230,22 +246,21 @@ module.exports = {
     /*-----вся инфа об датах тренировок одного спортсмена-----*/
   async allDateTrainsInfo(req, res) {
 
-      let mas=[]
+      try{
+
+      
+      let mas2=[]
       const deTr = await DateTrain.findAll({where: {participant_id: req.params.participant_id},raw: true})
         for (u in deTr){
-          var max = 0
-          let uLeng = deTr.length
           let dt_id = deTr[u].dt_id
           let participant_id = deTr[u].participant_id
           let from = deTr[u].from
           let to = deTr[u].to
          // console.log('g = ' + g)
-         
+         let mas=[]
           const k = await DETrain.findAll({where: {dt_id: deTr[u].dt_id},raw: true})
           for(w in k){
-            let kLeng = k.length
            // let max = kLeng+uLeng
-            max = u+w
             let deTr_id = k[w].detrain_id
             let train_id = k[w].train_id
 
@@ -256,9 +271,10 @@ module.exports = {
             let nameType = type.name
            // let g = u+m
 
-            mas[max] = {//[u]
-              dates: [{dt_id: dt_id,from: from,
-                to: to}],
+            mas[w] = {//[u]
+              dt_id: dt_id,
+              from: from,
+              to: to,
               participant_id: participant_id,
               detrain_id: deTr_id,
               train_id: train_id,
@@ -267,24 +283,13 @@ module.exports = {
               type_train_id: type_train_id
              }
             }
+            mas2[u] = {mas}
+
           }
-          return res.status(200).send(mas)
-     /* DateTrain.findOne({where: {participant_id: req.params.participant_id}})
-        .then(dt=>{
-          if (!dt) {          
-            return res.status(404).send({
-              message: 'Тренировки нет!'
-            })
-          }
-          dt.getTrains().then(ex => {
-            for(exer of ex){          
-              console.log("exercise:", exer.name);                
-            }
-            return res.status(200).send(ex)
-          })
-          .catch(error => res.status(400).send(error))
-      })
-      .catch(error => res.status(400).send(error))*/
+          return res.status(200).send(mas2)
+        }catch(err){
+          return res.status(400).send(err)
+        }
     },
     
     /*-----удалить даты в тренировке-----*/

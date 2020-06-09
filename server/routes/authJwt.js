@@ -10,76 +10,54 @@ verifyToken = (req, res, next) => {
         auth: false, message: 'Нет токена.' 
       });
     }
-   
     jwt.verify(token, config.secret, (err, decoded) => {
       if (err){
         return res.status(401).send({ 
-            auth: false, 
-            message: 'Неавторизированный пользователь! ' + err 
+            auth: false,  message: 'Неавторизированный пользователь! ' + err 
           });
       }
       req.user_id = decoded.user_id;
       next();
     });
   }
-
-  isSportsmen = (req, res, next) => {
   
+  isTrainer = (req, res, next) => {
     User.findByPk(req.user_id)
       .then(user => {
-        user.getRoles().then(roles => {
-          for(let i=0; i<roles.length; i++){
-           // console.log(roles[i].role_name);
-            if(roles[i].role_name/*.toUpperCase()*/ === "SPORTSMEN"){
+            if(user.role_id === 1){
               next();
               return;
             }
-          }
-          
+          res.status(403).send({message: "Требуется роль Тренера!"});
+          return;
+      })
+  }
+
+  isSportsmen = (req, res, next) => {
+    User.findByPk(req.user_id)
+      .then(user => {
+            if(user.role_id === 2){
+              next();
+              return;
+            }
           res.status(403).send({message: "Требуется роль Спортсмена!"});
           return;
         })
-      })
-  }
-  
-  isTrainer = (req, res, next) => {
-  
-    User.findByPk(req.user_id)
-      .then(user => {
-        user.getRoles().then(roles => {
-          for(let i=0; i<roles.length; i++){
-           // console.log(roles[i].role_name);
-            if(roles[i].role_name/*.toUpperCase()*/ === "TRAINER"){
-              next();
-              return;
-            }
-          }
-          
-          res.status(403).send({message: "Требуется роль Тренера!"});
-          return;
-        })
-      })
   }
    
   isTrOrSp = (req, res, next) => {
-    
     User.findByPk(req.user_id)
-      .then(user => {
-        user.getRoles().then(roles => {
-          for(let i=0; i<roles.length; i++){          
-            if(roles[i].role_name/*.toUpperCase()*/ === "TRAINER"){ //PM
+      .then(user => {        
+            if(user.role_id === 1){ 
               next();
               return;
             }
             
-            if(roles[i].role_name/*.toUpperCase()*/ === "SPORTSMEN"){
+            if(user.role_id=== 2){
               next();
               return;
             }
-          }
-          
           res.status(403).send({message: "Требуется роль Тренера или Спортсмена!"})
-        })
       })
   }
    

@@ -9,37 +9,51 @@ module.exports = {
       },
       name: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: true,
+        defaultValue: null
       },
       surname: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: true,
+        defaultValue: null
       },
-      email: {
+      /*email: {
         type: Sequelize.STRING,
-        allowNull: false
-      },
+        allowNull: true,
+        defaultValue: null
+      },*/
       sex: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: true,
+        defaultValue: null
       },
       age: {
         type: Sequelize.DATE,
-        allowNull: false,
+        allowNull: true,
+        defaultValue: null,
         validation: {
           isDate: true,
         }
       },
       heigth: {
         type: Sequelize.INTEGER,
-        allowNull: false
+        allowNull: true,
+        defaultValue: null
       },
       weigth: {
         type: Sequelize.INTEGER,
-        allowNull: false
+        allowNull: true,
+        defaultValue: null
       },
-      group_id: { //group_id
+      user_id: {
         type: Sequelize.INTEGER,
+        allowNull: true,
+        references: { model: 'Users', key: 'user_id', as: 'user_id' },
+      }
+     /* group_id: { //group_id
+        type: Sequelize.INTEGER,
+        allowNull: true,
+        defaultValue: null,
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
         references: {
@@ -47,7 +61,7 @@ module.exports = {
           key: 'group_id',
           as: 'group_id'//group_id
         }
-      }
+      }*/
     });
   },
   down: (queryInterface, Sequelize) => {

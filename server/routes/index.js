@@ -72,37 +72,31 @@ module.exports = (app) => {
   /*-------------------- ВСЕ БЕЗ РЕГИСТРАЦИИ !!!!!!!!!!--------------------*/
 
   /*-------------------- добавление/просмотр/удаление groups --------------------*/
-
-  
   // добавить группу                                                                !!!!!
-  app.post('/api/newGroup', groupsController.createGroup); //ok
+  app.post('/api/newGroup',[authJwt.verifyToken, authJwt.isTrainer], groupsController.createGroup);
   // удалить группу                                                                 !!!!!
-  app.delete('/api/delGroup/:group_id', groupsController.destroyGroup); //ok
+  app.delete('/api/delGroup/:group_id', [authJwt.verifyToken, authJwt.isTrainer], groupsController.destroyGroup);
   // список групп                                                                   !!!!!
-  app.get('/api/groupList', groupsController.listGroups); //ok
+  app.get('/api/groupList', [authJwt.verifyToken, authJwt.isTrainer], groupsController.listGroups);
 
 
   /*-------------------- добавление/просмотр/удаление group participants --------------------*/
-
-
   // добавить спортсмена в группу с id группы                                       !!!!!
-  app.post('/api/newParticipant', groupsController.addParticipant); //ok
+  app.post('/api/newParticipant', [authJwt.verifyToken, authJwt.isTrainer], groupsController.addParticipant);
   // удалить спортсмена из группы                                                   !!!!!
-  app.delete('/api/delSportsmen/:participant_id', groupsController.destroyParticipant); //ok
+  app.delete('/api/delSportsmen/:participant_id', [authJwt.verifyToken, authJwt.isTrainer], groupsController.destroyParticipant); 
 
 
   /*-------------- добавление/просмотр/удаление standarts, parameters, events --------------*/
-
   /*---------- НОРМАТИВ Standart ----------*/
-
   // создать НОРМАТИВ с id спортсмена                                               !!!!!
-  app.post('/api/newStandart/:participant_id', participantsController.createStandart); // ok
+  app.post('/api/newStandart/:participant_id', [authJwt.verifyToken, authJwt.isTrainer], participantsController.createStandart); 
   // все названия НОРМАТИВОВ                                                        !!!!!
-  app.get('/api/listStandarts', participantsController.listStandarts); // ok 
-  // создать НОРМАТИВ отдельно для id спортсмена                                     !!!!!
-  app.get('/api/listPartStandart/:participant_id', participantsController.listPartStandart); // ok   
+  app.get('/api/listStandarts', [authJwt.verifyToken, authJwt.isTrOrSp], participantsController.listStandarts);  
+  // список НОРМАТИВОВ отдельно для id спортсмена                                     !!!!!
+  app.get('/api/listPartStandart/:participant_id', [authJwt.verifyToken, authJwt.isTrOrSp], participantsController.listPartStandart);   
   // удалить НОРМАТИВ по id                                                         !!!!!
-  app.delete('/api/delStandart/:standart_id', participantsController.destroyStandart); // ok 
+  app.delete('/api/delStandart/:standart_id', [authJwt.verifyToken, authJwt.isTrainer], participantsController.destroyStandart);  
   
   /*---------- ИЗМЕРЕНИЕ Parameter ----------*/
 

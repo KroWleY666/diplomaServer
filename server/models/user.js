@@ -29,6 +29,10 @@ module.exports = (sequelize, DataTypes) => {
           isEmail: true
         }
       },
+      role_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+      },
       password: {
         type: DataTypes.STRING,
         allowNull: false
@@ -40,14 +44,29 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     User.associate = models => {
-      User.belongsToMany(models.Role, {
+      /*User.belongsToMany(models.Role, {
         through: models.UserRole,
         foreignKey: 'user_id',
         otherKey: 'role_id',
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE'
-      })
-     /* User.hasOne(models.Participant, {
+      }),*/
+      User.belongsToMany(models.Group, {
+        as: 'users', 
+        through: models.UserGroup,
+        foreignKey: 'user_id',
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
+      }),
+      User.belongsTo(models.Role, {
+       // through: models.UserRole,
+        foreignKey: 'role_id',
+        //otherKey: 'role_id',
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
+      }),
+      User.hasOne(models.Participant, {
+        foreignKey: 'user_id',
        // through: models.UserRole,
         //foreignKey: 'user_id',
         //otherKey: 'role_id',

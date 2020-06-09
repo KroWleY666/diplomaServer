@@ -2,6 +2,7 @@ const Group = require('../models').Group
 const User = require('../models').User
 const Participant = require('../models').Participant
 const Event = require('../models').Event
+const UserGroup = require('../models').UserGroup
 
 var getAge = function(birth) {
  
@@ -76,9 +77,38 @@ module.exports = {
   /*--------добавление/просмотр/удаление ТОЛЬКО ГРУПП--------*/
 
   /*--------создать группу--------*/
-  createGroup(req, res) {
-    // если группа вообще существует, не только у конкретного пользователя
-    Group.findOne({where: {
+  async createGroup(req, res) {
+   // try{
+      let user = await User.findOne({where: {user_id: req.user_id}})
+      let m = await Group.findOne({where: {title: req.body.title}})
+      if(!m){
+        //console.log(m)
+        let t = await Group.create({title: req.body.title})
+        let v = await UserGroup.create({
+          user_id: req.user_id,
+          group_id: t.group_id
+        })
+
+
+       // let f = user.addGroups(t)
+        /*.then(nGr => {
+          //console.log(user)
+          console.log(nGr)
+          user.addGroups(nGr)
+          return res.status(201).send({nGr,user})
+        })*/
+        return res.status(201).send({v,user})
+      }else{
+        console.log('else '+m)
+        return res.status(400).send('error')
+        //.catch(error =>return res.status(400).send(error));
+       // return res.status(400).send(error)
+      }
+   // }catch(err) {
+   //   return res.status(400).send(err)
+   // }
+    
+   /* Group.findOne({where: {
       title: req.body.title//,
       //sport: req.body.sport
     }}).then(group => 
@@ -102,7 +132,7 @@ module.exports = {
           .catch(error => res.status(400).send(error));
         }
       })
-      .catch(error => res.status(400).send(error));
+      .catch(error => res.status(400).send(error));*/
   },
   
   /*--------список всех групп с зависимой моделью Participant--------*/

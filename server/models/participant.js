@@ -8,57 +8,60 @@ module.exports = (sequelize, DataTypes) => {
     },
     name: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: true
     },
     surname: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: true
     },
     sex: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: true
     },
     age: {
       type: DataTypes.DATE,
-      allowNull: false,
+      allowNull: true,
       get() {
         var date = new Date(this.getDataValue('age'))
-        //получаем день
         var dd = date.getDate();
         if (dd < 10) dd = '0' + dd;
-  
-        //получаем месяц
         var mm = date.getMonth() + 1;
         if (mm < 10) mm = '0' + mm;
-
-        //получаем год
         var yy = date.getFullYear() ;
-
         return dd + '.' + mm + '.' + yy;
       },
     },
     heigth: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: true
     },
     weigth: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: true
     },
-    email: {
+    user_id: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    }
+    /*email: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
       validate: {
         isEmail: true
       }
-    }
+    }*/
   });
   Participant.associate = models => {
-    Participant.belongsTo(models.Group, {
+    /*Participant.belongsTo(models.Group, {
       foreignKey: 'group_id',
       targetKey: 'group_id',
       onDelete: 'CASCADE',
       onUpdate: 'CASCADE'
+    }),*/
+    Participant.belongsToMany(models.Group, { //hasMany
+      through: models.PartGroup,
+      foreignKey: 'participant_id',      
+      as: 'participants'
     }),
     Participant.hasMany(models.Standart, {
       foreignKey: 'participant_id',
@@ -71,6 +74,12 @@ module.exports = (sequelize, DataTypes) => {
     Participant.hasMany(models.Parameter, {
       foreignKey: 'participant_id',
       as: 'parameters'
+    }),
+    Participant.belongsTo(models.User, {
+      foreignKey: 'user_id',
+      //as: 'trains',
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
     }),
     /*Participant.hasMany(models.Train, {
       foreignKey: 'participant_id',

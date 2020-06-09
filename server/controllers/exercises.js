@@ -6,6 +6,7 @@ const TypeEx = require('../models').TypeEx
 const PlanTrain = require('../models').PlanTrain
 const CharEx = require('../models').CharEx
 const TrainExercise = require('../models').TrainExercise
+const MuscleEP = require('../models').MuscleEP
 
 
 const db = require('../models/index')
@@ -142,40 +143,50 @@ module.exports = {
   
   /*----- список только мышц упражнения -----*/
   async filterExercise(req, res) {
-    let filter = req.body.filter
-    let m = req.body.muscle
-    let t = req.body.type
-    let findArgs = {}
-    for (let key in filter) {
-      if (filter[key].length > 0) {
-        if (key === "muscle") {
-          findArgs[key] = {
-            $gte: filter[key][0],
-            $lte: filter[key][1]
-        }
-      }
-        if (key === "type") {
-          findArgs[key] = {
-            $gte: req.body.filters[key][0],
-            $lte: req.body.filters[key][1]
-        }
-        }
-      }else {
-        findArgs[key] = filter[key];
+    let m, t, r
+    try{
+    if(req.body.muscle){
+      m = await MuscleEP.findAll({where: {mscl_id: req.body.muscle}})
     }
-    Exercise.findAll({where: {}})
-
+    if(req.body.type){
+      t = await Exercise.findAll({where: {te_id: req.body.type}})
     }
+    if(m && t){
+      //let o = await MuscleEP.findAll({where: {mscl_id: req.body.muscle, exercise_id: t.exercise_id}})
+//console.log(o)
 
-    for(ms in filter){
-      let k
-      if(filter[ms] === 'muscle'){
-
-      }
-      if(filter[ms] === 'type'){
-        
+      let r
+      var e=0
+      let d=[]
+     for (n in m){
+      r = await Exercise.findAll({where: {exercise_id: m[n].exercise_id,te_id: req.body.type}})
+      if(r.length>0){
+        d[e]=r
+        e=e+1
       }
     }
+        return res.status(200).send(d)
+
+    }else {
+      if(m){
+        let f=[]
+        let g
+        for (n in m){
+          f[n] = await Exercise.findAll({where: {exercise_id: m[n].exercise_id}})
+         // console.log(g.exercise_id)
+          //f[n] =g
+        }
+
+        return res.status(200).send(f)
+      }
+      if(t){
+        return res.status(200).send({t, message: 'Список упражнений получен! T'})
+      }
+    }
+  }catch(err){
+    return res.status(200).send('err '+err)
+  }
+    
   },
   
   

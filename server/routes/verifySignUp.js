@@ -30,13 +30,13 @@ checkDuplicateUserNameOrEmail = (req, res, next) => {
   }
 
   checkRolesExisted = (req, res, next) => {  
-    if (req.body.roles) {
-    for(let i=0; i<req.body.roles.length; i++){
-      if(!ROLEs.includes(req.body.roles[i]/*.toUpperCase()*/)){
-        res.status(400).send("Ошибка! Не существует роли = " + req.body.roles[i]);
+    if (req.body.role_id) {
+    //for(let i=0; i<req.body.role_id.length; i++){
+      if(!ROLEs.includes(req.body.role_id/*[i]/*.toUpperCase()*/)){
+        res.status(400).send("Ошибка! Не существует роли = " + req.body.role_id/*[i]*/);
         return;
       }
-    }
+    //}
   }
     next();
   }

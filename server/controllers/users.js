@@ -1,6 +1,7 @@
 //const UserRole = require('../models').UserRole;
 const User = require('../models').User
 const Role = require('../models').Role
+const Participant = require('../models').Participant
 const config = require('../config/auth.js');
 const bcrypt = require('bcryptjs')
 var jwt = require('jsonwebtoken');
@@ -17,34 +18,20 @@ module.exports = {
         console.log("Идет процесс регистрации");
         
         User.create({
-         // name: req.body.name,
-         // username: req.body.username,
           email: req.body.email,
           password: req.body.password,
-          salt: bcrypt.hashSync(req.body.password, 10)
+          salt: bcrypt.hashSync(req.body.password, 10),
+          role_id: req.body.role
         }).then(user => {
-          if (req.body.roles) {
-          Role.findAll({where: {
-            role_name: {
-              [Op.or]: req.body.roles
-            }//req.body.roles.map(role => role/*.toUpperCase()*/)
-          }})
-          .then(roles => {
-            user.setRoles(roles).then(() => {
-              res.send({user, roles, message: "Пользователь успешно зарегестрирован!"})});
-            
-          }).catch(err => {
-            res.status(500).send({err, message: "Error -> "});
-          });
-          }else {
-            // user role = 1
-            user.setRoles([1]).then(() => {
-              res.send({ message: "Пользователь успешно зарегестрирован (без роли как спортсмен)!" });
-            })
-          }
-        }).catch(err => {
-          res.status(500).send({err, message: "Error -> "});
-        })
+          //Participant.create()
+          //.then(pt => {
+           // user.setParticipant(pt)
+            res.send({user, message: "Пользователь успешно зарегестрирован!"})
+          //})
+          //.catch(err => res.status(500).send({err, message: "Error -> "}))
+          })
+            //  res.send({user, message: "Пользователь успешно зарегестрирован!"})})
+          .catch(err => res.status(500).send({err, message: "Error -> "}))
       },
 
       signin(req, res) {
@@ -63,25 +50,16 @@ module.exports = {
           
           var token = jwt.sign({ user_id: user.user_id }, config.secret, {
             expiresIn: 86400 // expires in 24 hours
-          });
-          
-          var authorities = [];
-          user.getRoles().then(roles => {
-            for (let i = 0; i < roles.length; i++) {
-              authorities.push("ROLE_" + roles[i].role_name.toUpperCase());
-            }
-            res.status(200).send({
+          })
+           let g = {
               user_id: user.user_id,
               //username: user.username,
               email: user.email,
-              roles: authorities,
+              roles: user.role_id,//authorities,
               accessToken: token
-            });
-          });
-          
-          
-          //res.status(200).send({ auth: true, accessToken: token });
-          //return { auth: true, accessToken: token }
+            }
+            res.status(200).send({g, auth: true, accessToken: token });
+           return { auth: true, accessToken: token }
           
         }).catch(err => {
           res.status(500).send({ message:'Error -> ' });
@@ -91,14 +69,7 @@ module.exports = {
       userContent(req, res) {
         User.findOne({
           where: {user_id: req.user_id},
-          attributes: ['email'],
-          include: [{
-            model: Role,
-            attributes: ['role_id', 'role_name'],
-            through: {
-              attributes: ['user_id', 'role_id'],
-            }
-          }]
+          attributes: ['email','role_id']
         }).then(user => {
           res.status(200).json({
             "description": "Общая страница",
@@ -115,14 +86,7 @@ module.exports = {
       adminBoard (req, res) {
         User.findOne({
             where: {user_id: req.user_id},
-            attributes: ['email'],
-            include: [{
-              model: Role,
-              attributes: ['role_id', 'role_name'],
-              through: {
-                attributes: ['user_id', 'role_id'],
-              }
-          }]
+            attributes: ['email','role_id']
         }).then(user => {
           res.status(200).json({
             "description": "Зашел на страницу тренер",
