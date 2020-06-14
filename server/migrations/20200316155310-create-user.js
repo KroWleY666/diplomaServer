@@ -32,6 +32,11 @@ module.exports = {
         allowNull: false,
         references: { model: 'Roles', key: 'role_id', as: 'role_id' },
       },
+     /* fk_userid: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        //references: { model: 'Participants', key: 'fk_userid', as: 'fk_userid' },
+      },*/
       password: {
         type: Sequelize.STRING,
         allowNull: false

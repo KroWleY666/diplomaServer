@@ -47,9 +47,16 @@ module.exports = {
       },
       user_id: {
         type: Sequelize.INTEGER,
-        allowNull: true,
-        references: { model: 'Users', key: 'user_id', as: 'user_id' },
+        allowNull: false,
+        references: { model: 'Users', key: 'user_id'},
+        onDelete: 'CASCADE',
+        unique: true
       }
+     /* user_id: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+        reference: { model: 'Users', key: 'user_id', as: 'user_id' },
+      }*/
      /* group_id: { //group_id
         type: Sequelize.INTEGER,
         allowNull: true,

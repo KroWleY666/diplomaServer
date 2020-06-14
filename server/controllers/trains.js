@@ -245,6 +245,19 @@ module.exports = {
     
     /*-----вся инфа об датах тренировок одного спортсмена-----*/
   async allDateTrainsInfo(req, res) {
+   /* DateTrain.findAll({where: {participant_id: req.params.participant_id}})
+    .then(async dt => {
+      DETrain.findAll({where: {dt_id: dt.dt_id}})
+      .then(async detr => {
+        let trn = await Train.findOne({where: {train_id: detr.train_id},raw: true})
+        let type = await TypeTrain.findOne({where: {type_train_id: trn.type_train_id},raw: true})
+        return res.status(200).send({detr})
+      })
+    })*/
+
+
+
+
 
       try{
 
@@ -286,7 +299,7 @@ module.exports = {
             mas2[u] = {mas}
 
           }
-          return res.status(200).send(mas2)
+          return res.status(200).send({mas2})
         }catch(err){
           return res.status(400).send(err)
         }

@@ -5,6 +5,8 @@ const passport = require('passport')
 const session = require('express-session')
 
 const createError = require('http-errors');
+
+
 //const moment = require('moment');
 
 // Set up the express app
@@ -37,6 +39,10 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
+
+
+
+
 
 //require('./app/routes.js')(app, passport)
 

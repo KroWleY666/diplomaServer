@@ -4,6 +4,8 @@ const Participant = require('../models').Participant
 const Event = require('../models').Event
 const UserGroup = require('../models').UserGroup
 
+const bcrypt = require('bcryptjs')
+
 var getAge = function(birth) {
  
   var today = new Date();
@@ -136,8 +138,26 @@ module.exports = {
   },
   
   /*--------список всех групп с зависимой моделью Participant--------*/
-  listGroups(req, res) {
-    return Group
+  async listGroups(req, res) {
+    UserGroup.findAll({where: {user_id: req.user_id}})
+    .then(async (group) => {
+      if (!group) {
+        return res.status(404).send({
+          message: 'Групп нет!',
+        });
+      }
+      let mas=[]
+      for(g in group){
+        mas[g] = await Group.findAll({where: {group_id: group[g].group_id}})
+      }
+      return res.status(200).send(mas)
+      //console.log(group.group_id)
+     
+     // .then(gr => { return res.status(200).send(gr) })
+      //.catch((error) => res.status(400).send(error));
+  })
+  .catch((error) => res.status(400).send(error));
+    /*return Group
       .findAll({
         include: [{
           model: Participant,
@@ -155,7 +175,7 @@ module.exports = {
         }
       return res.status(200).send(group);
     })
-    .catch((error) => res.status(400).send(error));
+    .catch((error) => res.status(400).send(error));*/
   },
   
   /*-----удалить группу с участниками-----*/
@@ -186,8 +206,51 @@ module.exports = {
   /*--------добавление/просмотр/удаление УЧАСТНИКОВ ГРУПП--------*/
 
   /*--------добавить спортсмена в группу--------*/
-  addParticipant(req, res) {  
-    Participant.findOne({where: {email: req.body.email}}) 
+  async addParticipant(req, res) {  
+    let psPart = generatePassword()
+    User.findOne({ where: {email: req.body.email}})
+      .then(async user1 => {
+        if (!user1) {
+    User.create({
+      email: req.body.email,
+      password: psPart,
+      salt: bcrypt.hashSync(psPart, 10),
+      role_id: 2
+    }).then(async user => { // если такой email уже есть
+      Participant.create({
+        name: req.body.name,
+        surname: req.body.surname,
+        sex: req.body.sex,
+        age: req.body.age,
+        heigth: req.body.heigth,
+        weigth: req.body.weigth,
+        user_id: user.user_id
+      }).then(async participant => {
+        //user.setParticipant(participant)
+        UserGroup.create({
+          user_id: user.user_id,
+          group_id: req.body.group_id
+        }).then(async pGr => {
+          let age = getAge(participant.age)
+          let group = await Group.findByPk(req.body.group_id)
+          let group_name = group.title
+          res.status(200).send({user,participant,group_name, age})
+          return {user,participant,group_name, age}
+        })
+        .catch((error) => res.status(400).send(error)); 
+      })
+      .catch((error) => res.status(400).send(error)); 
+    })
+    .catch((error) => res.status(400).send(error)); 
+  }else {
+    return res.status(404).send({ message: 'uze est'})
+  }
+})
+.catch((error) => res.status(400).send(error)); 
+
+
+
+    /*Participant.findOne({where: {email: req.body.email}}) 
     .then(allPart => { // если такой email уже есть
       if(allPart) {
         return res.status(404).send({
@@ -220,7 +283,7 @@ module.exports = {
       .catch((error) => res.status(400).send({error,  
         message: 'Возможно не существует такой группы!'}));
       }        
-    }).catch((error) => res.status(400).send(error)); 
+    }).catch((error) => res.status(400).send(error)); */
   },
   
   

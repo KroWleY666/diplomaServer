@@ -2,7 +2,7 @@
   "development": {
     "username": "postgres",
     "password": "qwerty",
-    "database": "DBtest", 
+    "database": "nDB", 
     "host": "127.0.0.1",
     "dialect": "postgres",
     "logging": false,

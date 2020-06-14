@@ -7,13 +7,13 @@ const rolesController = require('../controllers').roles;
 const userRolesController = require('../controllers').userRoles;
 const usersController = require('../controllers').users;
 const groupsController = require('../controllers').groups;
-const filtersController = require('../controllers').filters;
 const exercisesController = require('../controllers').exercises;
-const plansController = require('../controllers').plans;
 const eventsController = require('../controllers').events;
 const participantsController = require('../controllers').participants;
 const trainsController = require('../controllers').trains;
 const analyticsController = require('../controllers').analytics;
+const filesController = require('../controllers').files;
+const filetwoController = require('../controllers').filetwo;
 
 module.exports = (app) => {
   app.use(function(req, res, next) {
@@ -185,6 +185,15 @@ module.exports = (app) => {
 
 
 
+
+
+  app.post('/api/create-pdf', filesController.createPdf); // ok
+  app.get('/api/fetch-pdf', filesController.fetchPdf); // ok
+  
+  app.post('/api/createNewpdf', filetwoController.createPdf); // ok
+
+
+
   // информация об упражнении БЕЗ тренировки           !!!!!
   app.post('/api/oneExercise', exercisesController.oneExercise); // ok
   // обновить 2 параметра к упражнению (по его id в коде)           !!!!!
@@ -216,38 +225,15 @@ module.exports = (app) => {
   // вывод ВСЕХ спортсменов и их id групп                    !!!!!
   app.get('/api/listPartWithGroup', participantsController.listPartWithGroup); // ok
   
-
-
-  /*-------------------- filters --------------------*/
-  // создать фильтр просто                                         !!!!!
-  app.post('/api/newFilters', filtersController.create); //ok
-  // список всех фильтров c привязанными к ним планами             !!!!!
-  app.get('/api/listFilter', filtersController.listFilter); //ok
-  // привязка плана(создается здесь же) к id фильтра               !!!!!
-  app.get('/api/PlanFilter', filtersController.addPlanToFilter); //ok
-  // удалить фильтр с привязанными к нему планами                  !!!!!
-  app.post('/api/delPlanFilter', filtersController.destroyFilter); //ok
   
 
 
-  /*----------------- planes -----------------*/
-  // создать план отдельно                                 !!!!!
-  app.post('/api/newPlan', plansController.create); // ok
-  // список планов с привязанными к ним фильтрами и тренировками         !!!!!
-  app.get('/api/listPlan', plansController.listPlan); // ok
 
 
   //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   //app.get('/api/listOneTrain/:train_id', plansController.listOneTrain); // ok
 
   
-
-  /*----------------- M:M planes,trains,exercises -----------------*/
-  // добавить в план тренировки(создать трентровку в ид плана)         !!!!!
-  app.post('/api/newTrainToPlan', plansController.addTrainToPlan); //ok 
-
-  // удалить план по его id                      !!!!!
-  app.delete('/api/delPlan/:plan_id', plansController.destroyPlan); // ok
 
 
 
@@ -316,12 +302,6 @@ module.exports = (app) => {
 
 
 
-
-
- app.get('/api/listMuscle', filtersController.listMuscle); // ok
-
-
- app.get('/api/listTypeEx', filtersController.listTypeEx); // ok
 
 
 

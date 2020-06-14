@@ -30,13 +30,13 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Train.associate = models => {
-    Train.belongsToMany(models.Plan, {
+    /*Train.belongsToMany(models.Plan, {
       through: models.PlanTrain,
       as: 'plans',
       foreignKey: 'train_id',
       onDelete: 'CASCADE',
       onUpdate: 'CASCADE'
-    }),
+    }),*/
     Train.belongsToMany(models.DateTrain, {
       through: models.DETrain,
       as: 'dates',

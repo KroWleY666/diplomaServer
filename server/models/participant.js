@@ -41,7 +41,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     user_id: {
       type: DataTypes.INTEGER,
-      allowNull: true
+      allowNull: true,
+      unique: true
     }
     /*email: {
       type: DataTypes.STRING,
@@ -75,12 +76,14 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'participant_id',
       as: 'parameters'
     }),
-    Participant.belongsTo(models.User, {
-      foreignKey: 'user_id',
+    /*Participant.belongsTo(models.User, {
+    //  foreignKey: 'user_id',
       //as: 'trains',
+      foreignKey: 'fk_userid', 
+      targetKey: 'user_id',
       onDelete: 'CASCADE',
       onUpdate: 'CASCADE'
-    }),
+    }),*/
     /*Participant.hasMany(models.Train, {
       foreignKey: 'participant_id',
       as: 'trains'

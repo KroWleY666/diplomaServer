@@ -66,10 +66,13 @@ module.exports = (sequelize, DataTypes) => {
         onUpdate: 'CASCADE'
       }),
       User.hasOne(models.Participant, {
-        foreignKey: 'user_id',
+      //  foreignKey: 'user_id',
        // through: models.UserRole,
         //foreignKey: 'user_id',
         //otherKey: 'role_id',
+        as: 'participants', 
+        foreignKey: 'user_id', 
+        //targetKey: 'user_id',
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE'
       })/*,
