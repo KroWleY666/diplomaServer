@@ -64,8 +64,8 @@ module.exports = (sequelize, DataTypes) => {
         //otherKey: 'role_id',
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE'
-      }),
-      User.hasOne(models.Participant, {
+      })
+     /* User.hasOne(models.Participant, {
       //  foreignKey: 'user_id',
        // through: models.UserRole,
         //foreignKey: 'user_id',
@@ -75,7 +75,8 @@ module.exports = (sequelize, DataTypes) => {
         //targetKey: 'user_id',
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE'
-      })/*,
+      })*/
+      /*,
       User.hasMany(models.Group, {
         foreignKey: 'user_id',
         as: 'userGroups'

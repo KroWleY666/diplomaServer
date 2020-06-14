@@ -17,22 +17,27 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: 'CASCADE'
      // as: 'ownerOfGroup'
     }),*/
-    Group.belongsToMany(models.User, {
+    /*Group.belongsToMany(models.User, {
       as: 'groups', 
       through: models.UserGroup,
       foreignKey: 'group_id',
       onDelete: 'CASCADE',
       onUpdate: 'CASCADE'
-    }),
+    }),*/
     Group.belongsToMany(models.Event, {
       as: 'events', 
       through: models.GroupEvent,
       foreignKey: 'group_id'
     }),
-    Group.belongsToMany(models.Participant, { //hasMany
+   /* Group.belongsToMany(models.Participant, { //hasMany
       through: models.PartGroup,
       foreignKey: 'group_id',      
       as: 'participants'
+    }),*/
+    Group.hasMany(models.Participant, {
+     // as: 'events', 
+    //  through: models.GroupEvent,
+      foreignKey: 'group_id'
     })
     /*Group.belongsToMany(models.Event, {
       as: 'events', 

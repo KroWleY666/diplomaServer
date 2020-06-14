@@ -8,7 +8,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      group_id: {
+      /*group_id: {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: { model: 'Groups', key: 'group_id', as: 'group_id' },
@@ -17,7 +17,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: { model: 'Users', key: 'user_id', as: 'user_id' },
-      }
+      }*/
     });
   },
   down: (queryInterface, Sequelize) => {

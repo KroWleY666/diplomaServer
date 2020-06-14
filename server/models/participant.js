@@ -39,31 +39,34 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: true
     },
-    user_id: {
+    /*user_id: {
       type: DataTypes.INTEGER,
       allowNull: true,
       unique: true
-    }
-    /*email: {
+    },*/
+    group_id: { //group_id
+      type: DataTypes.INTEGER
+    },
+    email: {
       type: DataTypes.STRING,
       allowNull: true,
       validate: {
         isEmail: true
       }
-    }*/
+    }
   });
   Participant.associate = models => {
-    /*Participant.belongsTo(models.Group, {
+    Participant.belongsTo(models.Group, {
       foreignKey: 'group_id',
       targetKey: 'group_id',
       onDelete: 'CASCADE',
       onUpdate: 'CASCADE'
-    }),*/
-    Participant.belongsToMany(models.Group, { //hasMany
+    }),
+    /*Participant.belongsToMany(models.Group, { //hasMany
       through: models.PartGroup,
       foreignKey: 'participant_id',      
       as: 'participants'
-    }),
+    }),*/
     Participant.hasMany(models.Standart, {
       foreignKey: 'participant_id',
       as: 'standarts'

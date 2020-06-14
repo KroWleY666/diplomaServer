@@ -79,9 +79,9 @@ module.exports = {
   /*--------добавление/просмотр/удаление ТОЛЬКО ГРУПП--------*/
 
   /*--------создать группу--------*/
-  async createGroup(req, res) {
+  createGroup(req, res) {
    // try{
-      let user = await User.findOne({where: {user_id: req.user_id}})
+     /* let user = await User.findOne({where: {user_id: req.user_id}})
       let m = await Group.findOne({where: {title: req.body.title}})
       if(!m){
         //console.log(m)
@@ -89,7 +89,7 @@ module.exports = {
         let v = await UserGroup.create({
           user_id: req.user_id,
           group_id: t.group_id
-        })
+        })*/
 
 
        // let f = user.addGroups(t)
@@ -99,18 +99,18 @@ module.exports = {
           user.addGroups(nGr)
           return res.status(201).send({nGr,user})
         })*/
-        return res.status(201).send({v,user})
+      /*  return res.status(201).send({v,user})
       }else{
         console.log('else '+m)
         return res.status(400).send('error')
         //.catch(error =>return res.status(400).send(error));
        // return res.status(400).send(error)
-      }
+      }*/
    // }catch(err) {
    //   return res.status(400).send(err)
    // }
     
-   /* Group.findOne({where: {
+    Group.findOne({where: {
       title: req.body.title//,
       //sport: req.body.sport
     }}).then(group => 
@@ -134,12 +134,12 @@ module.exports = {
           .catch(error => res.status(400).send(error));
         }
       })
-      .catch(error => res.status(400).send(error));*/
+      .catch(error => res.status(400).send(error));
   },
   
   /*--------список всех групп с зависимой моделью Participant--------*/
-  async listGroups(req, res) {
-    UserGroup.findAll({where: {user_id: req.user_id}})
+  listGroups(req, res) {
+   /* UserGroup.findAll({where: {user_id: req.user_id}})
     .then(async (group) => {
       if (!group) {
         return res.status(404).send({
@@ -150,14 +150,14 @@ module.exports = {
       for(g in group){
         mas[g] = await Group.findAll({where: {group_id: group[g].group_id}})
       }
-      return res.status(200).send(mas)
+      return res.status(200).send(mas)*/
       //console.log(group.group_id)
      
      // .then(gr => { return res.status(200).send(gr) })
       //.catch((error) => res.status(400).send(error));
-  })
-  .catch((error) => res.status(400).send(error));
-    /*return Group
+//  })
+  //.catch((error) => res.status(400).send(error));
+    return Group
       .findAll({
         include: [{
           model: Participant,
@@ -175,7 +175,7 @@ module.exports = {
         }
       return res.status(200).send(group);
     })
-    .catch((error) => res.status(400).send(error));*/
+    .catch((error) => res.status(400).send(error));
   },
   
   /*-----удалить группу с участниками-----*/
@@ -206,8 +206,8 @@ module.exports = {
   /*--------добавление/просмотр/удаление УЧАСТНИКОВ ГРУПП--------*/
 
   /*--------добавить спортсмена в группу--------*/
-  async addParticipant(req, res) {  
-    let psPart = generatePassword()
+  addParticipant(req, res) {  
+    /*let psPart = generatePassword()
     User.findOne({ where: {email: req.body.email}})
       .then(async user1 => {
         if (!user1) {
@@ -248,9 +248,9 @@ module.exports = {
 })
 .catch((error) => res.status(400).send(error)); 
 
+*/
 
-
-    /*Participant.findOne({where: {email: req.body.email}}) 
+    Participant.findOne({where: {email: req.body.email}}) 
     .then(allPart => { // если такой email уже есть
       if(allPart) {
         return res.status(404).send({
@@ -283,7 +283,7 @@ module.exports = {
       .catch((error) => res.status(400).send({error,  
         message: 'Возможно не существует такой группы!'}));
       }        
-    }).catch((error) => res.status(400).send(error)); */
+    }).catch((error) => res.status(400).send(error)); 
   },
   
   

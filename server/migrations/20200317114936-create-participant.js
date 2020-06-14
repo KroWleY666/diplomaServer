@@ -17,11 +17,11 @@ module.exports = {
         allowNull: true,
         defaultValue: null
       },
-      /*email: {
+      email: {
         type: Sequelize.STRING,
         allowNull: true,
         defaultValue: null
-      },*/
+      },
       sex: {
         type: Sequelize.STRING,
         allowNull: true,
@@ -45,19 +45,19 @@ module.exports = {
         allowNull: true,
         defaultValue: null
       },
-      user_id: {
+     /* user_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: { model: 'Users', key: 'user_id'},
         onDelete: 'CASCADE',
         unique: true
-      }
+      }*/
      /* user_id: {
         type: Sequelize.INTEGER,
         allowNull: true,
         reference: { model: 'Users', key: 'user_id', as: 'user_id' },
       }*/
-     /* group_id: { //group_id
+      group_id: { //group_id
         type: Sequelize.INTEGER,
         allowNull: true,
         defaultValue: null,
@@ -68,7 +68,7 @@ module.exports = {
           key: 'group_id',
           as: 'group_id'//group_id
         }
-      }*/
+      }
     });
   },
   down: (queryInterface, Sequelize) => {
