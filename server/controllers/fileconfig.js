@@ -1,6 +1,6 @@
 
 
-module.exports = (from,to) => {
+module.exports = () => {
     const today = new Date();
 return `<html>
 

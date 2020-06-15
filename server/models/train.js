@@ -24,47 +24,28 @@ module.exports = (sequelize, DataTypes) => {
     },
     definition: {
       allowNull: false,
-      type: DataTypes.STRING//,
-      //validate: { len: [0,3000] }
+      type: DataTypes.STRING
     }
   });
 
   Train.associate = models => {
-    /*Train.belongsToMany(models.Plan, {
-      through: models.PlanTrain,
-      as: 'plans',
-      foreignKey: 'train_id',
-      onDelete: 'CASCADE',
-      onUpdate: 'CASCADE'
-    }),*/
     Train.belongsToMany(models.DateTrain, {
       through: models.DETrain,
       as: 'dates',
-      foreignKey: 'train_id',
-      otherKey: 'dt_id'
-     // onDelete: 'CASCADE',
+      foreignKey: 'train_id'
     }),
     Train.belongsToMany(models.Exercise, {
       as: 'exercises', 
       through: models.TrainExercise,
-      foreignKey: 'train_id',
-      onDelete: 'CASCADE',
-      onUpdate: 'CASCADE'
-      //otherKey: 'exercise_id'
+      foreignKey: 'train_id'
     }),
     Train.belongsTo(models.TypeTrain, {
       as: 'types', 
-     // through: models.TrTypeId,
-      foreignKey: 'type_train_id',
-      onDelete: 'CASCADE',
-      onUpdate: 'CASCADE'
+      foreignKey: 'type_train_id'
     }),
     Train.belongsTo(models.LevelTrain, {
       as: 'levels', 
-      //through: models.TrLevId,
-      foreignKey: 'level_train_id',
-      onDelete: 'CASCADE',
-      onUpdate: 'CASCADE'
+      foreignKey: 'level_train_id'
     })
   };
   return Train;

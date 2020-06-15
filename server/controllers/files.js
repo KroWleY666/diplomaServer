@@ -5,17 +5,17 @@ module.exports = {
 
     createPdf (req, res) {
         
-        pdf.create(pdfTemplate(req.body), {}).toFile('result.pdf', (err) => {
+        pdf.create(pdfTemplate(), {}).toFile('result.pdf', (err) => {
             if(err) {
-                res.send(Promise.reject());
+                res.status(400).send(Promise.reject());
             }
     
-            res.send(Promise.resolve());
+            res.status(200).send(Promise.resolve());
         });
     },
 
     fetchPdf (req, res) {
-        res.sendFile(`${__dirname}/result.pdf`)
+        res.sendFile(`D:\\Study\\SportLifeServer\\result.pdf`)//${__dirname}/
     }
 
 }

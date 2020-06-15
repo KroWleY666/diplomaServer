@@ -1,4 +1,3 @@
-'use strict';
 module.exports = (sequelize, DataTypes) => {
   const Muscle = sequelize.define('Muscle', {
     mscl_id: {
@@ -13,19 +12,11 @@ module.exports = (sequelize, DataTypes) => {
     }
   });
   Muscle.associate = models => {
-    /*Muscle.belongsTo(models.ExercParam, {
-      foreignKey: 'mscl_id',
-     // onDelete: 'CASCADE',
-     // onUpdate: 'CASCADE'
-    }),*/
     Muscle.belongsToMany(models.Exercise, {
       as: 'exParams', 
       through: models.MuscleEP,
-      foreignKey: 'mscl_id',
-      onDelete: 'CASCADE',
-      onUpdate: 'CASCADE'
+      foreignKey: 'mscl_id'
     })
-    // associations can be defined here
   };
   return Muscle;
 };
